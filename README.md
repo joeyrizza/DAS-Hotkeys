@@ -148,7 +148,7 @@ These variables have configurable values.
 | `$ProfitThresholdToBeginScaling` | `$10` | Peak realized profit (Dollars) at which position sizing begins increasing above the minimum risk level. | `($MaxShares*.5)*$MaximumRiskPerShare` |
 | `$ProfitThresholdForFullRisk` | `$50` | Peak realized profit (Dollars) at which the hotkey reaches 100% of the maximum risk budget. | `$ProfitThresholdToBeginScaling*5`. |
 | `$PeakRealized` | `$2.23` | The highest realized P&L (Dollars) reached during the trading session. This is the high-water mark used for both position-size scaling and drawdown protection. | `if($Realized > $PeakRealized){ $PeakRealized=$Realized; }` |
-| `$RiskScalingPercent` | `0 - 1` | Determines how far the trader has progressed from the scaling threshold to the full-risk threshold. `0` represents minimum risk and `1` represents maximum risk. Clamped between `0` and `1`.| `($PeakRealized-$ProfitThresholdToBeginScaling)/($ProfitThresholdForFullRisk-$ProfitThresholdToBeginScaling)`|
+| `$RiskScalingPercent` | `0 - 1` | Determines how far the trader has progressed from the scaling threshold to the full-risk threshold. `0` represents minimum risk and `1` represents maximum risk. Clamped between `0` and `1`.| `($PeakRealized-$ProfitThresholdToBeginScaling)  /($ProfitThresholdForFullRisk-$ProfitThresholdToBeginScaling)`|
 
 ### Peak Profit Drawdown Protection
 
