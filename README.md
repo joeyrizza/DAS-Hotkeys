@@ -38,7 +38,7 @@ Importantly, this protection is based on **realized P&L only**. Unrealized losse
 The high-water mark also does **not decrease** when profits are given back. This prevents a losing trade from immediately reducing the earned scaling tier.
 ### 2. Determine today's risk budget
 
-> If drawdown protection has not been activated, the hotkey starts with a maximum risk amount based on my full position size and desired cents-per-share risk. That risk is scaled down when I am losing or starting the day, and gradually increases as I build profits.
+If drawdown protection has not been activated, the hotkey starts with a maximum risk amount based on my full position size and desired cents-per-share risk. That risk is scaled down when I am losing or starting the day, and gradually increases as I build profits.
 
 Example:
 
@@ -56,7 +56,7 @@ At $50 realized profit:
 
 ### 3. Determine the real risk per share
 
-> The hotkey calculates the distance from entry to my technical stop, then adds the stop-limit offset because that represents additional downside exposure if the stock moves quickly.
+The hotkey calculates the distance from entry to my technical stop, then adds the stop-limit offset because that represents additional downside exposure if the stock moves quickly.
 
 Example:
 
@@ -75,7 +75,7 @@ $0.07 + $0.05 = $0.12/share
 
 ### 4. Calculate position size
 
-> The hotkey divides my allowed dollar risk by my effective risk per share.
+The hotkey divides my allowed dollar risk by my effective risk per share.
 
 Example:
 
