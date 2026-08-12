@@ -110,3 +110,14 @@ It then:
 2. Immediately attaches a stop-loss order.
 3. Uses the stop-limit offset to prioritize getting out of the trade.
 
+## Variables
+
+### Position & Account Configuration
+
+| Variable | Example Value | Description |
+|---|---:|---|
+| `$BuyPrice` | `Ask` | The current ask price used as the intended entry price. |
+| `$MaxShares` | `200` | Absolute maximum number of shares the hotkey is allowed to purchase. This also determines the maximum risk budget and several scaling thresholds. |
+| `$MaxLongVal` | `2000` | Maximum dollar value allowed for a long position. The final share count is reduced if the calculated position would exceed this value. |
+| `$Account` | `GetAccountObj(ACCOUNT)` | Reference to the current DAS account object. Used to retrieve account-level information such as realized P&L. |
+| `$Realized` | Account P&L | Current realized P&L for the trading session. This is calculated from the account's current and opening equity values. |
