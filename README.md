@@ -114,7 +114,7 @@ It then:
 These variables have configurable values.
 | Variable | Example Value | Description |
 |---|---|---|
-| `$BuyPrice` | `1.69` | The current ask price used as the intended entry price. |
+| `$BuyPrice` | `Ask` | The value used as the intended entry price. |
 | `$MaxShares` | `200` | Absolute maximum number of shares the hotkey is allowed to purchase. This also determines the maximum risk budget and several scaling thresholds. |
 | `$MaximumRiskPerShare` | `.10` | Maximum amount of risk allocated per share when operating at full risk. Used to calculate the maximum risk budget and scaling thresholds. |
 | `$MinimumRiskPercent` | `.50` | Percentage of the maximum risk budget available when the session has not yet reached the scaling threshold. For example, `.50` means the trader starts at 50% of maximum risk. |
@@ -145,7 +145,7 @@ These variables have configurable values.
 
 | Variable | Example Value | Description | Calculated From |
 |---|---|---|---|
-| `$ProfitThresholdToBeginScaling` | `$10` | Peak realized profit (Dollars) at which position sizing begins increasing above the minimum risk level. | ($MaxShares*.5)*$MaximumRiskPerShare` |
+| `$ProfitThresholdToBeginScaling` | `$10` | Peak realized profit (Dollars) at which position sizing begins increasing above the minimum risk level. | `($MaxShares*.5)*$MaximumRiskPerShare` |
 | `$ProfitThresholdForFullRisk` | `$50` | Peak realized profit (Dollars) at which the hotkey reaches 100% of the maximum risk budget. | `$ProfitThresholdToBeginScaling*5`. |
 | `$PeakRealized` | `$2.23` | The highest realized P&L (Dollars) reached during the trading session. This is the high-water mark used for both position-size scaling and drawdown protection. | `if($Realized > $PeakRealized){ $PeakRealized=$Realized; }` |
 | `$RiskScalingPercent` | `0 - 1` | Determines how far the trader has progressed from the scaling threshold to the full-risk threshold. `0` represents minimum risk and `1` represents maximum risk. Clamped between `0` and `1`.| `($PeakRealized-$ProfitThresholdToBeginScaling)/($ProfitThresholdForFullRisk-$ProfitThresholdToBeginScaling)`|
