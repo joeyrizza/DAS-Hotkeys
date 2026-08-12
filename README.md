@@ -163,9 +163,9 @@ These variables have configurable values.
 | `$SelectedStopPrice` | `4.64` | Stop price selected by the trader, typically by clicking/double-clicking on the chart. | `Price` |
 | `$TechnicalStopDistance` | `.10` | Distance between the entry price and the selected technical stop. | `$BuyPrice-$SelectedStopPrice` |
 | `$EffectiveRiskPerShare` | `.15` | Total planned risk per share, including both the technical stop distance and the stop-limit offset. | `$TechnicalStopDistance + $StopLimitPriceOffset` |
-| `$TechnicalStopRisk` | $5.00 | Dollar loss associated with the technical stop alone. | `$FinalShareCount * $TechnicalStopDistance` |
+| `$TechnicalStopRisk` | $10.00 | Dollar loss associated with the technical stop alone. | `$FinalShareCount * $TechnicalStopDistance` |
 | `$AdditionalOffsetRisk` | $5.00 | Additional potential dollar loss created by the stop-limit offset. | `$FinalShareCount * $StopLimitPriceOffset` |
-| `$WorstCasePlannedRisk` | $10.00 | Maximum planned loss based on the final share count and the effective risk per share. | `$FinalShareCount * $EffectiveRiskPerShare` |
+| `$WorstCasePlannedRisk` | $15.00 | Maximum planned loss based on the final share count and the effective risk per share. | `$FinalShareCount * $EffectiveRiskPerShare` |
 | `$CalculatedPositionValue` | 20.0 | Dollar value of the position before applying the maximum position-value restriction. | `$BuyPrice*$FinalShareCount` |
 | `$MaxSharesAllowedByPositionValue` | 73 | Maximum number of shares permitted by `$MaxLongVal` at the current buy price. | `$MaxLongVal/$BuyPrice` |
 | `$ActualPosVal` | $384.73 | Final dollar value of the position after all share-count restrictions have been applied. | `$BuyPrice*$FinalShareCount` |
