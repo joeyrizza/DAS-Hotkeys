@@ -12,7 +12,7 @@ $Realized=($Account.curreq - $Account.openeq);
 if($Realized > $PeakRealized){
     $PeakRealized=$Realized;
 }
-
+$DrawdownFromPeak=$PeakRealized-$Realized;
 
 if (Pos<=0){
 SwitchTWnd;
@@ -21,7 +21,7 @@ CXL ALLSYMB;
 $MaximumRiskBudget = $MaxShares*$RiskCentsPerShare;
 $ProfitToBeginScaling=($MaxShares*.5)*$RiskCentsPerShare;
 $ProfitForFullRisk=$ProfitToBeginScaling*5;
-$RiskScalingPercent = ($Realized-$ProfitToBeginScaling)/($ProfitForFullRisk-$ProfitToBeginScaling);
+$RiskScalingPercent = ($PeakRealized-$ProfitToBeginScaling)/($ProfitForFullRisk-$ProfitToBeginScaling);
 if($RiskScalingPercent < 0){$RiskScalingPercent=0;}
 if($RiskScalingPercent > 1){$RiskScalingPercent=1;}
 $TodaysRiskBudgetBasedOnRealized = $MaximumRiskBudget * ($MinimumRiskPercent + ($RiskScalingPercent*(1-$MinimumRiskPercent)));
