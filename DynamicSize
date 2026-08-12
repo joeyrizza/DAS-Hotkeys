@@ -1,7 +1,7 @@
 $BuyPrice=Ask;
 $MaxShares=200;
 $RiskCentsPerShare=.10;
-$MinimumRiskPercent=.25;
+$MinimumRiskPercent=.50;
 $MaxLongVal=2000;
 $StopTooCloseWarn=.05;
 $StopLimitPriceOffset=.05;
@@ -9,6 +9,9 @@ $EmergencyStopOffset=.10;
 $MinimumAllowedStopDistance=.05;
 $Account=GetAccountObj(ACCOUNT);
 $Realized=($Account.curreq - $Account.openeq);
+if($Realized > $PeakRealized){
+    $PeakRealized=$Realized;
+}
 
 
 if (Pos<=0){
