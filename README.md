@@ -4,11 +4,41 @@ This hotkey automatically calculates my position size based on my current risk a
 It's a dynamic risk-based entry hotkey. Instead of buying a fixed share size, it calculates my size from my allowed dollar risk and my stop distance. My risk allowance scales up or down based on my realized P&L, and the sizing includes my stop-limit buffer so I don't underestimate my downside. The goal is that every trade has a consistent maximum loss regardless of the stock price or stop placement.
 
 
-If I were documenting the logic, I'd break it down like this:
+## How it works
+### 1. Peak Profit Drawdown Protection
+Upon execution the hotkey uses a **PeakRealized high-water mark** to protect profits earned during the trading session.
 
-## 1. Determine today's risk budget
+`$PeakRealized` records the highest realized P&L reached during the day. Once realized profit reaches the minimum threshold for drawdown protection, the hotkey monitors how much profit has been given back from that peak.
 
-> The hotkey starts with a maximum risk amount based on my full position size and desired cents-per-share risk. That risk is scaled down when I am losing or starting the day, and gradually increases as I build profits.
+The protection is controlled by:
+
+- `$MinimumPeakProfitForDrawdownProtection` — minimum realized profit required before drawdown protection activates. This scales automatically with `$MaxShares` and `$MaximumRiskPerShare`.
+- `$MaximumAllowedDrawdownPercent` — maximum percentage of peak realized profit that can be given back before trading is locked out. Currently set to `50%`.
+
+#### Example
+
+With `$MaxShares=200` and `$MaximumRiskPerShare=.10`:
+
+- Maximum risk budget = `$20`
+- Drawdown protection activates once `$PeakRealized` reaches `$10`
+- Maximum allowed drawdown = `50%` of peak realized profit
+
+| Peak Realized | Lockout Threshold |
+|---:|---:|
+| $10 | $5 |
+| $15 | $7.50 |
+| $20 | $10 |
+| $30 | $15 |
+| $50 | $25 |
+
+For example, if the session reaches a **+$30 PeakRealized** and subsequently falls to **+$14**, the trader has given back `$16`, or 53.3% of the peak profit. The hotkey will prevent additional trades and display a **Daily drawdown limit reached** message.
+
+Importantly, this protection is based on **realized P&L only**. Unrealized losses on an open position do not trigger the daily drawdown lockout. Individual trades are still managed separately through the technical stop, stop-limit offset, and position-sizing risk calculations.
+
+The high-water mark also does **not decrease** when profits are given back. This prevents a losing trade from immediately reducing the earned scaling tier.
+### 2. Determine today's risk budget
+
+> If drawdown protection has not been activated, the hotkey starts with a maximum risk amount based on my full position size and desired cents-per-share risk. That risk is scaled down when I am losing or starting the day, and gradually increases as I build profits.
 
 Example:
 
@@ -24,7 +54,7 @@ At $50 realized profit:
 
 ---
 
-## 2. Determine the real risk per share
+### 3. Determine the real risk per share
 
 > The hotkey calculates the distance from entry to my technical stop, then adds the stop-limit offset because that represents additional downside exposure if the stock moves quickly.
 
@@ -43,7 +73,7 @@ $0.07 + $0.05 = $0.12/share
 
 ---
 
-## 3. Calculate position size
+### 4. Calculate position size
 
 > The hotkey divides my allowed dollar risk by my effective risk per share.
 
@@ -61,7 +91,7 @@ $5 / $0.12 = 41 shares
 
 ---
 
-## 4. Apply safety limits
+### 5. Apply safety limits
 
 Before sending the order, it checks:
 
@@ -72,7 +102,7 @@ Before sending the order, it checks:
 
 ---
 
-## 5. Submit the trade
+### 6. Submit the trade
 
 It then:
 
