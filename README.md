@@ -110,60 +110,62 @@ It then:
 2. Immediately attaches a stop-loss order.
 3. Uses the stop-limit offset to prioritize getting out of the trade.
 
-## Variables
+## Configuration Variables
+These variables have configurable values.
+| Variable | Example Value | Description |
+|---|---|---|
+| `$BuyPrice` | `1.69` | The current ask price used as the intended entry price. |
+| `$MaxShares` | `200` | Absolute maximum number of shares the hotkey is allowed to purchase. This also determines the maximum risk budget and several scaling thresholds. |
+| `$MaximumRiskPerShare` | `.10` | Maximum amount of risk allocated per share when operating at full risk. Used to calculate the maximum risk budget and scaling thresholds. |
+| `$MinimumRiskPercent` | `.50` | Percentage of the maximum risk budget available when the session has not yet reached the scaling threshold. For example, `.50` means the trader starts at 50% of maximum risk. |
+| `$MaxLongVal` | `2000` | Maximum dollar value allowed for a long position. The final share count is reduced if the calculated position would exceed this value. |
+| `$StopTooCloseWarn` | `.05` | Warning threshold for a stop that is considered too close to the entry price. |
+| `$StopLimitPriceOffset` | `.05` | Additional price distance applied to the stop-limit order to increase the probability of execution during fast drops. This is included in the effective risk-per-share calculation. |
+| `$MinimumAllowedStopDistance` | `.05` | Minimum permitted distance between the entry price and selected stop. The trade is rejected if the stop is at or below this distance. |
+| `$MaximumAllowedDrawdownPercent` | `.50` | Maximum percentage of peak realized profit that can be given back before trading is locked out. `.50` represents a 50% drawdown limit. |
 
+## Non-Configurable Variable Definitions
 ### Position & Account Configuration
 
 | Variable | Example Value | Description |
-|---|---:|---|
-| `$BuyPrice` | `Ask` | The current ask price used as the intended entry price. |
-| `$MaxShares` | `200` | Absolute maximum number of shares the hotkey is allowed to purchase. This also determines the maximum risk budget and several scaling thresholds. |
-| `$MaxLongVal` | `2000` | Maximum dollar value allowed for a long position. The final share count is reduced if the calculated position would exceed this value. |
-| `$Account` | `GetAccountObj(ACCOUNT)` | Reference to the current DAS account object. Used to retrieve account-level information such as realized P&L. |
-| `$Realized` | Account P&L | Current realized P&L for the trading session. This is calculated from the account's current and opening equity values. |
+|---|---|---|
+| `$Account` | `AccountObject` | Reference to the current DAS account object. Used to retrieve account-level information such as realized P&L. |
+| `$Realized` | `$2.23` | Current realized P&L for the trading session. This is calculated from the account's current and opening equity values. |
 
-### Risk Configuration
+### Risk Variables
 
-| Variable | Example Value | Description |
-|---|---:|---|
-| `$MaximumRiskPerShare` | `.10` | Maximum amount of risk allocated per share when operating at full risk. Used to calculate the maximum risk budget and scaling thresholds. |
-| `$MinimumRiskPercent` | `.50` | Percentage of the maximum risk budget available when the session has not yet reached the scaling threshold. For example, `.50` means the trader starts at 50% of maximum risk. |
-| `$MaximumRiskBudget` | `$20` | Maximum dollar risk available when operating at 100% risk. Calculated as `$MaxShares * $MaximumRiskPerShare`. |
-| `$TodaysRiskBudgetBasedOnRealized` | Dynamic | Current dollar risk budget allowed based on the session's `PeakRealized` profit and scaling level. |
-| `$RiskScalingPercent` | `0.0 - 1.0` | Percentage of the distance between the scaling-start profit threshold and the full-risk profit threshold that has been reached. Clamped between `0` and `1`. |
-| `$RiskBasedShareCount` | Dynamic | Number of shares that can be purchased based solely on the current risk budget and the effective risk per share. |
-| `$FinalShareCount` | Dynamic | Final number of shares to purchase after applying the risk limit, maximum share limit, and maximum position-value limit. |
+| Variable | Example Value | Description | Calculated From |
+|---|---|---|---|
+| `$MaximumRiskBudget` | `$20` | Calculated maximum dollar risk available when operating at 100% risk. | `$MaxShares * $MaximumRiskPerShare`. |
+| `$TodaysRiskBudgetBasedOnRealized` | `$10.00` | Current dollar risk budget allowed based on the session's `PeakRealized` profit and scaling level. | `$MaximumRiskBudget * ($MinimumRiskPercent + ($RiskScalingPercent*(1-$MinimumRiskPercent)))` |
+| `$RiskBasedShareCount` | `83.333` | Number of shares that can be purchased based solely on the current risk budget and the effective risk per share. | `$TodaysRiskBudgetBasedOnRealized/$EffectiveRiskPerShare` |
+| `$FinalShareCount` | `50.00` | Final number of shares to purchase after applying the risk limit, maximum share limit, and maximum position-value limit. | `$FinalShareCount=$RiskBasedShareCount; if($RiskBasedShareCount > $MaxShares){$FinalShareCount = $MaxShares; }` |
 
 ### Profit-Based Position Scaling
 
-| Variable | Example Value | Description |
-|---|---:|---|
-| `$ProfitThresholdToBeginScaling` | `$10` | Peak realized profit at which position sizing begins increasing above the minimum risk level. Calculated dynamically from `$MaxShares` and `$MaximumRiskPerShare`. |
-| `$ProfitThresholdForFullRisk` | `$50` | Peak realized profit at which the hotkey reaches 100% of the maximum risk budget. Currently calculated as 5× `$ProfitThresholdToBeginScaling`. |
-| `$PeakRealized` | Dynamic | The highest realized P&L reached during the trading session. This is the high-water mark used for both position-size scaling and drawdown protection. |
-| `$MinimumRiskPercent` | `.50` | Starting percentage of the maximum risk budget before the scaling threshold is reached. |
-| `$RiskScalingPercent` | `0 - 1` | Determines how far the trader has progressed from the scaling threshold to the full-risk threshold. `0` represents minimum risk and `1` represents maximum risk. |
+| Variable | Example Value | Description | Calculated From |
+|---|---|---|---|
+| `$ProfitThresholdToBeginScaling` | `$10` | Peak realized profit (Dollars) at which position sizing begins increasing above the minimum risk level. | ($MaxShares*.5)*$MaximumRiskPerShare` |
+| `$ProfitThresholdForFullRisk` | `$50` | Peak realized profit (Dollars) at which the hotkey reaches 100% of the maximum risk budget. | `$ProfitThresholdToBeginScaling*5`. |
+| `$PeakRealized` | `$2.23` | The highest realized P&L (Dollars) reached during the trading session. This is the high-water mark used for both position-size scaling and drawdown protection. | `if($Realized > $PeakRealized){ $PeakRealized=$Realized; }` |
+| `$RiskScalingPercent` | `0 - 1` | Determines how far the trader has progressed from the scaling threshold to the full-risk threshold. `0` represents minimum risk and `1` represents maximum risk. Clamped between `0` and `1`.| `($PeakRealized-$ProfitThresholdToBeginScaling)/($ProfitThresholdForFullRisk-$ProfitThresholdToBeginScaling)`|
 
 ### Peak Profit Drawdown Protection
 
-| Variable | Example Value | Description |
-|---|---:|---|
-| `$DrawdownFromPeak` | Dynamic | Dollar amount of realized profit given back from the session's `$PeakRealized`. Calculated as `$PeakRealized - $Realized`. |
-| `$MaximumAllowedDrawdownPercent` | `.50` | Maximum percentage of peak realized profit that can be given back before trading is locked out. `.50` represents a 50% drawdown limit. |
-| `$MinimumPeakProfitForDrawdownProtection` | `$10` | Minimum peak realized profit required before the drawdown protection becomes active. Calculated dynamically as 50% of `$MaximumRiskBudget`. |
+| Variable | Example Value | Description | Calculated From |
+|---|---|---|---|
+| `$DrawdownFromPeak` | `$2.76` | Realized profit (Dollars) given back from the session's `$PeakRealized`. | `$PeakRealized - $Realized` |
+| `$MinimumPeakProfitForDrawdownProtection` | `$10` | Minimum peak realized profit required before the drawdown protection becomes active. | `$MaximumRiskBudget*.50;` |
 
 ### Stop & Execution Configuration
-| Variable | Example Value | Description |
-| --- | --- | --- |
-| `$StopTooCloseWarn` | `.05` | Warning threshold for a stop that is considered too close to the entry price. |
-| `$MinimumAllowedStopDistance` | `.05` | Minimum permitted distance between the entry price and selected stop. The trade is rejected if the stop is at or below this distance. |
-| `$StopLimitPriceOffset` | `.05` | Additional price distance applied to the stop-limit order to increase the probability of execution during fast moves. This is included in the effective risk-per-share calculation. |
-| `$SelectedStopPrice` | `price` | Stop price selected by the trader, typically by clicking/double-clicking on the chart. |
-| `$TechnicalStopDistance` | Dynamic | Distance between the entry price and the selected technical stop. |
-| `$EffectiveRiskPerShare` | Dynamic | Total planned risk per share, including both the technical stop distance and the stop-limit offset. Calculated as `$TechnicalStopDistance + $StopLimitPriceOffset`. |
-| `$TechnicalStopRisk` | Dynamic | Dollar loss associated with the technical stop alone. |
-| `$AdditionalOffsetRisk` | Dynamic | Additional potential dollar loss created by the stop-limit offset. |
-| `$WorstCasePlannedRisk` | Dynamic | Maximum planned loss based on the final share count and the effective risk per share. |
-| `$CalculatedPositionValue` | Dynamic | Dollar value of the position before applying the maximum position-value restriction. |
-| `$MaxSharesAllowedByPositionValue` | Dynamic | Maximum number of shares permitted by `$MaxLongVal` at the current buy price. |
-| `$ActualPosVal` | Dynamic | Final dollar value of the position after all share-count restrictions have been applied. |
+| Variable | Example Value | Description | Calculated From |
+|---|---|---|---|
+| `$SelectedStopPrice` | `4.64` | Stop price selected by the trader, typically by clicking/double-clicking on the chart. | `Price` |
+| `$TechnicalStopDistance` | `.10` | Distance between the entry price and the selected technical stop. | `$BuyPrice-$SelectedStopPrice` |
+| `$EffectiveRiskPerShare` | `.15` | Total planned risk per share, including both the technical stop distance and the stop-limit offset. | `$TechnicalStopDistance + $StopLimitPriceOffset` |
+| `$TechnicalStopRisk` | $5.00 | Dollar loss associated with the technical stop alone. | `$FinalShareCount * $TechnicalStopDistance` |
+| `$AdditionalOffsetRisk` | $5.00 | Additional potential dollar loss created by the stop-limit offset. | `$FinalShareCount * $StopLimitPriceOffset` |
+| `$WorstCasePlannedRisk` | $10.00 | Maximum planned loss based on the final share count and the effective risk per share. | `$FinalShareCount * $EffectiveRiskPerShare` |
+| `$CalculatedPositionValue` | 20.0 | Dollar value of the position before applying the maximum position-value restriction. | `$BuyPrice*$FinalShareCount` |
+| `$MaxSharesAllowedByPositionValue` | 73 | Maximum number of shares permitted by `$MaxLongVal` at the current buy price. | `$MaxLongVal/$BuyPrice` |
+| `$ActualPosVal` | $384.73 | Final dollar value of the position after all share-count restrictions have been applied. | `$BuyPrice*$FinalShareCount` |
