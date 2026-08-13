@@ -1,0 +1,15 @@
+SwitchTWnd;
+CXL ALLSYMB;
+$qty=Pos;
+
+ROUTE=ARCAL;
+Price=Ask;
+Share=$qty;
+SELL=Send;
+
+ROUTE=STOP;
+StopType=LimitP;
+StopPrice=AvgCost;
+Price=AvgCost;
+Share=Pos-$qty;
+SELL=Send;
