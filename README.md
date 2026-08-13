@@ -117,7 +117,7 @@ These variables have configurable values.
 | `$BuyPrice` | `Ask` | The value used as the intended entry price. |
 | `$MaxShares` | `200` | Absolute maximum number of shares the hotkey is allowed to purchase. This also determines the maximum risk budget and several scaling thresholds. |
 | `$MaximumRiskPerShare` | `.10` | Maximum amount of risk allocated per share when operating at full risk. Used to calculate the maximum risk budget and scaling thresholds. |
-| `$MinimumRiskPercent` | `.50` | Percentage of the maximum risk budget available when the session has not yet reached the scaling threshold. For example, `.50` means the trader starts at 50% of maximum risk. |
+| `$StartingRiskPercent` | `.50` | Percentage of the maximum risk budget available when the session has not yet reached the scaling threshold. For example, `.50` means the trader starts at 50% of maximum risk. |
 | `$MaxLongVal` | `2000` | Maximum dollar value allowed for a long position. The final share count is reduced if the calculated position would exceed this value. |
 | `$StopLimitPriceOffset` | `.05` | Additional price distance applied to the stop-limit order to increase the probability of execution during fast drops. This is included in the effective risk-per-share calculation. |
 | `$MinimumAllowedStopDistance` | `.05` | Minimum permitted distance between the entry price and selected stop. The trade is rejected if the stop is at or below this distance. |
@@ -136,7 +136,7 @@ These variables have configurable values.
 | Variable | Example Value | Description | Calculated From |
 |---|---|---|---|
 | `$MaximumRiskBudget` | `$20` | Calculated maximum dollar risk available when operating at 100% risk. | `$MaxShares * $MaximumRiskPerShare`. |
-| `$TodaysRiskBudgetBasedOnRealized` | `$10.00` | Current dollar risk budget allowed based on the session's `PeakRealized` profit and scaling level. | `$MaximumRiskBudget * ($MinimumRiskPercent + ($RiskScalingPercent*(1-$MinimumRiskPercent)))` |
+| `$TodaysRiskBudgetBasedOnRealized` | `$10.00` | Current dollar risk budget allowed based on the session's `PeakRealized` profit and scaling level. | `$MaximumRiskBudget * ($StartingRiskPercent + ($RiskScalingPercent*(1-$StartingRiskPercent)))` |
 | `$RiskBasedShareCount` | `83.333` | Number of shares that can be purchased based solely on the current risk budget and the effective risk per share. | `$TodaysRiskBudgetBasedOnRealized/$EffectiveRiskPerShare` |
 | `$FinalShareCount` | `50.00` | Final number of shares to purchase after applying the risk limit, maximum share limit, and maximum position-value limit. | `$FinalShareCount=$RiskBasedShareCount; if($RiskBasedShareCount > $MaxShares){$FinalShareCount = $MaxShares; }` |
 

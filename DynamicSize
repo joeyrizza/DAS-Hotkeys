@@ -1,7 +1,7 @@
 $BuyPrice=Ask;
 $MaxShares=200;
 $MaximumRiskPerShare=.10;
-$MinimumRiskPercent=.50;
+$StartingRiskPercent=.50;
 $MaxLongVal=2000;
 
 $StopLimitPriceOffset=.05;
@@ -41,7 +41,7 @@ $ProfitThresholdForFullRisk=$ProfitThresholdToBeginScaling*5;
 $RiskScalingPercent=($PeakRealized-$ProfitThresholdToBeginScaling)/($ProfitThresholdForFullRisk-$ProfitThresholdToBeginScaling);
 if($RiskScalingPercent < 0){$RiskScalingPercent=0;}
 if($RiskScalingPercent > 1){$RiskScalingPercent=1;}
-$TodaysRiskBudgetBasedOnRealized = $MaximumRiskBudget * ($MinimumRiskPercent + ($RiskScalingPercent*(1-$MinimumRiskPercent)));
+$TodaysRiskBudgetBasedOnRealized = $MaximumRiskBudget * ($StartingRiskPercent + ($RiskScalingPercent*(1-$StartingRiskPercent)));
 
 
 $SelectedStopPrice=price;
