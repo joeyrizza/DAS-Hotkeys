@@ -4,7 +4,6 @@ $MaximumRiskPerShare=.10;
 $MinimumRiskPercent=.50;
 $MaxLongVal=2000;
 
-$StopTooCloseWarn=.05;
 $StopLimitPriceOffset=.05;
 $MinimumAllowedStopDistance=.05;
 

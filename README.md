@@ -119,7 +119,6 @@ These variables have configurable values.
 | `$MaximumRiskPerShare` | `.10` | Maximum amount of risk allocated per share when operating at full risk. Used to calculate the maximum risk budget and scaling thresholds. |
 | `$MinimumRiskPercent` | `.50` | Percentage of the maximum risk budget available when the session has not yet reached the scaling threshold. For example, `.50` means the trader starts at 50% of maximum risk. |
 | `$MaxLongVal` | `2000` | Maximum dollar value allowed for a long position. The final share count is reduced if the calculated position would exceed this value. |
-| `$StopTooCloseWarn` | `.05` | Warning threshold for a stop that is considered too close to the entry price. |
 | `$StopLimitPriceOffset` | `.05` | Additional price distance applied to the stop-limit order to increase the probability of execution during fast drops. This is included in the effective risk-per-share calculation. |
 | `$MinimumAllowedStopDistance` | `.05` | Minimum permitted distance between the entry price and selected stop. The trade is rejected if the stop is at or below this distance. |
 | `$MaximumAllowedDrawdownPercent` | `.50` | Maximum percentage of peak realized profit that can be given back before trading is locked out. `.50` represents a 50% drawdown limit. |
