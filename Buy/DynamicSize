@@ -32,7 +32,12 @@ if($PeakRealized >= $MinimumPeakProfitForDrawdownProtection && $DrawdownFromPeak
     Price=$SelectedStopPrice;
     return;
 }
-if (Pos<=0){
+
+if (Pos > 0){
+     Speak "Position is not flat";
+     return;
+}
+
 SwitchTWnd;
 CXL ALLSYMB;
 
@@ -68,8 +73,4 @@ Price=$SelectedStopPrice;return;
 BUY=Send;
 TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$SelectedStopPrice-$StopLimitPriceOffset ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
 
-
-} else {
-Speak "Position is not flat";
-};
 Price=$SelectedStopPrice;
