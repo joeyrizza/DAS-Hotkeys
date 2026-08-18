@@ -139,8 +139,6 @@ These variables have configurable values.
 |---|---|---|---|
 | `$MaximumRiskBudget` | `$20` | Calculated maximum dollar risk available when operating at 100% risk. | `$MaxShares * $MaximumRiskPerShare`. |
 | `$TodaysRiskBudgetBasedOnRealized` | `$10.00` | Current dollar risk budget allowed based on the session's `PeakRealized` profit and scaling level. | `$MaximumRiskBudget * ($StartingRiskPercent + ($RiskScalingPercent*(1-$StartingRiskPercent)))` |
-| `$RiskBasedShareCount` | `83.333` | Number of shares that can be purchased based solely on the current risk budget and the effective risk per share. | `$TodaysRiskBudgetBasedOnRealized/$EffectiveRiskPerShare` |
-| `$FinalShareCount` | `50.00` | Final number of shares to purchase after applying the risk limit, maximum share limit, and maximum position-value limit. | `$FinalShareCount=$RiskBasedShareCount; if($RiskBasedShareCount > $MaxShares){$FinalShareCount = $MaxShares; }` |
 
 ### Profit-Based Position Scaling
 
@@ -152,6 +150,7 @@ These variables have configurable values.
 | `$RiskScalingPercent` | `0 - 1` | Determines how far the trader has progressed from the scaling threshold to the full-risk threshold. `0` represents minimum risk and `1` represents maximum risk. Clamped between `0` and `1`.| `($PeakRealized-$ProfitThresholdToBeginScaling)  /($ProfitThresholdForFullRisk-$ProfitThresholdToBeginScaling)`|
 | `$MinimumMaxShares` | `50` | Sets the maximum starting position size on a tight stop.| `$MaxShares*.25`|
 | `$DynamicMaxShares` | `180` | `$DynamicMaxShares` starts at 25% of `$MaxShares` and increases toward `$MaxShares` as realized profits increase.| `Round($MinimumMaxShares+(($MaxShares-$MinimumMaxShares)*$RiskScalingPercent))`|
+| `$RiskBasedShareCount` | `83` | Number of shares that can be purchased based solely on the current risk budget and the effective risk per share. | `Round($TodaysRiskBudgetBasedOnRealized/$EffectiveRiskPerShare)` |
 | `$FinalShares` | `68` | This is the number of shares that will be used for the order.| `MIN($RiskBasedShareCount,$DynamicMaxShares)`|
 
 ### Peak Profit Drawdown Protection

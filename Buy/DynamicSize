@@ -101,7 +101,7 @@ if($EffectiveRiskPerShare <= 0){
     Speak Invalid risk calculation;
     return;
 }
-$RiskBasedShareCount=$TodaysRiskBudgetBasedOnRealized/$EffectiveRiskPerShare;
+$RiskBasedShareCount=Round($TodaysRiskBudgetBasedOnRealized/$EffectiveRiskPerShare);
 
 $FinalShareCount=MIN($RiskBasedShareCount,$DynamicMaxShares);
 
