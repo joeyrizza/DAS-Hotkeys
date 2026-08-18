@@ -152,6 +152,7 @@ These variables have configurable values.
 | `$RiskScalingPercent` | `0 - 1` | Determines how far the trader has progressed from the scaling threshold to the full-risk threshold. `0` represents minimum risk and `1` represents maximum risk. Clamped between `0` and `1`.| `($PeakRealized-$ProfitThresholdToBeginScaling)  /($ProfitThresholdForFullRisk-$ProfitThresholdToBeginScaling)`|
 | `$MinimumMaxShares` | `50` | Sets the maximum starting position size on a tight stop.| `$MaxShares*.25`|
 | `$DynamicMaxShares` | `180` | `$DynamicMaxShares` starts at 25% of `$MaxShares` and increases toward `$MaxShares` as realized profits increase.| `Round($MinimumMaxShares+(($MaxShares-$MinimumMaxShares)*$RiskScalingPercent))`|
+| `$FinalShares` | `68` | This is the number of shares that will be used for the order.| `MIN($RiskBasedShareCount,$DynamicMaxShares)`|
 
 ### Peak Profit Drawdown Protection
 
