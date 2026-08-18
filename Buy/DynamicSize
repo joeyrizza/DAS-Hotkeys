@@ -83,7 +83,7 @@ CXL ALLSYMB;
 $ProfitThresholdToBeginScaling=($MaxShares*.5)*$MaximumRiskPerShare;
 $ProfitThresholdForFullRisk=$ProfitThresholdToBeginScaling*5;
 
-$RiskScalingPercent=($PeakRealized-$ProfitThresholdToBeginScaling)/($ProfitThresholdForFullRisk-$ProfitThresholdToBeginScaling);
+$RiskScalingPercent=($Realized-$ProfitThresholdToBeginScaling)/($ProfitThresholdForFullRisk-$ProfitThresholdToBeginScaling);
 
 if($RiskScalingPercent < 0){$RiskScalingPercent=0;}
 if($RiskScalingPercent > 1){$RiskScalingPercent=1;}
