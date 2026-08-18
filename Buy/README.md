@@ -76,22 +76,23 @@ $0.07 + $0.05 = $0.12/share
 
 ### 4. Calculate position size
 
-The hotkey divides my allowed dollar risk by my effective risk per share.
-
+The hotkey divides my allowed dollar risk by my effective risk per share, then applies a dynamic maximum share limit based on my current risk-scaling tier.
 Example:
 
 ```
-Allowed risk:       $5.00
+Allowed risk: $5.00
 
-Effective risk:
-$0.12/share
+Effective risk: $0.12/share
 
-Position:
-$5 / $0.12 = 41 shares
+Risk-based Position: $5 / $0.12 = 41 shares
+
+Dynamic max shares: 50 
+
+Final position: MIN(41, 50) = 41 shares
 ```
+`$DynamicMaxShares` starts at 25% of `$MaxShares` and increases toward `$MaxShares` as realized profits increase. This prevents a very tight stop from producing an excessively large position while still allowing full size as the day's profits grow.
 
 ---
-
 ### 5. Apply safety limits
 
 Before sending the order, it checks:
@@ -149,6 +150,8 @@ These variables have configurable values.
 | `$ProfitThresholdForFullRisk` | `$50` | Peak realized profit (Dollars) at which the hotkey reaches 100% of the maximum risk budget. | `$ProfitThresholdToBeginScaling*5`. |
 | `$PeakRealized` | `$2.23` | The highest realized P&L (Dollars) reached during the trading session. This is the high-water mark used for both position-size scaling and drawdown protection. | `if($Realized > $PeakRealized){ $PeakRealized=$Realized; }` |
 | `$RiskScalingPercent` | `0 - 1` | Determines how far the trader has progressed from the scaling threshold to the full-risk threshold. `0` represents minimum risk and `1` represents maximum risk. Clamped between `0` and `1`.| `($PeakRealized-$ProfitThresholdToBeginScaling)  /($ProfitThresholdForFullRisk-$ProfitThresholdToBeginScaling)`|
+| `$MinimumMaxShares` | `50` | Sets the maximum starting position size on a tight stop.| `$MaxShares*.25`|
+| `$DynamicMaxShares` | `180` | `$DynamicMaxShares` starts at 25% of `$MaxShares` and increases toward `$MaxShares` as realized profits increase.| `Round($MinimumMaxShares+(($MaxShares-$MinimumMaxShares)*$RiskScalingPercent))`|
 
 ### Peak Profit Drawdown Protection
 
@@ -157,6 +160,7 @@ These variables have configurable values.
 | `$DrawdownFromPeak` | `$2.76` | Realized profit (Dollars) given back from the session's `$PeakRealized`. | `$PeakRealized - $Realized` |
 | `$MinimumPeakProfitForDrawdownProtection` | `$10` | Minimum peak realized profit required before the drawdown protection becomes active. | `$MaximumRiskBudget*.50;` |
 | `$MinimumAllowedDrawdown` | `$15` | Lockout won't occur until at least this amount has been reached. | `$MaximumRiskBudget*.75` |
+
 ### Stop & Execution Configuration
 | Variable | Example Value | Description | Calculated From |
 |---|---|---|---|

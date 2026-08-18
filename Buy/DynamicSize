@@ -88,6 +88,8 @@ $RiskScalingPercent=($Realized-$ProfitThresholdToBeginScaling)/($ProfitThreshold
 if($RiskScalingPercent < 0){$RiskScalingPercent=0;}
 if($RiskScalingPercent > 1){$RiskScalingPercent=1;}
 
+$MinimumMaxShares=$MaxShares*.25;
+$DynamicMaxShares=Round($MinimumMaxShares+(($MaxShares-$MinimumMaxShares)*$RiskScalingPercent));
 
 $TodaysRiskBudgetBasedOnRealized=$MaximumRiskBudget*($StartingRiskPercent+($RiskScalingPercent*(1-$StartingRiskPercent)));
 
@@ -100,11 +102,7 @@ if($EffectiveRiskPerShare <= 0){
 }
 $RiskBasedShareCount=$TodaysRiskBudgetBasedOnRealized/$EffectiveRiskPerShare;
 
-$FinalShareCount=$RiskBasedShareCount;
-
-if($RiskBasedShareCount > $MaxShares){
-    $FinalShareCount=$MaxShares;
-}
+$FinalShareCount=MIN($RiskBasedShareCount,$DynamicMaxShares);
 
 $CalculatedPositionValue=$BuyPrice*$FinalShareCount;
 $MaxSharesAllowedByPositionValue=$MaxLongVal/$BuyPrice;
@@ -120,11 +118,7 @@ $AdditionalOffsetRisk=$FinalShareCount*$StopLimitPriceOffset;
 $WorstCasePlannedRisk=$FinalShareCount*$EffectiveRiskPerShare;
 
 SShare=$amount;Share=$FinalShareCount;TogSShare;ROUTE=$Route;Price=$BuyPrice;TIF=DAY+;
-
-
-
 BUY=Send;
-
 TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$SelectedStopPrice-$StopLimitPriceOffset ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
 
 Price=$SelectedStopPrice;
