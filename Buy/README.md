@@ -14,7 +14,7 @@ The protection is controlled by:
 
 - `$MinimumPeakProfitForDrawdownProtection` — minimum realized profit required before drawdown protection activates. This scales automatically with `$MaxShares` and `$MaximumRiskPerShare`.
 - `$MaximumAllowedDrawdownPercent` — maximum percentage of peak realized profit that can be given back before trading is locked out. Currently set to `50%`.
-
+- `MinimumAllowedDrawdown` - Lockout won't occur until at least this amount has been reached.
 #### Example
 
 With `$MaxShares=200` and `$MaximumRiskPerShare=.10`:
@@ -22,20 +22,21 @@ With `$MaxShares=200` and `$MaximumRiskPerShare=.10`:
 - Maximum risk budget = `$20`
 - Drawdown protection activates once `$PeakRealized` reaches `$10`
 - Maximum allowed drawdown = `50%` of peak realized profit
-
-| Peak Realized | Lockout Threshold |
-|---:|---:|
-| $10 | $5 |
-| $15 | $7.50 |
-| $20 | $10 |
-| $30 | $15 |
-| $50 | $25 |
+- Drawdown floor set to `$15` (`$MaximumRiskBudget*.75`) 
+| Peak Realized | Allowed Drawdown | Lockout At |
+|---|---|---|
+| $10 | $15 | -$5 |
+| $14 | $15 | -$1 |
+| $20 | $15 | +$5 |
+| $30 | $15 | +$15|
+| $40 | $20 | +$20|
+| $50 | $25 | +$25|
 
 For example, if the session reaches a **+$30 PeakRealized** and subsequently falls to **+$14**, the trader has given back `$16`, or 53.3% of the peak profit. The hotkey will prevent additional trades and display a **Daily drawdown limit reached** message.
 
 Importantly, this protection is based on **realized P&L only**. Unrealized losses on an open position do not trigger the daily drawdown lockout. Individual trades are still managed separately through the technical stop, stop-limit offset, and position-sizing risk calculations.
 
-The high-water mark also does **not decrease** when profits are given back. This prevents a losing trade from immediately reducing the earned scaling tier.
+Trial: The high-water mark also does **not decrease** when profits are given back. This prevents a losing trade from immediately reducing the earned scaling tier.
 ### 2. Determine today's risk budget
 
 If drawdown protection has not been activated, the hotkey starts with a maximum risk amount based on my full position size and desired cents-per-share risk. That risk is scaled down when I am losing or starting the day, and gradually increases as I build profits.
@@ -155,7 +156,7 @@ These variables have configurable values.
 |---|---|---|---|
 | `$DrawdownFromPeak` | `$2.76` | Realized profit (Dollars) given back from the session's `$PeakRealized`. | `$PeakRealized - $Realized` |
 | `$MinimumPeakProfitForDrawdownProtection` | `$10` | Minimum peak realized profit required before the drawdown protection becomes active. | `$MaximumRiskBudget*.50;` |
-
+| `$MinimumAllowedDrawdown` | `$15` | Lockout won't occur until at least this amount has been reached. | `$MaximumRiskBudget*.75` |
 ### Stop & Execution Configuration
 | Variable | Example Value | Description | Calculated From |
 |---|---|---|---|

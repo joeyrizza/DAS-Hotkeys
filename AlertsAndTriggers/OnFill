@@ -1,0 +1,19 @@
+$Chart1=GetWindowObj("Chart1");
+
+$CurrentAccount=GetAccountObj(ACCOUNT);
+if($CurrentAccount.Type == "Margin"){
+    $MarginTradingDate=SubString($Chart1.GetBar(0).time,0,8);
+    $MarginRealized=($CurrentAccount.curreq-$CurrentAccount.openeq);
+    if($MarginRealized > $MarginPeakRealized){
+        $MarginPeakRealized=$MarginRealized;
+    }
+}
+if($CurrentAccount.Type == "Margin(Demo)"){
+    $TrainingTradingDate=SubString($Chart1.GetBar(0).time,0,8);
+    $TrainingRealized=($CurrentAccount.curreq-$CurrentAccount.openeq);
+    if($TrainingRealized > $TrainingPeakRealized){
+        $TrainingPeakRealized=$TrainingRealized;
+    }
+}
+
+SaveVarToFile("TradingRiskState");

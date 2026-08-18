@@ -3,6 +3,7 @@ $MaxShares=200;
 $MaximumRiskPerShare=.10;
 $StartingRiskPercent=.50;
 $MaxLongVal=2000;
+$Route=LIMIT;
 
 $StopLimitPriceOffset=.05;
 $MinimumAllowedStopDistance=.05;
@@ -10,32 +11,70 @@ $MinimumAllowedStopDistance=.05;
 $MaximumAllowedDrawdownPercent=.50;
 
 $MaximumRiskBudget=$MaxShares*$MaximumRiskPerShare;
+$MinimumAllowedDrawdown=$MaximumRiskBudget*.75;
 $MinimumPeakProfitForDrawdownProtection=$MaximumRiskBudget*.50;
+$SelectedStopPrice=price;
 
-$Account=GetAccountObj(ACCOUNT);
-$Realized=($Account.curreq - $Account.openeq);
+$CurrentAccount=GetAccountObj(ACCOUNT);
+
+if($CurrentAccount.Type == "Margin"){
+    $Realized=($CurrentAccount.curreq-$CurrentAccount.openeq);
+    $PeakRealized=$MarginPeakRealized;
+    $TradingLockedOut=$MarginTradingLockedOut;
+}
+
+if($CurrentAccount.Type == "Margin(Demo)"){
+    $Realized=($CurrentAccount.curreq-$CurrentAccount.openeq);
+    $PeakRealized=$TrainingPeakRealized;
+}
 
 if($Realized > $PeakRealized){
     $PeakRealized=$Realized;
 }
 
 $DrawdownFromPeak=$PeakRealized-$Realized;
+$AllowedDrawdown=$PeakRealized*$MaximumAllowedDrawdownPercent;
 
-if($PeakRealized >= $MinimumPeakProfitForDrawdownProtection && $DrawdownFromPeak >= ($PeakRealized*$MaximumAllowedDrawdownPercent)){
+if($AllowedDrawdown < $MinimumAllowedDrawdown){
+    $AllowedDrawdown=$MinimumAllowedDrawdown;
+}
+
+if($PeakRealized >= $MinimumPeakProfitForDrawdownProtection && $DrawdownFromPeak >= $AllowedDrawdown){
+    $TradingLockedOut=1;
+}
+
+if($CurrentAccount.Type == "Margin" && $TradingLockedOut==1){
+    $MarginPeakRealized=$PeakRealized;
+    $MarginTradingLockedOut=$TradingLockedOut;
+    SaveVarToFile("TradingRiskState");
+
+    LockAllMontage;
     Speak "Daily drawdown limit reached";
     MsgBox(
         "TRADING LOCKED OUT"
         + "\nPeak Realized: $" + $PeakRealized
         + "\nCurrent Realized: $" + $Realized
         + "\nDrawdown From Peak: $" + $DrawdownFromPeak
+        + "\nAllowed Drawdown: $" + $AllowedDrawdown
     );
+    return;
+}
+
+
+if(Pos > 0){
+    Speak "Position is not flat";
+    return;
+}
+if($SelectedStopPrice >= $BuyPrice){
+    Speak Stop is above buy price;
     Price=$SelectedStopPrice;
     return;
 }
 
-if (Pos > 0){
-     Speak "Position is not flat";
-     return;
+if($BuyPrice-$SelectedStopPrice <= $MinimumAllowedStopDistance){
+    Speak Stop is too close;
+    Price=$SelectedStopPrice;
+    return;
 }
 
 SwitchTWnd;
@@ -43,34 +82,49 @@ CXL ALLSYMB;
 
 $ProfitThresholdToBeginScaling=($MaxShares*.5)*$MaximumRiskPerShare;
 $ProfitThresholdForFullRisk=$ProfitThresholdToBeginScaling*5;
+
 $RiskScalingPercent=($PeakRealized-$ProfitThresholdToBeginScaling)/($ProfitThresholdForFullRisk-$ProfitThresholdToBeginScaling);
+
 if($RiskScalingPercent < 0){$RiskScalingPercent=0;}
 if($RiskScalingPercent > 1){$RiskScalingPercent=1;}
-$TodaysRiskBudgetBasedOnRealized = $MaximumRiskBudget * ($StartingRiskPercent + ($RiskScalingPercent*(1-$StartingRiskPercent)));
 
 
-$SelectedStopPrice=price;
+$TodaysRiskBudgetBasedOnRealized=$MaximumRiskBudget*($StartingRiskPercent+($RiskScalingPercent*(1-$StartingRiskPercent)));
+
+
 $TechnicalStopDistance=$BuyPrice-$SelectedStopPrice;
-$EffectiveRiskPerShare = $TechnicalStopDistance + $StopLimitPriceOffset;
+$EffectiveRiskPerShare=$TechnicalStopDistance+$StopLimitPriceOffset;
+if($EffectiveRiskPerShare <= 0){
+    Speak Invalid risk calculation;
+    return;
+}
 $RiskBasedShareCount=$TodaysRiskBudgetBasedOnRealized/$EffectiveRiskPerShare;
+
 $FinalShareCount=$RiskBasedShareCount;
-if($RiskBasedShareCount > $MaxShares){$FinalShareCount = $MaxShares; }
+
+if($RiskBasedShareCount > $MaxShares){
+    $FinalShareCount=$MaxShares;
+}
+
 $CalculatedPositionValue=$BuyPrice*$FinalShareCount;
 $MaxSharesAllowedByPositionValue=$MaxLongVal/$BuyPrice;
-if($CalculatedPositionValue > $MaxLongVal) { $FinalShareCount=$MaxSharesAllowedByPositionValue; }
+
+if($CalculatedPositionValue > $MaxLongVal){
+    $FinalShareCount=$MaxSharesAllowedByPositionValue;
+}
+
 $ActualPosVal=$BuyPrice*$FinalShareCount;
-$TechnicalStopRisk = $FinalShareCount * $TechnicalStopDistance;
-$AdditionalOffsetRisk = $FinalShareCount * $StopLimitPriceOffset;
-$WorstCasePlannedRisk = $FinalShareCount * $EffectiveRiskPerShare;
-SShare=$amount;Share=$FinalShareCount;TogSShare;ROUTE=ARCAL;Price=$BuyPrice;TIF=DAY+;
-if($SelectedSTopPrice >= $BuyPrice){
- Speak Stop is above buy price;Price=$SelectedStopPrice;return;
-}
-if($BuyPrice-$SelectedStopPrice <= $MinimumAllowedStopDistance){
-  Speak Stop is too close;
-Price=$SelectedStopPrice;return;
-}
+
+$TechnicalStopRisk=$FinalShareCount*$TechnicalStopDistance;
+$AdditionalOffsetRisk=$FinalShareCount*$StopLimitPriceOffset;
+$WorstCasePlannedRisk=$FinalShareCount*$EffectiveRiskPerShare;
+
+SShare=$amount;Share=$FinalShareCount;TogSShare;ROUTE=$Route;Price=$BuyPrice;TIF=DAY+;
+
+
+
 BUY=Send;
+
 TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$SelectedStopPrice-$StopLimitPriceOffset ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
 
 Price=$SelectedStopPrice;
