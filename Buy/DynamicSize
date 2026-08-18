@@ -4,6 +4,7 @@ $MaximumRiskPerShare=.10;
 $StartingRiskPercent=.50;
 $MaxLongVal=2000;
 $Route=LIMIT;
+$Debug=0;
 
 $StopLimitPriceOffset=.05;
 $MinimumAllowedStopDistance=.05;
@@ -118,7 +119,19 @@ $AdditionalOffsetRisk=$FinalShareCount*$StopLimitPriceOffset;
 $WorstCasePlannedRisk=$FinalShareCount*$EffectiveRiskPerShare;
 
 SShare=$amount;Share=$FinalShareCount;TogSShare;ROUTE=$Route;Price=$BuyPrice;TIF=DAY+;
-BUY=Send;
-TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$SelectedStopPrice-$StopLimitPriceOffset ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
 
+if($Debug == 0){
+  BUY=Send;
+  TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$SelectedStopPrice-$StopLimitPriceOffset ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
+ } else {
+    MsgBox(
+    "Realized: $" + $Realized +
+    "\nRisk Scaling: " + $RiskScalingPercent +
+    "\nRisk Budget: $" + $TodaysRiskBudgetBasedOnRealized +
+    "\nStop Distance: $" + $EffectiveRiskPerShare +
+    "\nRisk-Based Shares: " + $RiskBasedShareCount +
+    "\nDynamic Max Shares: " + $DynamicMaxShares +
+    "\nFinal Shares: " + $FinalShareCount
+);
+ }
 Price=$SelectedStopPrice;
