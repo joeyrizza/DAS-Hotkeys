@@ -1,7 +1,7 @@
 LoadVarFromFile("TradingRiskState");
-
+Wait(2000);
 $Chart1=GetWindowObj("Chart1");
-$CurrentTradingDate=SubString($Chart1.GetBar(0).time,0,8);
+$CurrentTradingDate=Substring($Chart1.GetBar(0).time,0,8);
 
 $Account=GetAccountObj("MARGIN");
 $Realized=($Account.curreq-$Account.openeq);
