@@ -66,8 +66,8 @@ if(Pos > 0){
     Speak "Position is not flat";
     return;
 }
-if($SelectedStopPrice >= $BuyPrice){
-    Speak Stop is above buy price;
+if($SelectedStopPrice >= $Bid){
+    Speak Stop is above Bid price;
     Price=$SelectedStopPrice;
     return;
 }
