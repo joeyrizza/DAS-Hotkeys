@@ -8,7 +8,7 @@ It's a dynamic risk-based entry hotkey. Instead of buying a fixed share size, it
 ### 1. Peak Profit Drawdown Protection
 Upon execution the hotkey uses a **PeakRealized high-water mark** to protect profits earned during the trading session.
 
-`$PeakRealized` records the highest realized P&L reached during the day. Once realized profit reaches the minimum threshold for drawdown protection, the hotkey monitors how much profit has been given back from that peak.
+`$MarginPeakRealized` records the highest realized P&L reached during the day. Once realized profit reaches the minimum threshold for drawdown protection, the hotkey monitors how much profit has been given back from that peak.
 
 The protection is controlled by:
 
@@ -20,7 +20,7 @@ The protection is controlled by:
 With `$MaxShares=200` and `$MaximumRiskPerShare=.10`:
 
 - Maximum risk budget = `$20`
-- Drawdown protection activates once `$PeakRealized` reaches `$10`
+- Drawdown protection activates once `$MarginPeakRealized` reaches `$10`
 - Maximum allowed drawdown = `50%` of peak realized profit
 - Drawdown floor set to `$15` (`$MaximumRiskBudget*.75`)
   
@@ -32,7 +32,7 @@ With `$MaxShares=200` and `$MaximumRiskPerShare=.10`:
   | $30 | $15 | $15 |
   | $50 | $25 | +$25|
 
-For example, if the session reaches a **+$30 PeakRealized** and subsequently falls to **+$14**, the trader has given back `$16`, or 53.3% of the peak profit. The hotkey will prevent additional trades and display a **Daily drawdown limit reached** message.
+For example, if the session reaches a **+$30 MarginPeakRealized** and subsequently falls to **+$14**, the trader has given back `$16`, or 53.3% of the peak profit. The hotkey will prevent additional trades and display a **Daily drawdown limit reached** message.
 
 Importantly, this protection is based on **realized P&L only**. Unrealized losses on an open position do not trigger the daily drawdown lockout. Individual trades are still managed separately through the technical stop, stop-limit offset, and position-sizing risk calculations.
 
@@ -137,7 +137,7 @@ These variables have configurable values.
 | Variable | Example Value | Description | Calculated From |
 |---|---|---|---|
 | `$MaximumRiskBudget` | `$20` | Calculated maximum dollar risk available when operating at 100% risk. | `$MaxShares * $MaximumRiskPerShare`. |
-| `$TodaysRiskBudgetBasedOnRealized` | `$10.00` | Current dollar risk budget allowed based on the session's `PeakRealized` profit and scaling level. | `$MaximumRiskBudget * ($StartingRiskPercent + ($RiskScalingPercent*(1-$StartingRiskPercent)))` |
+| `$TodaysRiskBudgetBasedOnRealized` | `$10.00` | Current dollar risk budget allowed based on the session's `MarginPeakRealized` profit and scaling level. | `$MaximumRiskBudget * ($StartingRiskPercent + ($RiskScalingPercent*(1-$StartingRiskPercent)))` |
 
 ### Profit-Based Position Scaling
 
@@ -145,8 +145,8 @@ These variables have configurable values.
 |---|---|---|---|
 | `$ProfitThresholdToBeginScaling` | `$10` | Peak realized profit (Dollars) at which position sizing begins increasing above the minimum risk level. | `($MaxShares*.5)*$MaximumRiskPerShare` |
 | `$ProfitThresholdForFullRisk` | `$50` | Peak realized profit (Dollars) at which the hotkey reaches 100% of the maximum risk budget. | `$ProfitThresholdToBeginScaling*5`. |
-| `$PeakRealized` | `$2.23` | The highest realized P&L (Dollars) reached during the trading session. This is the high-water mark used for both position-size scaling and drawdown protection. | `if($Realized > $PeakRealized){ $PeakRealized=$Realized; }` |
-| `$RiskScalingPercent` | `0 - 1` | Determines how far the trader has progressed from the scaling threshold to the full-risk threshold. `0` represents minimum risk and `1` represents maximum risk. Clamped between `0` and `1`.| `($PeakRealized-$ProfitThresholdToBeginScaling)  /($ProfitThresholdForFullRisk-$ProfitThresholdToBeginScaling)`|
+| `$MarginPeakRealized` | `$2.23` | The highest realized P&L (Dollars) reached during the trading session. This is the high-water mark used for both position-size scaling and drawdown protection. | `if($MarginPeakRealized >= $MinimumPeakProfitForDrawdownProtection && $DrawdownFromPeak >= $AllowedDrawdown){$TradingLockedOut=1;}` |
+| `$RiskScalingPercent` | `0 - 1` | Determines how far the trader has progressed from the scaling threshold to the full-risk threshold. `0` represents minimum risk and `1` represents maximum risk. Clamped between `0` and `1`.| `($MarginPeakRealized-$ProfitThresholdToBeginScaling)  /($ProfitThresholdForFullRisk-$ProfitThresholdToBeginScaling)`|
 | `$MinimumDynamicShares` | `50` | Floor of dynamic scaling. Controls the starting position size on a tight stop.| `$MaxShares*.25`|
 | `$DynamicMaxShares` | `180` | Current dynamic ceiling. `$DynamicMaxShares` starts at 25% of `$MaxShares` and increases toward `$MaxShares` as realized profits increase.| `Round($MinimumDynamicShares+(($MaxShares-$MinimumDynamicShares)*$RiskScalingPercent))`|
 | `$RiskBasedShareCount` | `83` | Number of shares that can be purchased based solely on the current risk budget and the effective risk per share. | `Round($TodaysRiskBudgetBasedOnRealized/$EffectiveRiskPerShare)` |
@@ -156,7 +156,7 @@ These variables have configurable values.
 
 | Variable | Example Value | Description | Calculated From |
 |---|---|---|---|
-| `$DrawdownFromPeak` | `$2.76` | Realized profit (Dollars) given back from the session's `$PeakRealized`. | `$PeakRealized - $Realized` |
+| `$DrawdownFromPeak` | `$2.76` | Realized profit (Dollars) given back from the session's `$MarginPeakRealized`. | `$MarginPeakRealized - $Realized` |
 | `$MinimumPeakProfitForDrawdownProtection` | `$10` | Minimum peak realized profit required before the drawdown protection becomes active. | `$MaximumRiskBudget*.50;` |
 | `$MinimumAllowedDrawdown` | `$10` | Lockout won't occur until at least this amount has been reached. | `$MaximumRiskBudget*.50` |
 
