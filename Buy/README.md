@@ -26,11 +26,10 @@ With `$MaxShares=200` and `$MaximumRiskPerShare=.10`:
   
   | Peak Realized | Allowed Drawdown | Lockout At |
   |---|---|---|
-  | $10 | $15 | -$5 |
-  | $14 | $15 | -$1 |
-  | $20 | $15 | +$5 |
-  | $30 | $15 | +$15|
-  | $40 | $20 | +$20|
+  | $10 | $10 | $0 |
+  | $14 | $10 | $4 |
+  | $20 | $10 | $20 |
+  | $30 | $15 | $15 |
   | $50 | $25 | +$25|
 
 For example, if the session reaches a **+$30 PeakRealized** and subsequently falls to **+$14**, the trader has given back `$16`, or 53.3% of the peak profit. The hotkey will prevent additional trades and display a **Daily drawdown limit reached** message.
