@@ -1,20 +1,28 @@
 LoadVarFromFile("TradingRiskState");
 
-$MY1MINWINDOW=GetWindowObj("Chart1");
-$CurrentTradingDate=SubString($MY1MINWINDOW.GetBar(0).time,0,8);
+$Chart1=GetWindowObj("Chart1");
+$CurrentTradingDate=SubString($Chart1.GetBar(0).time,0,8);
+
 $Account=GetAccountObj("MARGIN");
 $Realized=($Account.curreq-$Account.openeq);
 
-if($SavedTradingDate==$CurrentTradingDate){
+if($MarginTradingDate==$CurrentTradingDate){
     Speak "Trading risk state restored";
 } else {
     Speak "New Trading day initialized";
-    $SavedTradingDate=$CurrentTradingDate;
-    $PeakRealized=0;
+
+    $MarginTradingDate=$CurrentTradingDate;
+    $MarginPeakRealized=0;
+    $TrainingPeakRealized=0;
     $TradingLockedOut=0;
+
+    if($Realized<0){
+        $TradingLockedOut=1;
+    }
+
     SaveVarToFile("TradingRiskState");
-}    
-if($Realized<0){
-   $TradingLockedOut=1;
-   LockAllMontage;
+}
+
+if($TradingLockedOut==1){
+    LockAllMontage;
 }

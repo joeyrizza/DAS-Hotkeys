@@ -12,61 +12,54 @@ $MinimumAllowedStopDistance=.05;
 $MaximumAllowedDrawdownPercent=.50;
 
 $MaximumRiskBudget=$MaxShares*$MaximumRiskPerShare;
-$MinimumAllowedDrawdown=$MaximumRiskBudget*.75;
+$MinimumAllowedDrawdown=$MaximumRiskBudget*.50;
 $MinimumPeakProfitForDrawdownProtection=$MaximumRiskBudget*.50;
-$MinimumMaxShares=$MaxShares*.25;
+$MinimumDynamicShares=$MaxShares*.25;
+
 $SelectedStopPrice=price;
 
 $CurrentAccount=GetAccountObj(ACCOUNT);
 
-if($CurrentAccount.Type == "Margin"){
-    $Realized=($CurrentAccount.curreq-$CurrentAccount.openeq);
-    $PeakRealized=$MarginPeakRealized;
-    $TradingLockedOut=$MarginTradingLockedOut;
-}
-
 if($CurrentAccount.Type == "Margin(Demo)"){
     $Realized=($CurrentAccount.curreq-$CurrentAccount.openeq);
-    $PeakRealized=$TrainingPeakRealized;
 }
 
-if($Realized > $PeakRealized){
-    $PeakRealized=$Realized;
+if($CurrentAccount.Type == "Margin"){
+    $Realized=($CurrentAccount.curreq-$CurrentAccount.openeq);
+
+    $DrawdownFromPeak=$MarginPeakRealized-$Realized;
+    $AllowedDrawdown=$MarginPeakRealized*$MaximumAllowedDrawdownPercent;
+
+    if($AllowedDrawdown < $MinimumAllowedDrawdown){
+        $AllowedDrawdown=$MinimumAllowedDrawdown;
+    }
+
+    if($MarginPeakRealized >= $MinimumPeakProfitForDrawdownProtection && $DrawdownFromPeak >= $AllowedDrawdown){
+        $TradingLockedOut=1;
+    }
+
+    if($TradingLockedOut==1){
+        LockAllMontage;
+
+        Speak "Daily drawdown limit reached";
+
+        MsgBox(
+            "TRADING LOCKED OUT"
+            + "\nPeak Realized: $" + $MarginPeakRealized
+            + "\nCurrent Realized: $" + $Realized
+            + "\nDrawdown From Peak: $" + $DrawdownFromPeak
+            + "\nAllowed Drawdown: $" + $AllowedDrawdown
+        );
+
+        return;
+    }
 }
-
-$DrawdownFromPeak=$PeakRealized-$Realized;
-$AllowedDrawdown=$PeakRealized*$MaximumAllowedDrawdownPercent;
-
-if($AllowedDrawdown < $MinimumAllowedDrawdown){
-    $AllowedDrawdown=$MinimumAllowedDrawdown;
-}
-
-if($PeakRealized >= $MinimumPeakProfitForDrawdownProtection && $DrawdownFromPeak >= $AllowedDrawdown){
-    $TradingLockedOut=1;
-}
-
-if($CurrentAccount.Type == "Margin" && $TradingLockedOut==1){
-    $MarginPeakRealized=$PeakRealized;
-    $MarginTradingLockedOut=$TradingLockedOut;
-    SaveVarToFile("TradingRiskState");
-
-    LockAllMontage;
-    Speak "Daily drawdown limit reached";
-    MsgBox(
-        "TRADING LOCKED OUT"
-        + "\nPeak Realized: $" + $PeakRealized
-        + "\nCurrent Realized: $" + $Realized
-        + "\nDrawdown From Peak: $" + $DrawdownFromPeak
-        + "\nAllowed Drawdown: $" + $AllowedDrawdown
-    );
-    return;
-}
-
 
 if(Pos > 0){
     Speak "Position is not flat";
     return;
 }
+
 if($SelectedStopPrice >= Bid){
     Speak Stop is above Bid price;
     Price=$SelectedStopPrice;
@@ -87,20 +80,26 @@ $ProfitThresholdForFullRisk=$ProfitThresholdToBeginScaling*5;
 
 $RiskScalingPercent=($Realized-$ProfitThresholdToBeginScaling)/($ProfitThresholdForFullRisk-$ProfitThresholdToBeginScaling);
 
-if($RiskScalingPercent < 0){$RiskScalingPercent=0;}
-if($RiskScalingPercent > 1){$RiskScalingPercent=1;}
+if($RiskScalingPercent < 0){
+    $RiskScalingPercent=0;
+}
 
-$DynamicMaxShares=Round($MinimumMaxShares+(($MaxShares-$MinimumMaxShares)*$RiskScalingPercent));
+if($RiskScalingPercent > 1){
+    $RiskScalingPercent=1;
+}
+
+$DynamicMaxShares=Round($MinimumDynamicShares+(($MaxShares-$MinimumDynamicShares)*$RiskScalingPercent));
 
 $TodaysRiskBudgetBasedOnRealized=$MaximumRiskBudget*($StartingRiskPercent+($RiskScalingPercent*(1-$StartingRiskPercent)));
 
-
 $TechnicalStopDistance=$BuyPrice-$SelectedStopPrice;
 $EffectiveRiskPerShare=$TechnicalStopDistance+$StopLimitPriceOffset;
+
 if($EffectiveRiskPerShare <= 0){
     Speak Invalid risk calculation;
     return;
 }
+
 $RiskBasedShareCount=Round($TodaysRiskBudgetBasedOnRealized/$EffectiveRiskPerShare);
 
 $FinalShareCount=MIN($RiskBasedShareCount,$DynamicMaxShares);
@@ -113,7 +112,6 @@ if($CalculatedPositionValue > $MaxLongVal){
 }
 
 $ActualPosVal=$BuyPrice*$FinalShareCount;
-
 $TechnicalStopRisk=$FinalShareCount*$TechnicalStopDistance;
 $AdditionalOffsetRisk=$FinalShareCount*$StopLimitPriceOffset;
 $WorstCasePlannedRisk=$FinalShareCount*$EffectiveRiskPerShare;
@@ -121,17 +119,20 @@ $WorstCasePlannedRisk=$FinalShareCount*$EffectiveRiskPerShare;
 SShare=$amount;Share=$FinalShareCount;TogSShare;ROUTE=$Route;Price=$BuyPrice;TIF=DAY+;
 
 if($Debug == 0){
-  BUY=Send;
-  TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$SelectedStopPrice-$StopLimitPriceOffset ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
- } else {
+    BUY=Send;
+    TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$SelectedStopPrice-$StopLimitPriceOffset ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
+} else {
     MsgBox(
-    "Realized: $" + $Realized +
-    "\nRisk Scaling: " + $RiskScalingPercent +
-    "\nRisk Budget: $" + $TodaysRiskBudgetBasedOnRealized +
-    "\nStop Distance: $" + $EffectiveRiskPerShare +
-    "\nRisk-Based Shares: " + $RiskBasedShareCount +
-    "\nDynamic Max Shares: " + $DynamicMaxShares +
-    "\nFinal Shares: " + $FinalShareCount
-);
- }
+        "Realized: $" + $Realized
+        + "\nMargin Peak Realized: $" + $MarginPeakRealized
+        + "\nTraining Peak Realized: $" + $TrainingPeakRealized
+        + "\nRisk Scaling: " + $RiskScalingPercent
+        + "\nRisk Budget: $" + $TodaysRiskBudgetBasedOnRealized
+        + "\nStop Distance: $" + $EffectiveRiskPerShare
+        + "\nRisk-Based Shares: " + $RiskBasedShareCount
+        + "\nDynamic Max Shares: " + $DynamicMaxShares
+        + "\nFinal Shares: " + $FinalShareCount
+    );
+}
+
 Price=$SelectedStopPrice;
