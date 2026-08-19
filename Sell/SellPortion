@@ -1,0 +1,22 @@
+if(Bid > AvgCost) {
+  SwitchTWnd;
+  CXL ALLSYMB;
+
+  $qty=Pos*0.5;
+
+  ROUTE=LIMIT;
+  Price=Ask;
+  Share=$qty;
+  SELL=Send;
+
+  ROUTE=STOP;
+  StopType=LimitP;
+  StopPrice=AvgCost;
+  Price=AvgCost;
+  Share=Pos-$qty;
+  SELL=Send;
+} else {
+  SwitchTWnd;
+  CXL ALLSYMB;
+  Price=Bid-0.10;ROUTE=LIMIT;Share=Pos;SELL;
+}
