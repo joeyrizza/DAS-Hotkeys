@@ -14,6 +14,7 @@ $MaximumAllowedDrawdownPercent=.50;
 $MaximumRiskBudget=$MaxShares*$MaximumRiskPerShare;
 $MinimumAllowedDrawdown=$MaximumRiskBudget*.75;
 $MinimumPeakProfitForDrawdownProtection=$MaximumRiskBudget*.50;
+$MinimumMaxShares=$MaxShares*.25;
 $SelectedStopPrice=price;
 
 $CurrentAccount=GetAccountObj(ACCOUNT);
@@ -66,7 +67,7 @@ if(Pos > 0){
     Speak "Position is not flat";
     return;
 }
-if($SelectedStopPrice >= $Bid){
+if($SelectedStopPrice >= Bid){
     Speak Stop is above Bid price;
     Price=$SelectedStopPrice;
     return;
@@ -89,7 +90,6 @@ $RiskScalingPercent=($Realized-$ProfitThresholdToBeginScaling)/($ProfitThreshold
 if($RiskScalingPercent < 0){$RiskScalingPercent=0;}
 if($RiskScalingPercent > 1){$RiskScalingPercent=1;}
 
-$MinimumMaxShares=$MaxShares*.25;
 $DynamicMaxShares=Round($MinimumMaxShares+(($MaxShares-$MinimumMaxShares)*$RiskScalingPercent));
 
 $TodaysRiskBudgetBasedOnRealized=$MaximumRiskBudget*($StartingRiskPercent+($RiskScalingPercent*(1-$StartingRiskPercent)));
