@@ -1,15 +1,28 @@
-SwitchTWnd;
-CXL ALLSYMB;
-$qty=Pos;
+if(Bid > AvgCost) {
+    SwitchTWnd;
+    CXL ALLSYMB;
 
-ROUTE=ARCAL;
-Price=Ask;
-Share=$qty;
-SELL=Send;
+    $qty=Pos*0.5;
 
-ROUTE=STOP;
-StopType=LimitP;
-StopPrice=AvgCost;
-Price=AvgCost;
-Share=Pos-$qty;
-SELL=Send;
+    ROUTE=LIMIT;
+    Price=Ask;
+    Share=$qty;
+    SELL=Send;
+
+    ROUTE=STOP;
+    StopType=LimitP;
+    StopPrice=AvgCost;
+    Price=AvgCost;
+    Share=Pos-$qty;
+    SELL=Send;
+} else {
+    Speak "Trade is not profitable";
+
+    SwitchTWnd;
+    CXL ALLSYMB;
+
+    Price=Bid-0.10;
+    ROUTE=LIMIT;
+    Share=Pos;
+    SELL;
+}

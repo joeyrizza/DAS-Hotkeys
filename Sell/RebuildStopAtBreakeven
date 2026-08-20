@@ -1,0 +1,10 @@
+SwitchTWnd;
+CXL ALLSYMB;
+$StopLimitOffset=0;
+
+ROUTE=STOP;
+StopType=LimitP;
+StopPrice=AvgCost;
+Price=AvgCost-$StopLimitOffset;
+Share=Pos;
+SELL=Send;
