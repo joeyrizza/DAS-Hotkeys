@@ -1,3 +1,13 @@
+//Draw Key Resistance
+
+//Set Market Hour Prefix.
+$TIMENOW=getsecond();
+$MH="";
+$PM=0;
+$AH=0;
+if($TIMENOW<34200){$PM=0;$MH="PM";}
+if($TIMENOW>=57600){$AH=1;$MH="AH";}
+
 ConfigTrendLine Text SolidLine:FFFFFF:2;
 //Daily 200SMA
 $p=$CHARTD.getstudyval("StudyD200SMA");
