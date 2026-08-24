@@ -27,6 +27,11 @@ if($RVOL<=5){
   $OKtoArm=0;
   return;
 }
+if($AverageRange > .4){
+  Speak("Candles have very large range.");
+  $OKtoArm=0;
+  return;
+}
 
 //Warnings
 ///////
@@ -44,5 +49,14 @@ Speak("Macdee is closed.");
 }
 //200
 if($MPRICE<$D200EMA){
-  Speak("Stock is under the 200 E M A.");
+  Speak("Stock is under the daily 200");
+}
+if($VOL < 1000000){
+  Speak("Low Volume.");
+}
+if($ETB == 1){
+  Speak("Stock is easy to borrow.");
+}
+if($AverageRange > .2){
+  Speak("Candles have large range.");
 }

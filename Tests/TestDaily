@@ -8,6 +8,16 @@ $D20EMA=$CHARTD.getstudyval("StudyD20EMA");
 $CHART1.GetCustButObj("btn_dailyavgs").text ="Below Daily Avgs";
 
 if (
+  $MPRICE < $D200SMA  &&
+  $D200EMA-$MPRICE < 5
+)
+{
+  $CHART1.GetCustButObj("btn_dailyavgs").text ="Near 200: " + $D200EMA;
+  $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Orange;
+  return;
+}
+
+if (
     $MPRICE > $D9EMA ||
     $MPRICE > $D20EMA
 )
@@ -19,11 +29,3 @@ if (
 $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=red;
 }
 
-if (
-  $MPRICE < $D200SMA  &&
-  $D200EMA-$MPRICE < 5
-)
-{
-  $CHART1.GetCustButObj("btn_dailyavgs").text ="Near 200: " + Round(($D200EMA-$MPRICE),103);
-  $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Orange;
-}
