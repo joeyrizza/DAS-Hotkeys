@@ -1,0 +1,48 @@
+$OKtoArm=1;
+//Non-Negotiables
+//Price
+if($MPRICE>20){
+  Speak("Stock is too expensive.");
+  $OKtoArm=0;
+  return;
+}
+
+//Float
+if($Float>20){
+  Speak("Float too high.");
+  $OKtoArm=0;
+  return;
+}
+
+//Gap
+if($GAPPERCENT<=10){
+  Speak("Gap less than 10%.");
+  $OKtoArm=0;
+  return;
+}
+
+//RVOL
+if($RVOL<=5){
+  Speak("Relative Volume too low.");
+  $OKtoArm=0;
+  return;
+}
+
+//Warnings
+///////
+//Price
+if($MPRICE>10){
+  Speak("Stock is expensive");
+}
+//VWAP
+if($ABOVEVWAP==0){
+Speak("Price is below veewap");
+}
+//MACD
+if($MACD<$Signal){
+Speak("Macdee is closed.");
+}
+//200
+if($MPRICE<$D200EMA){
+  Speak("Stock is under the 200 E M A.");
+}

@@ -172,3 +172,9 @@ These variables have configurable values.
 | `$CalculatedPositionValue` | 20.0 | Dollar value of the position before applying the maximum position-value restriction. | `$BuyPrice*$FinalShareCount` |
 | `$MaxSharesAllowedByPositionValue` | 73 | Maximum number of shares permitted by `$MaxLongVal` at the current buy price. | `$MaxLongVal/$BuyPrice` |
 | `$ActualPosVal` | $384.73 | Final dollar value of the position after all share-count restrictions have been applied. | `$BuyPrice*$FinalShareCount` |
+
+
+TODO: use new logic to get account PL
+$Account=GetAccountObj("MARGIN");
+MsgBox("NetPL: "+$Account.NetPL);
+TODO: use new Speak(""); syntax

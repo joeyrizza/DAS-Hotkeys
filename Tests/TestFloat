@@ -1,0 +1,37 @@
+//get the float value
+$FLOAT=getquoteobj($CHART1.SYMBOL).float/1000000;
+
+if($FLOAT < 1){
+  $FLOATDISP=Round(SubString($FLOAT,2,StrLen($FLOAT)-1),3)+"K";
+} else {
+  $FLOATDISP=$FLOAT+"M";
+}
+$CHART1.GetCustButObj("btn_float").text ="Float: " + $FLOATDISP;
+
+//run tests
+if($FLOAT <= 20){
+  $PILLARS=$PILLARS+1;
+}
+if($FLOAT <= 0.3){
+  $CHART1.GetCustButObj("btn_float").bkcolor=green;
+}
+else if($FLOAT <= 1){
+  $CHART1.GetCustButObj("btn_float").bkcolor=green;
+}
+else if($FLOAT <= 2){
+  $CHART1.GetCustButObj("btn_float").bkcolor=green;
+}
+else if($FLOAT <= 5){
+  $CHART1.GetCustButObj("btn_float").bkcolor=color(70,230,105);
+}
+else if($FLOAT <= 10){
+  $CHART1.GetCustButObj("btn_float").bkcolor=color(120,245,140);
+}
+else if($FLOAT < 20){
+  $CHART1.GetCustButObj("btn_float").bkcolor=color(180,255,180);
+}
+else{
+  $CHART1.GetCustButObj("btn_float").bkcolor=red;
+
+}
+

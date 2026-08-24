@@ -1,0 +1,4 @@
+$CHART1= GetWindowObj("Chart1");
+$CHARTD= GetWindowObj("ChartD");
+$MONTAGE1=GetWindowObj("MONTAGE1");
+$NEWS1=GetWindowObj("NEWS1");

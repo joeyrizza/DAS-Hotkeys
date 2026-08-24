@@ -1,0 +1,18 @@
+//test the price
+
+$CHART1.GetCustButObj("btn_price").text ="Price: "  + Round($MPRICE,103);
+
+if($MPRICE>1 && $MPRICE<2){
+  $CHART1.GetCustButObj("btn_price").bkcolor=orange;
+}
+if($MPRICE>2 && $MPRICE < 20){
+  $PILLARS=$PILLARS+1;
+  $CHART1.GetCustButObj("btn_price").bkcolor=green;
+}
+if($MPRICE >= 20) { 
+  $CHART1.GetCustButObj("btn_price").bkcolor=red;
+}
+if(getquoteobj($CHART1.SYMBOL).Halted == 1){
+$CHART1.GetCustButObj("btn_price").text ="HALTED: "  + Round(getquoteobj($CHART1.SYMBOL).Last,103);
+  $CHART1.GetCustButObj("btn_price").bkcolor=orange;
+}

@@ -1,0 +1,24 @@
+//Run Tests
+$MPRICE=getstudyval("StudyBar");
+$TIMENOW=getsecond();
+$PILLARS=0;
+$PM=0;
+$AH=0;
+$MH="";
+if($TIMENOW<34200){$PM=0;$MH="PM";}
+if($TIMENOW>=57600){$AH=1;$MH="AH";}
+
+exechotkey("CleanupLines");
+exechotkey("DrawKeyResistance");
+exechotkey("TestEMAAlignment");
+exechotkey("TestVWAP");
+exechotkey("TestExtended");
+exechotkey("TestFloat");
+exechotkey("TestPrice");
+exechotkey("TestRVOL");
+exechotkey("TestGap");
+exechotkey("TestETB");
+exechotkey("TestDaily");
+exechotkey("TestMACD");
+exechotkey("TestVolume");
+

@@ -1,0 +1,14 @@
+if($CHART1.Symbol==$selectedsymbol){
+//run every update
+  if($SetupArmed==1){
+    $CHART1.GetCustButObj("btn_armed").text ="Setup Armed.";
+    $CHART1.GetCustButObj("btn_armed").bkcolor=red;
+  } else {
+    $CHART1.GetCustButObj("btn_armed").text =getquoteobj($CHART1.SYMBOL).CompanyName;
+    $CHART1.GetCustButObj("btn_armed").bkcolor=gray;    
+  }
+} else {
+  //symbol change only.
+  $selectedsymbol=$Chart1.Symbol;
+}
+

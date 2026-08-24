@@ -1,0 +1,9 @@
+//get the rvol value
+$RVOL=getquoteobj($CHART1.SYMBOL).RVOL;
+$CHART1.GetCustButObj("btn_rvol").text ="RVOL: " + $RVOL + "x";
+
+if($RVOL>5){
+  $CHART1.GetCustButObj("btn_rvol").bkcolor=green;
+} else {
+  $CHART1.GetCustButObj("btn_rvol").bkcolor=red;
+}

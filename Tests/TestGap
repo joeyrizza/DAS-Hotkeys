@@ -1,0 +1,13 @@
+//get the yclose value
+$YCLOSE=getquoteobj($CHART1.SYMBOL).yClose;
+$GapPercent=Round((($MPRICE-$YCLOSE)/$YCLOSE)*100);
+$Gapper=0;
+$CHART1.GetCustButObj("btn_gap").text ="Gap: " + $GapPercent + "%";
+
+if($GapPercent > 10){
+  $CHART1.GetCustButObj("btn_gap").bkcolor=green;
+  $GAPPER=1;
+  $PILLARS=$PILLARS+1;
+} else {
+  $CHART1.GetCustButObj("btn_gap").bkcolor=red;
+}

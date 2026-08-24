@@ -1,0 +1,29 @@
+//Test Daily
+
+$D200SMA=$CHARTD.getstudyval("StudyD200SMA");
+$D200EMA=$CHARTD.getstudyval("StudyD200EMA");
+$D9EMA=$CHARTD.getstudyval("StudyD9EMA");
+$D20EMA=$CHARTD.getstudyval("StudyD20EMA");
+
+$CHART1.GetCustButObj("btn_dailyavgs").text ="Below Daily Avgs";
+
+if (
+    $MPRICE > $D9EMA ||
+    $MPRICE > $D20EMA
+)
+{
+  $CHART1.GetCustButObj("btn_dailyavgs").text ="Above Daily Avgs";
+  $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=green;
+} else {
+  //price is below either 9 or 20
+$CHART1.GetCustButObj("btn_dailyavgs").bkcolor=red;
+}
+
+if (
+  $MPRICE < $D200SMA  &&
+  $D200EMA-$MPRICE < 5
+)
+{
+  $CHART1.GetCustButObj("btn_dailyavgs").text ="Near 200: " + Round(($D200EMA-$MPRICE),103);
+  $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Orange;
+}

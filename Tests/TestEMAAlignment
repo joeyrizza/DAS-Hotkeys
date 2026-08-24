@@ -1,0 +1,27 @@
+//Test EMA Alignment
+$EMA9=getstudyval("Study9EMA");
+$EMA20=getstudyval("Study20EMA");
+$EMA200=getstudyval("Study200EMA");
+$MOVINGAVGSALIGNED=0;
+$ABOVE9EMA=0;
+
+$CHART1.GetCustButObj("btn_emas").text ="1M EMAs Not Aligned";
+if($MPrice > $EMA9){
+  $ABOVE9EMA=1;
+}
+
+if($EMA9 > $EMA20){
+  if($EMA20 > $EMA200){
+    $MOVINGAVGSALIGNED=1;
+   $CHART1.GetCustButObj("btn_emas").text ="AVGs Aligned";
+   $CHART1.GetCustButObj("btn_emas").bkcolor=green;
+  } else {
+    //20 is below 200
+  $CHART1.GetCustButObj("btn_emas").bkcolor=red;
+  }
+} else {
+//9 is below 20
+$CHART1.GetCustButObj("btn_emas").bkcolor=red;
+}
+
+//MsgBox("EMA 9: " + $EMA9 + "\nEMA 20: " + $EMA20 + "\nEMA 200: " + $EMA200);

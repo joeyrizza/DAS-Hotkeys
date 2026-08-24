@@ -1,0 +1,6 @@
+$C="200 SMA";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine("_"+ $C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
+$C="200 EMA";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine("_"+ $C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
+$C="PDC";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine("_"+ $C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
+$C=$MH+"HOD";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine("_"+ $C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
+$C=$MH+"LOD";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine("_"+ $C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
+

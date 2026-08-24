@@ -1,0 +1,10 @@
+//VWAP Test
+$VWAP=getquoteobj($CHART1.SYMBOL).vwap;
+if($MPRICE>$VWAP){
+  $ABOVEVWAP=1;
+  $CHART1.GetCustButObj("btn_vwap").text ="Above VWAP";
+  $CHART1.GetCustButObj("btn_vwap").bkcolor=green;
+} else {
+  $CHART1.GetCustButObj("btn_vwap").text ="Below VWAP";
+  $CHART1.GetCustButObj("btn_vwap").bkcolor=red;
+}

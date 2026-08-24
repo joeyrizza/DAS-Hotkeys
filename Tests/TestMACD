@@ -1,0 +1,24 @@
+//Tests the MACD Study
+$MACDInfo=$CHART1.GetStudyVal("StudyMACD",ByBarNum,0);
+$CommaPos=StrFind($MACDInfo,", Signal:");
+$MACD=Round(SubString($MACDInfo,5,$CommaPos),3);
+$Signal=Round(SubString($MACDInfo,$CommaPos+9,StrLen($MACDInfo)-1),3);
+
+
+if($MACD>$Signal)
+{
+  // MACD open / bullish
+  //Speak("macdee is open");
+  $CHART1.GetCustButObj("btn_macd").text ="MACD Pos";
+  $CHART1.GetCustButObj("btn_macd").bkcolor=green;
+}
+else
+{
+  // MACD closed / bearish
+  //Speak("macdee is closed");
+  $CHART1.GetCustButObj("btn_macd").text ="MACD Neg";
+  $CHART1.GetCustButObj("btn_macd").bkcolor=red;
+}
+
+//debug
+//MsgBox("FULL:\n"+$MACDInfo+"\n\nFIND POS:\n"+$CommaPos+"\n\nMACD STRING:\n"+$MACDString+"\n\nSIGNAL STRING:\n"+$SignalString+"\n\nMACD:\n"+$MACD+"\n\nSIGNAL:\n"+$Signal);

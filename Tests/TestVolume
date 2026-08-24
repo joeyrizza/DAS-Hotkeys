@@ -1,0 +1,22 @@
+//Volume Test
+$VOL=getquoteobj($CHART1.SYMBOL).Volume;
+
+if($VOL>=1000000)
+{
+    $VOLDISP=Round($VOL/1000000,1)+"M";
+  $CHART1.GetCustButObj("btn_vol").bkcolor=green;
+}
+else
+{
+  $CHART1.GetCustButObj("btn_vol").bkcolor=red;
+    if($VOL>=1000)
+    {
+        $VOLDISP=Round($VOL/1000,1)+"K";
+    }
+    else
+    {
+        $VOLDISP=$VOL;
+    }
+}
+
+$CHART1.GetCustButObj("btn_vol").text ="Volume: " + $VOLDISP;
