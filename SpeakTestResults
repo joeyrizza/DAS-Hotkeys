@@ -26,8 +26,8 @@ if($AverageRange > .4){
   return;
 }
 //Volume
-if($VOL < 500000){
-  Speak("Very Low Volume."); $OKtoArm=0;
+if($VOL < 1000000){
+  Speak("Volume too low. Wait for stock to become obvious."); $OKtoArm=0;
   return;
 }
 
@@ -50,9 +50,9 @@ if($MPRICE<$D200EMA){
   Speak("Stock is under the daily 200");
 }
 //Volume Check
-if($VOL < 1000000){
-  Speak("Low Volume.");
-}
+//if($VOL < 1000000){
+//  Speak("Low Volume.");
+//}
 //Easy to Borrow
 if($ETB == 1){
   Speak("Stock is easy to borrow.");
