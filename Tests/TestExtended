@@ -43,3 +43,12 @@ if($MPRICE < $Extension){
 
 //Average Candle Size
   $CHART1.GetCustButObj("btn_range").text ="Avg Range: $" + Round($AverageRange,103);
+
+//Risk Button
+$rpc=25*Round($AverageRange,103);
+if($MPRICE <= 2){
+  $rpc=25*Round($AverageRange,4);
+}
+$CHART1.GetCustButObj("btn_risk").text ="Risk per candle: $" + $MPRICE;
+
+ 
