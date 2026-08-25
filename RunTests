@@ -1,18 +1,19 @@
 //Run Tests
 $MPRICE=getstudyval("StudyBar");
 $PILLARS=0;
-
-exechotkey("CleanupLines");
-exechotkey("DrawKeyResistance");
-exechotkey("TestEMAAlignment");
-exechotkey("TestVWAP");
-exechotkey("TestExtended");
-exechotkey("TestFloat");
-exechotkey("TestPrice");
-exechotkey("TestRVOL");
-exechotkey("TestGap");
-exechotkey("TestETB");
-exechotkey("TestDaily");
-exechotkey("TestMACD");
-exechotkey("TestVolume");
-
+if($RunTestsEnabled==1)
+{
+	exechotkey("CleanupLines");
+	exechotkey("DrawKeyResistance");
+	exechotkey("TestEMAAlignment");
+	exechotkey("TestVWAP");
+	exechotkey("TestExtended");
+	exechotkey("TestFloat");
+	exechotkey("TestPrice");
+	exechotkey("TestRVOL");
+	exechotkey("TestGap");
+	exechotkey("TestETB");
+	exechotkey("TestDaily");
+	exechotkey("TestMACD");
+	exechotkey("TestVolume");
+}
