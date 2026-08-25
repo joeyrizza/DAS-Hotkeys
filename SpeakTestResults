@@ -32,6 +32,11 @@ if($AverageRange > .4){
   $OKtoArm=0;
   return;
 }
+if($VOL < 500000){
+  Speak("Very Low Volume.");
+  $OKtoArm=0;
+  return;
+}
 
 //Warnings
 ///////
@@ -59,4 +64,7 @@ if($ETB == 1){
 }
 if($AverageRange > .2){
   Speak("Candles have large range.");
+}
+if($Extended == 1){
+  Speak("Stock may be extended.");
 }
