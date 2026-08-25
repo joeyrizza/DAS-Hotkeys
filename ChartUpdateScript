@@ -4,8 +4,9 @@ if($CHART1.Symbol==$selectedsymbol){
     $CHART1.GetCustButObj("btn_armed").text ="Setup Armed.";
     $CHART1.GetCustButObj("btn_armed").bkcolor=red;
   } else {
-    $CHART1.GetCustButObj("btn_armed").text =getquoteobj($CHART1.SYMBOL).CompanyName;
-    $CHART1.GetCustButObj("btn_armed").bkcolor=gray;    
+    $CHART1.GetCustButObj("btn_armed").text = getquoteobj($CHART1.SYMBOL).CompanyName + " | " +
+    getquoteobj($CHART1.SYMBOL).Sector;
+    $CHART1.GetCustButObj("btn_armed").bkcolor=color(211,211,211);    
   }
 } else {
   //symbol change only.
