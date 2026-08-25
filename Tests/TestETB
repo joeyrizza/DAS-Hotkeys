@@ -3,18 +3,15 @@ $ETB=getquoteobj($CHART1.SYMBOL).ETB;
 $SSR=getquoteobj($CHART1.SYMBOL).SSR;
 $HTB=getquoteobj($CHART1.SYMBOL).HTB;
 
-//$CHART1.GetCustButObj("btn_etb").text ="HTB / ETB / SSR";
-//$CHART1.GetCustButObj("btn_etb").bkcolor=color(211,211,211);
-
 if($ETB == 1){
-$CHART1.GetCustButObj("btn_etb").text ="ETB";
-$CHART1.GetCustButObj("btn_etb").bkcolor=red;
+  $CHART1.GetCustButObj("btn_etb").text ="ETB";
+  $CHART1.GetCustButObj("btn_etb").bkcolor=red;
 }
-if($HTB == 1){
-$CHART1.GetCustButObj("btn_etb").text ="Shortable: HTB";
-$CHART1.GetCustButObj("btn_etb").bkcolor=orange;
+if($HTB == 1 && SSR == 0){
+  $CHART1.GetCustButObj("btn_etb").text ="Shortable: HTB";
+  $CHART1.GetCustButObj("btn_etb").bkcolor=orange;
 }
 if($SSR == 1){
-$CHART1.GetCustButObj("btn_etb").text ="SSR";
-$CHART1.GetCustButObj("btn_etb").bkcolor=green;
+  $CHART1.GetCustButObj("btn_etb").text ="SSR";
+  $CHART1.GetCustButObj("btn_etb").bkcolor=green;
 }
