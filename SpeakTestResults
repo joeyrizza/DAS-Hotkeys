@@ -2,39 +2,32 @@ $OKtoArm=1;
 //Non-Negotiables
 //Price
 if($MPRICE>20){
-  Speak("Stock is too expensive.");
-  $OKtoArm=0;
+  Speak("Stock is too expensive."); $OKtoArm=0;
   return;
 }
-
 //Float
 if($Float>20){
-  Speak("Float too high.");
-  $OKtoArm=0;
+  Speak("Float too high."); $OKtoArm=0;
   return;
 }
-
 //Gap
 if($GAPPERCENT<=10){
-  Speak("Gap less than 10%.");
-  $OKtoArm=0;
+  Speak("Gap less than 10%."); $OKtoArm=0;
   return;
 }
-
 //RVOL
 if($RVOL<=5){
-  Speak("Relative Volume too low.");
-  $OKtoArm=0;
+  Speak("Relative Volume too low."); $OKtoArm=0;
   return;
 }
+//Average Range
 if($AverageRange > .4){
-  Speak("Candles have very large range.");
-  $OKtoArm=0;
+  Speak("Candles have very large range."); $OKtoArm=0;
   return;
 }
+//Volume
 if($VOL < 500000){
-  Speak("Very Low Volume.");
-  $OKtoArm=0;
+  Speak("Very Low Volume."); $OKtoArm=0;
   return;
 }
 
@@ -56,15 +49,19 @@ Speak("Macdee is closed.");
 if($MPRICE<$D200EMA){
   Speak("Stock is under the daily 200");
 }
+//Volume Check
 if($VOL < 1000000){
   Speak("Low Volume.");
 }
+//Easy to Borrow
 if($ETB == 1){
   Speak("Stock is easy to borrow.");
 }
+//Check for Large Candle Range
 if($AverageRange > .2){
   Speak("Candles have large range.");
 }
+//Check for Extended
 if($Extended == 1){
   Speak("Stock may be extended.");
 }
