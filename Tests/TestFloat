@@ -2,7 +2,7 @@
 $FLOAT=getquoteobj($CHART1.SYMBOL).float/1000000;
 
 if($FLOAT < 1){
-  $FLOATDISP=Round(SubString($FLOAT,2,StrLen($FLOAT)-1),3)+"K";
+  $FLOATDISP=Round(SubString($FLOAT,2,StrLen($FLOAT)),3)+"K";
 } else {
   $FLOATDISP=$FLOAT+"M";
 }
