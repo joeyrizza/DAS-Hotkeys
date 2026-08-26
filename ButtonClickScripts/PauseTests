@@ -1,0 +1,14 @@
+if($RunTestsEnabled==1)
+{
+    $RunTestsEnabled=0;
+
+    GetWindowObj("CHART1").GetCustButObj("btn_pausetests").Text="Unpause Tests";
+    GetWindowObj("CHART1").GetCustButObj("btn_pausetests").bkcolor=orange;
+}
+else
+{
+    $RunTestsEnabled=1;
+
+    GetWindowObj("CHART1").GetCustButObj("btn_pausetests").Text="Pause Tests";
+    GetWindowObj("CHART1").GetCustButObj("btn_pausetests").bkcolor=color(211,211,211);
+}

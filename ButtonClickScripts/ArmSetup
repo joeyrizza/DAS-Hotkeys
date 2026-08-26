@@ -1,0 +1,8 @@
+if($SetupArmed==1)
+{
+  exechotkey("Setup Disarmed");
+}
+else
+{
+  exechotkey("Setup Armed");
+}

@@ -1,0 +1,2 @@
+exechotkey("CleanupLines");
+exechotkey("DrawKeyResistance");
