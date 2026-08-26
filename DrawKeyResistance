@@ -1,13 +1,31 @@
 //Draw Key Resistance
 
-//Set Market Hour Prefix.
-$TIMENOW=getsecond();
-$MH="";
-$PM=0;
-$AH=0;
-if($TIMENOW<34200){$PM=0;$MH="PM";}
-if($TIMENOW>=57600){$AH=1;$MH="AH";}
+//Finds the top two highest vol candles today, marks important levels within range of current trading price.
+exechotkey("FindIntradayLevels");
 
+if($M=="PM"){
+    //premarket only
+    //PM HOD
+    $p=$MONTAGE1.HI;
+    $label="PM High";
+    $color=color(211,211,211);
+    $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL2 = $CHART1.CreateTrendline("Text");$TL2.name="_" + $label + $CHART1.Symbol;$TL2.text=$label;$TL2.Price=$p;$TL2.Price1=$p;$TL2.time=$CHART1.getbar(-30).time;$TL2.time1=$CHART1.getbar(-30).time;
+}
+if($M=="AH"){
+    //after hours only
+    //AH HOD
+    $p=$MONTAGE1.HI;
+    $label="AH High";
+    $color=color(211,211,211);
+    $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL2 = $CHART1.CreateTrendline("Text");$TL2.name="_" + $label + $CHART1.Symbol;$TL2.text=$label;$TL2.Price=$p;$TL2.Price1=$p;$TL2.time=$CHART1.getbar(-30).time;$TL2.time1=$CHART1.getbar(-30).time;
+}
+if($M=="MH"){
+    //Market Hours Only
+    $p=$MONTAGE1.HI;
+    $label="HOD";
+    $color=color(211,211,211);
+    $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL2 = $CHART1.CreateTrendline("Text");$TL2.name="_" + $label + $CHART1.Symbol;$TL2.text=$label;$TL2.Price=$p;$TL2.Price1=$p;$TL2.time=$CHART1.getbar(-30).time;$TL2.time1=$CHART1.getbar(-30).time;
+}
 ConfigTrendLine Text SolidLine:FFFFFF:2;
 //Daily 200SMA
 $p=$CHARTD.getstudyval("StudyD200SMA");
@@ -26,16 +44,3 @@ $p=getquoteobj($CHART1.SYMBOL).yClose;
 $label="PDC";
 $color=color(211,211,211);
 $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL2 = $CHART1.CreateTrendline("Text");$TL2.name="_" + $label + $CHART1.Symbol;$TL2.text=$label;$TL2.Price=$p;$TL2.Price1=$p;$TL2.time=$CHART1.getbar(-30).time;$TL2.time1=$CHART1.getbar(-30).time;
-
-//HOD
-$p=$MONTAGE1.HI;
-$label=$MH+"HOD";
-$color=color(211,211,211);
-$TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL2 = $CHART1.CreateTrendline("Text");$TL2.name="_" + $label + $CHART1.Symbol;$TL2.text=$label;$TL2.Price=$p;$TL2.Price1=$p;$TL2.time=$CHART1.getbar(-30).time;$TL2.time1=$CHART1.getbar(-30).time;
-
-//LOD
-$p=$MONTAGE1.Lo;
-$label=$MH+"LOD";
-$color=color(211,211,211);
-$TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL2 = $CHART1.CreateTrendline("Text");$TL2.name="_" + $label + $CHART1.Symbol;$TL2.text=$label;$TL2.Price=$p;$TL2.Price1=$p;$TL2.time=$CHART1.getbar(-30).time;$TL2.time1=$CHART1.getbar(-30).time;
-

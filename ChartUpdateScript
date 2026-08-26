@@ -8,6 +8,16 @@ if($CHART1.Symbol==$selectedsymbol){
     getquoteobj($CHART1.SYMBOL).Sector;
     $CHART1.GetCustButObj("btn_armed").bkcolor=color(211,211,211);    
   }
+  $TIMENOW=getsecond();
+  if($TIMENOW<34200){
+      $M="PM";//Pre Market 
+    }
+  if($TIMENOW>=57600){
+      $M="AH";//After Hours
+    }
+  if($TIMENOW>=34200 && TIMENOW <57600){
+      $M="MH";//Market Hours
+    }
 } else {
   //symbol change only.
   $selectedsymbol=$Chart1.Symbol;
