@@ -3,8 +3,6 @@ $MPRICE=getstudyval("StudyBar");
 $PILLARS=0;
 if($RunTestsEnabled==1)
 {
-	exechotkey("CleanupLines");
-	exechotkey("DrawKeyResistance");
 	exechotkey("TestEMAAlignment");
 	exechotkey("TestVWAP");
 	exechotkey("TestExtended");
@@ -16,4 +14,5 @@ if($RunTestsEnabled==1)
 	exechotkey("TestDaily");
 	exechotkey("TestMACD");
 	exechotkey("TestVolume");
+	exechotkey("TestStop");
 }
