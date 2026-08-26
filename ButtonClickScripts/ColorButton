@@ -1,0 +1,7 @@
+$p=input("Enter price for Horizontal Line");
+$label="HL"+getsecond();
+$color=color(211,211,211);
+if($p>0){
+$TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;
+//$TL2 = $CHART1.CreateTrendline("Text");$TL2.name="_" + $label + $CHART1.Symbol;$TL2.text=$label;$TL2.Price=$p;$TL2.Price1=$p;$TL2.time=$CHART1.getbar(-30).time;$TL2.time1=$CHART1.getbar(-30).time;
+}
