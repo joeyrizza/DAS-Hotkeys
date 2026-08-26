@@ -1,7 +1,28 @@
 $C="200 SMA";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine("_"+ $C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
 $C="200 EMA";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine("_"+ $C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
 $C="PDC";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine("_"+ $C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
-$C="PM High";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine("_"+ $C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
-$C="AH High";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine("_"+ $C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
-$C="HOD";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine("_"+ $C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
 
+//Intraday Levels
+$C="1H";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
+$C="1O";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
+$C="1C";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
+$C="1L";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
+$C="2H";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
+$C="2O";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
+$C="2C";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
+$C="2L";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
+
+if($M=="PM"){
+    //premarket only
+    //PM HOD
+    $C="PM High";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine("_"+ $C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
+}
+if($M=="AH"){
+    //after hours only
+    //AH HOD
+    $C="AH High";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine("_"+ $C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
+}
+if($M=="MH"){
+    //Market Hours Only
+    $C="HOD";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine("_"+ $C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
+}
