@@ -11,5 +11,6 @@ if($CHART1.Symbol==$selectedsymbol){
 } else {
   //symbol change only.
   $selectedsymbol=$Chart1.Symbol;
+  $SetupArmed=0;
 }
 
