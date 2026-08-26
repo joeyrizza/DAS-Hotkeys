@@ -1,0 +1,77 @@
+$BuyPrice=Ask;
+$MaxShares=25;
+$MaxLongVal=2000;
+$Route=LIMIT;
+$Debug=0;
+
+$StopLimitPriceOffset=.05;
+$MinimumAllowedStopDistance=.05;
+$MaximumRiskPerTrade=($MaxShares * .15);
+$SelectedStopPrice=price;
+
+if(Pos > 0){
+    Speak("Position is not flat");
+    return;
+}
+
+if($SetupArmed==0){
+Speak You cannot trade just because you feel like trading. You must first explicitly declare that you have identified a setup.;
+return;
+}
+
+if($SelectedStopPrice >= Bid){
+    Speak("Stop is above Bid price");
+    Price=$SelectedStopPrice;
+    return;
+}
+
+if($BuyPrice-$SelectedStopPrice <= $MinimumAllowedStopDistance){
+    Speak("Stop is too close");
+    Price=$SelectedStopPrice;
+    return;
+}
+$SetupArmed=0;
+SwitchTWnd;
+CXL ALLSYMB;
+
+$TechnicalStopDistance=$BuyPrice-$SelectedStopPrice;
+$EffectiveRiskPerShare=$TechnicalStopDistance+$StopLimitPriceOffset;
+
+$FinalShareCount = Round($MaximumRiskPerTrade / $EffectiveRiskPerShare);
+
+if($FinalShareCount > $MaxShares){
+    $FinalShareCount=$MaxShares;
+}
+
+$CalculatedPositionValue=$BuyPrice*$FinalShareCount;
+$MaxSharesAllowedByPositionValue=$MaxLongVal/$BuyPrice;
+
+if($CalculatedPositionValue > $MaxLongVal){
+    $FinalShareCount=$MaxSharesAllowedByPositionValue;
+}
+
+
+$ActualPosVal=$BuyPrice*$FinalShareCount;
+$TechnicalStopRisk=$FinalShareCount*$TechnicalStopDistance;
+$AdditionalOffsetRisk=$FinalShareCount*$StopLimitPriceOffset;
+$WorstCasePlannedRisk=$FinalShareCount*$EffectiveRiskPerShare;
+
+SShare=$amount;Share=$FinalShareCount;TogSShare;ROUTE=$Route;Price=$BuyPrice;TIF=DAY+;
+
+if($Debug == 0){
+    BUY=Send;
+    TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$SelectedStopPrice-$StopLimitPriceOffset ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
+} else {
+    MsgBox(
+        "\nSelectedStopPrice: $" + $SelectedStopPrice
+        + "\nTechnicalStopDistance: $" + $TechnicalStopDistance
+        + "\nEffectiveRiskPerShare: $" + $EffectiveRiskPerShare
+        + "\nMaximumRiskPerTrade: $" + $MaximumRiskPerTrade
+        + "\nTechnicalStopRisk: $" + $TechnicalStopRisk
+        + "\nAdditionalOffsetRisk: $" + $AdditionalOffsetRisk
+        + "\nWorstCasePlannedRisk: $" + $WorstCasePlannedRisk
+        + "\nFinal Shares: " + $FinalShareCount
+    );
+}
+
+Price=$SelectedStopPrice;
