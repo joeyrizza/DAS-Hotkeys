@@ -5,5 +5,5 @@ $CHART1.GetCustButObj("btn_spread").text ="Spread: $" + Round($Spread,103);
 if($Spread > .05){
   $CHART1.GetCustButObj("btn_spread").bkcolor=orange;
 } else {
-  $CHART1.GetCustButObj("btn_spread").bkcolor=color(211,211,211);
+  $CHART1.GetCustButObj("btn_spread").bkcolor=green;
 }
