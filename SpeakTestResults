@@ -30,6 +30,10 @@ if($VOL < 750000){
   Speak("Volume too low. Wait for stock to become obvious."); $OKtoArm=0;
   return;
 }
+//Spread
+if($Spread > .10){
+  Speak("Stock has a large spread."); $OKtoArm=0;
+}
 
 //Warnings
 ///////
