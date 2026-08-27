@@ -44,11 +44,11 @@ $VOL=$BAR.volume;
 
 if($VOL>$V1)
 {
-$V3=$V2;
-$O3=$O2;
-$H3=$H2;
-$L3=$L2;
-$C3=$C2;
+// $V3=$V2;
+// $O3=$O2;
+// $H3=$H2;
+// $L3=$L2;
+// $C3=$C2;
 
 $V2=$V1;
 $O2=$O1;
@@ -64,11 +64,11 @@ $C1=$BAR.close;
 }
 else if($VOL>$V2)
 {
-$V3=$V2;
-$O3=$O2;
-$H3=$BAR.Hi;
-$L3=$BAR.Lo;
-$C3=$BAR.close;
+// $V3=$V2;
+// $O3=$O2;
+// $H3=$BAR.Hi;
+// $L3=$BAR.Lo;
+// $C3=$BAR.close;
 
 $V2=$VOL;
 $O2=$BAR.open;
@@ -76,14 +76,14 @@ $H2=$BAR.Hi;
 $L2=$BAR.Lo;
 $C2=$BAR.close;
 }
-else if($VOL>$V3)
-{
-$V3=$VOL;
-$O3=$BAR.open;
-$H3=$BAR.Hi;
-$L3=$BAR.Lo;
-$C3=$BAR.close;
-}
+// else if($VOL>$V3)
+// {
+// $V3=$VOL;
+// $O3=$BAR.open;
+// $H3=$BAR.Hi;
+// $L3=$BAR.Lo;
+// $C3=$BAR.close;
+// }
 
 $IDX=$IDX+1;
 }
@@ -99,13 +99,13 @@ $TL.name="1O";
 $TL.Price=$O1;
 $TL.Color=Color(211,211,211);
 
-$TL2=$CHART1.CreateTrendline("Text");
-$TL2.name="1OT";
-$TL2.text="1O";
-$TL2.Price=$O1;
-$TL2.Price1=$O1;
-$TL2.time=$CHART1.getbar(-30).time;
-$TL2.time1=$CHART1.getbar(-30).time;
+// $TL2=$CHART1.CreateTrendline("Text");
+// $TL2.name="1OT";
+// $TL2.text="1O";
+// $TL2.Price=$O1;
+// $TL2.Price1=$O1;
+// $TL2.time=$CHART1.getbar(-30).time;
+// $TL2.time1=$CHART1.getbar(-30).time;
 }
 
 if($H1>=$LowerPrice && $H1<=$UpperPrice)
@@ -115,13 +115,13 @@ $TL.name="1H";
 $TL.Price=$H1;
 $TL.Color=Color(211,211,211);
 
-$TL2=$CHART1.CreateTrendline("Text");
-$TL2.name="1HT";
-$TL2.text="1H";
-$TL2.Price=$H1;
-$TL2.Price1=$H1;
-$TL2.time=$CHART1.getbar(-30).time;
-$TL2.time1=$CHART1.getbar(-30).time;
+// $TL2=$CHART1.CreateTrendline("Text");
+// $TL2.name="1HT";
+// $TL2.text="1H";
+// $TL2.Price=$H1;
+// $TL2.Price1=$H1;
+// $TL2.time=$CHART1.getbar(-30).time;
+// $TL2.time1=$CHART1.getbar(-30).time;
 }
 
 if($L1>=$LowerPrice && $L1<=$UpperPrice)
@@ -131,13 +131,13 @@ $TL.name="1L";
 $TL.Price=$L1;
 $TL.Color=Color(211,211,211);
 
-$TL2=$CHART1.CreateTrendline("Text");
-$TL2.name="1LT";
-$TL2.text="1L";
-$TL2.Price=$L1;
-$TL2.Price1=$L1;
-$TL2.time=$CHART1.getbar(-30).time;
-$TL2.time1=$CHART1.getbar(-30).time;
+// $TL2=$CHART1.CreateTrendline("Text");
+// $TL2.name="1LT";
+// $TL2.text="1L";
+// $TL2.Price=$L1;
+// $TL2.Price1=$L1;
+// $TL2.time=$CHART1.getbar(-30).time;
+// $TL2.time1=$CHART1.getbar(-30).time;
 }
 
 if($C1>=$LowerPrice && $C1<=$UpperPrice)
@@ -147,13 +147,13 @@ $TL.name="1C";
 $TL.Price=$C1;
 $TL.Color=Color(211,211,211);
 
-$TL2=$CHART1.CreateTrendline("Text");
-$TL2.name="1CT";
-$TL2.text="1C";
-$TL2.Price=$C1;
-$TL2.Price1=$C1;
-$TL2.time=$CHART1.getbar(-30).time;
-$TL2.time1=$CHART1.getbar(-30).time;
+// $TL2=$CHART1.CreateTrendline("Text");
+// $TL2.name="1CT";
+// $TL2.text="1C";
+// $TL2.Price=$C1;
+// $TL2.Price1=$C1;
+// $TL2.time=$CHART1.getbar(-30).time;
+// $TL2.time1=$CHART1.getbar(-30).time;
 }
 
 // ============================================================
@@ -167,13 +167,13 @@ $TL.name="2O";
 $TL.Price=$O2;
 $TL.Color=Color(120,120,120);
 
-$TL2=$CHART1.CreateTrendline("Text");
-$TL2.name="2OT";
-$TL2.text="2O";
-$TL2.Price=$O2;
-$TL2.Price1=$O2;
-$TL2.time=$CHART1.getbar(-30).time;
-$TL2.time1=$CHART1.getbar(-30).time;
+// $TL2=$CHART1.CreateTrendline("Text");
+// $TL2.name="2OT";
+// $TL2.text="2O";
+// $TL2.Price=$O2;
+// $TL2.Price1=$O2;
+// $TL2.time=$CHART1.getbar(-30).time;
+// $TL2.time1=$CHART1.getbar(-30).time;
 }
 
 if($H2>=$LowerPrice && $H2<=$UpperPrice)
@@ -183,13 +183,13 @@ $TL.name="2H";
 $TL.Price=$H2;
 $TL.Color=Color(120,120,120);
 
-$TL2=$CHART1.CreateTrendline("Text");
-$TL2.name="2HT";
-$TL2.text="2H";
-$TL2.Price=$H2;
-$TL2.Price1=$H2;
-$TL2.time=$CHART1.getbar(-30).time;
-$TL2.time1=$CHART1.getbar(-30).time;
+// $TL2=$CHART1.CreateTrendline("Text");
+// $TL2.name="2HT";
+// $TL2.text="2H";
+// $TL2.Price=$H2;
+// $TL2.Price1=$H2;
+// $TL2.time=$CHART1.getbar(-30).time;
+// $TL2.time1=$CHART1.getbar(-30).time;
 }
 
 if($L2>=$LowerPrice && $L2<=$UpperPrice)
@@ -199,13 +199,13 @@ $TL.name="2L";
 $TL.Price=$L2;
 $TL.Color=Color(120,120,120);
 
-$TL2=$CHART1.CreateTrendline("Text");
-$TL2.name="2LT";
-$TL2.text="2L";
-$TL2.Price=$L2;
-$TL2.Price1=$L2;
-$TL2.time=$CHART1.getbar(-30).time;
-$TL2.time1=$CHART1.getbar(-30).time;
+// $TL2=$CHART1.CreateTrendline("Text");
+// $TL2.name="2LT";
+// $TL2.text="2L";
+// $TL2.Price=$L2;
+// $TL2.Price1=$L2;
+// $TL2.time=$CHART1.getbar(-30).time;
+// $TL2.time1=$CHART1.getbar(-30).time;
 }
 
 if($C2>=$LowerPrice && $C2<=$UpperPrice)
@@ -215,13 +215,13 @@ $TL.name="2C";
 $TL.Price=$C2;
 $TL.Color=Color(120,120,120);
 
-$TL2=$CHART1.CreateTrendline("Text");
-$TL2.name="2CT";
-$TL2.text="2C";
-$TL2.Price=$C2;
-$TL2.Price1=$C2;
-$TL2.time=$CHART1.getbar(-30).time;
-$TL2.time1=$CHART1.getbar(-30).time;
+// $TL2=$CHART1.CreateTrendline("Text");
+// $TL2.name="2CT";
+// $TL2.text="2C";
+// $TL2.Price=$C2;
+// $TL2.Price1=$C2;
+// $TL2.time=$CHART1.getbar(-30).time;
+// $TL2.time1=$CHART1.getbar(-30).time;
 }
 /* 
 // ============================================================
