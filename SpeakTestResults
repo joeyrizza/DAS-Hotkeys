@@ -65,3 +65,7 @@ if($AverageRange > .2){
 if($Extended == 1){
   Speak("Stock may be extended.");
 }
+//Check Spread
+if($Spread > .05){
+  Speak("Stock has a wide spread.");
+}

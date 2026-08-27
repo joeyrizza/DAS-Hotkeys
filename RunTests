@@ -14,5 +14,6 @@ if($RunTestsEnabled==1)
 	exechotkey("TestDaily");
 	exechotkey("TestMACD");
 	exechotkey("TestVolume");
+	exechotkey("TestSpread");
 	exechotkey("TestStop");
 }
