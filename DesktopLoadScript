@@ -1,4 +1,4 @@
 $CHART1= GetWindowObj("Chart1");
-$CHARTD= GetWindowObj("ChartD");
+$CHARTD= GetWindowObj("ChartDaily");
 $MONTAGE1=GetWindowObj("MONTAGE1");
-$NEWS1=GetWindowObj("NEWS1");
+$rpcval=25;
