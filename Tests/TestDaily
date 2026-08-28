@@ -5,18 +5,100 @@ $D200EMA=$CHARTD.getstudyval("StudyD200EMA");
 $D9EMA=$CHARTD.getstudyval("StudyD9EMA");
 $D20EMA=$CHARTD.getstudyval("StudyD20EMA");
 
-$CHART1.GetCustButObj("btn_dailyavgs").text ="Below Daily Avgs";
 
-if (
-  $MPRICE < $D200SMA  &&
-  $D200EMA-$MPRICE < 5
-)
+//Below 200 EMA+SMA
+$Near200Percent=.20;
+$PlentyRoom200Percent=.50;
+
+if ($MPRICE < $D200SMA && $MPRICE < $D200EMA)
 {
-  $CHART1.GetCustButObj("btn_dailyavgs").text ="Near 200: " + $D200EMA;
-  $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Orange;
-  return;
+    if ($D200SMA < $D200EMA)
+    {
+        if ($MPRICE >= $D200SMA * (1 - $Near200Percent))
+        {
+            $CHART1.GetCustButObj("btn_dailyavgs").text="Near 200 EMA+SMA: " + Round($D200SMA,103);
+            $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Red;
+        }
+        else if ($MPRICE < $D200SMA * (1 - $PlentyRoom200Percent))
+        {
+            $CHART1.GetCustButObj("btn_dailyavgs").text="Plenty of room to 200: " + Round($D200SMA,103);
+            $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Green;
+        }
+        else
+        {
+            $CHART1.GetCustButObj("btn_dailyavgs").text="Below 200 EMA+SMA: " + Round($D200SMA,103);
+            $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Orange;
+        }
+    }
+    else
+    {
+        if ($MPRICE >= $D200EMA * (1 - $Near200Percent))
+        {
+            $CHART1.GetCustButObj("btn_dailyavgs").text="Near 200 EMA+SMA: " + Round($D200EMA,103);
+            $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Red;
+        }
+        else if ($MPRICE < $D200EMA * (1 - $PlentyRoom200Percent))
+        {
+            $CHART1.GetCustButObj("btn_dailyavgs").text="Plenty of room to 200: " + Round($D200EMA,103);
+            $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Green;
+        }
+        else
+        {
+            $CHART1.GetCustButObj("btn_dailyavgs").text="Below 200 EMA+SMA: " + Round($D200EMA,103);
+            $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Orange;
+        }
+    }
+
+    return;
 }
 
+if ($MPRICE < $D200SMA)
+{
+    if ($MPRICE >= $D200SMA * (1 - $Near200Percent))
+    {
+        $CHART1.GetCustButObj("btn_dailyavgs").text="Near 200 SMA: " + Round($D200SMA,103);
+        $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Red;
+    }
+    else if ($MPRICE < $D200SMA * (1 - $PlentyRoom200Percent))
+    {
+        $CHART1.GetCustButObj("btn_dailyavgs").text="Plenty of room to 200 SMA: " + Round($D200SMA,103);
+        $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Green;
+    }
+    else
+    {
+        $CHART1.GetCustButObj("btn_dailyavgs").text="Below 200 SMA: " + Round($D200SMA,103);
+        $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Orange;
+    }
+
+    return;
+}
+
+if ($MPRICE < $D200EMA)
+{
+    if ($MPRICE >= $D200EMA * (1 - $Near200Percent))
+    {
+        $CHART1.GetCustButObj("btn_dailyavgs").text="Near 200 EMA: " + Round($D200EMA,103);
+        $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Red;
+    }
+    else if ($MPRICE < $D200EMA * (1 - $PlentyRoom200Percent))
+    {
+        $CHART1.GetCustButObj("btn_dailyavgs").text="Plenty of room to 200 EMA: " + Round($D200EMA,103);
+        $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Green;
+    }
+    else
+    {
+        $CHART1.GetCustButObj("btn_dailyavgs").text="Below 200 EMA: " + Round($D200EMA,103);
+        $CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Orange;
+    }
+
+    return;
+}
+
+$CHART1.GetCustButObj("btn_dailyavgs").text="Above 200 EMA";
+$CHART1.GetCustButObj("btn_dailyavgs").bkcolor=Green;
+
+
+//9 and 20 EMA
 if (
     $MPRICE > $D9EMA ||
     $MPRICE > $D20EMA
