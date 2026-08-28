@@ -1,0 +1,24 @@
+$SYMBOL=$CHART1.SYMBOL;
+$VAR="news_"+$SYMBOL;
+$STATE=getvar($VAR);
+if($STATE==1) {
+    // Has news -> No news
+    setvar($VAR,2);
+    $CHART1.GetCustButObj("btn_news").bkcolor="orange";
+} else {
+    if($STATE==2) {
+        // No news -> Red
+        setvar($VAR,3);
+        $CHART1.GetCustButObj("btn_news").bkcolor="red";
+    } else {
+        if($STATE==3) {
+            // Red -> Not set
+            setvar($VAR,0);
+            $CHART1.GetCustButObj("btn_news").bkcolor=color(211,211,211);
+            } else {
+            // Not set -> Has news
+            setvar($VAR,1);
+            $CHART1.GetCustButObj("btn_news").bkcolor="green";
+        }
+    }
+}

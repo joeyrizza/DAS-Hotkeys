@@ -22,5 +22,6 @@ if($CHART1.Symbol==$selectedsymbol){
   //symbol change only.
   $selectedsymbol=$Chart1.Symbol;
   $SetupArmed=0;
+  exechotkey("CatalystButtonColor");
 }
 

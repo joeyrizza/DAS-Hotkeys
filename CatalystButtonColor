@@ -1,0 +1,20 @@
+//news button
+$STATE=getvar("news_"+$CHART1.SYMBOL);
+
+if($STATE==1) {
+  // Has news -> Green
+  $CHART1.GetCustButObj("btn_news").bkcolor="green";
+} else {
+  if($STATE==2) {
+    // No news -> Orange
+    $CHART1.GetCustButObj("btn_news").bkcolor="orange";
+  } else {
+    if($STATE==3) {
+    // Red
+    $CHART1.GetCustButObj("btn_news").bkcolor="red";
+    } else {
+    // Not set -> Gray
+    $CHART1.GetCustButObj("btn_news").bkcolor=color(211,211,211);
+    }
+  }
+}
