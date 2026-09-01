@@ -1,23 +1,23 @@
 //This script uses basically the same logic as DynamicEntry, but it uses different variables to not step on the toes of the original script. This allows for multiple entries to be calculated and sent at the same time.
+
 $TestPrice=getquoteobj($CHART1.SYMBOL).Ask;
 $TestShareSize=25;
 $TestMaxLongVal=2000;
-
 $TestOffsetRisk=.05;
-$TestTradeRisk=($TestShareSize * .15);
+$TestMaximumRiskPerTrade=($TestShareSize*.15);
+$TestTradeRisk=$TestMaximumRiskPerTrade;
 $TestStopPrice=$MONTAGE1.price;
 
 if(price <= 0){
-    $CHART1.GetCustButObj("btn_riskpershare").text ="Risk/Share: N/A";
-    $CHART1.GetCustButObj("btn_shares").text ="Shares: N/A";
-    $CHART1.GetCustButObj("btn_plannedrisk").text ="Risk: Price not Set";
+    $CHART1.GetCustButObj("btn_riskpershare").text="Risk/Share: N/A";
+    $CHART1.GetCustButObj("btn_shares").text="Shares: N/A";
+    $CHART1.GetCustButObj("btn_plannedrisk").text="Risk: Price not Set";
     return;
 }
 
 $TechnicalStopDistance=$TestPrice-$TestStopPrice;
 $TestRiskPerShare=Round($TechnicalStopDistance+$TestOffsetRisk,103);
-$TestShareCount = Round($TestTradeRisk / $TestRiskPerShare);
-$TestPlannedRisk=$TestShareCount*$TestRiskPerShare;
+$TestShareCount=Round($TestTradeRisk/$TestRiskPerShare);
 
 if($TestShareCount > $TestShareSize){
     $TestShareCount=$TestShareSize;
@@ -29,12 +29,17 @@ $TestShareSizeAllowedByPositionValue=$TestMaxLongVal/$TestPrice;
 if($TestPositionValue > $TestMaxLongVal){
     $TestShareCount=$TestShareSizeAllowedByPositionValue;
 }
+
 if(shares <= 0){
-    $CHART1.GetCustButObj("btn_riskpershare").text ="Risk/Share: N/A";
-    $CHART1.GetCustButObj("btn_shares").text ="Shares: N/A";
-    $CHART1.GetCustButObj("btn_plannedrisk").text ="Risk: No Shares";
+    $CHART1.GetCustButObj("btn_riskpershare").text="Risk/Share: N/A";
+    $CHART1.GetCustButObj("btn_shares").text="Shares: N/A";
+    $CHART1.GetCustButObj("btn_plannedrisk").text="Risk: No Shares";
 }
-$CHART1.GetCustButObj("btn_stop").text ="Stop: " + $TestStopPrice;
-$CHART1.GetCustButObj("btn_riskpershare").text ="Risk/Share: " + $TestRiskPerShare;
-$CHART1.GetCustButObj("btn_shares").text ="Shares: " + $TestShareCount;
-$CHART1.GetCustButObj("btn_plannedrisk").text ="Risk: $" + $TestPlannedRisk;
+
+$TestPlannedRisk=$TestShareCount*$TestRiskPerShare;
+$TestPlannedRiskR=$TestPlannedRisk/$TestMaximumRiskPerTrade;
+
+$CHART1.GetCustButObj("btn_stop").text="Stop: " + $TestStopPrice;
+$CHART1.GetCustButObj("btn_riskpershare").text="Risk/Share: " + $TestRiskPerShare;
+$CHART1.GetCustButObj("btn_shares").text="Shares: " + $TestShareCount;
+$CHART1.GetCustButObj("btn_plannedrisk").text="Risk: " + Round($TestPlannedRiskR,2) + "R";
