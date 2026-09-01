@@ -2,14 +2,7 @@ $C="200 SMA";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.dele
 $C="200 EMA";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine("_"+ $C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
 
 //Intraday Levels
-$C="1H";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
-$C="1O";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
-$C="1C";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
-$C="1L";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
-$C="2H";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
-$C="2O";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
-$C="2C";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
-$C="2L";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
+exechotkey("CleanupLines_Intraday");
 
 if($M=="PM"){
     //premarket only

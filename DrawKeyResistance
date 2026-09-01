@@ -1,7 +1,7 @@
 //Draw Key Resistance
 
 //Finds the top two highest vol candles today, marks important levels within range of current trading price.
-exechotkey("FindIntradayLevels");
+exechotkey("FindIntradayLevels_1");
 
 if($M=="PM"){
     //premarket only
