@@ -30,10 +30,6 @@ if($VOL < 750000){
   Speak("Volume too low. Wait for stock to become obvious."); $OKtoArm=0;
   return;
 }
-//Spread
-if($Spread > .10){
-  Speak("Stock has a large spread."); $OKtoArm=0;
-}
 
 //Warnings
 ///////
@@ -70,6 +66,16 @@ if($Extended == 1){
   Speak("Stock may be extended.");
 }
 //Check Spread
-if($Spread > .05){
+if($Spread > .10){
   Speak("Stock has a wide spread.");
+} else if($Spread > .05){
+  Speak("Stock has a moderate spread.");
+}
+//Check Catalyst
+$STATE=getvar("news_"+$SYMBOL);
+if($STATE==2) {
+  Speak("Poor catalyst.");
+}
+if($STATE==3) {
+  Speak("No catalyst to account for move.");
 }
