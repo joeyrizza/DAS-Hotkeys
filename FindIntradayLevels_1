@@ -85,3 +85,6 @@ $TL.Color=Color(211,211,211);
 }
 
 ConfigTrendLine Text SolidLine:FFFFFF:2;
+
+//msgbox("IDX="+$IDX+" | Time="+$BAR.Time+" | Vol="+$VOL+" | O="+$BAR.Open+" | H="+$BAR.Hi+" | L="+$BAR.Lo+" | C="+$BAR.Close+" | Range="+Round($BAR.Hi-$BAR.Lo,3));
+
