@@ -23,5 +23,9 @@ $CHART1.GetCustButObj("btn_rvol").text ="RVOL: " + $RVOL + "x";
 if($RVOL>5){
   $CHART1.GetCustButObj("btn_rvol").bkcolor=green;
 } else {
-  $CHART1.GetCustButObj("btn_rvol").bkcolor=red;
+  if($RVOL == 0){
+    $CHART1.GetCustButObj("btn_rvol").bkcolor=orange;
+  } else {
+    $CHART1.GetCustButObj("btn_rvol").bkcolor=red;
+  }
 }

@@ -16,7 +16,7 @@ if($GAPPERCENT<=10){
   return;
 }
 //RVOL
-if($RVOL<=5){
+if($RVOL>0 && $RVOL<=5){
   Speak("Relative Volume too low."); $OKtoArm=0;
   return;
 }
@@ -46,7 +46,7 @@ if($MACD<$Signal){
 Speak("Macdee is closed.");
 }
 //200
-if($MPRICE<$D200EMA){
+if ($MPRICE > $D200EMA * .5){
   Speak("Stock is under the daily 200");
 }
 //Volume Check
@@ -72,6 +72,7 @@ if($Spread > .10){
   Speak("Stock has a moderate spread.");
 }
 //Check Catalyst
+$STATE=0;
 $STATE=getvar("news_"+$SYMBOL);
 if($STATE==2) {
   Speak("Poor catalyst.");
