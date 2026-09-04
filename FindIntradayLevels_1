@@ -1,5 +1,5 @@
 $IDX=1;
-
+$ct=$CHART1.getbar(0).Time;
 $SEC=GetSecond();
 
 if($SEC>=14400)
@@ -61,33 +61,41 @@ while($IDX<=$MAXBARS)
 if($O1>=$LowerPrice && $O1<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
-    $TL.Name="1O";
+    $TL.Name="1O" + $CHART1.Symbol;
     $TL.Price=$O1;
     $TL.Color=Color(211,211,211);
+    $TL.time=$ct;
+    $TL.time1=$ct;
 }
 
 if($H1>=$LowerPrice && $H1<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
-    $TL.Name="1H";
+    $TL.Name="1H" + $CHART1.Symbol;
     $TL.Price=$H1;
     $TL.Color=Color(211,211,211);
+    $TL.time=$ct;
+    $TL.time1=$ct;
 }
 
 if($L1>=$LowerPrice && $L1<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
-    $TL.Name="1L";
+    $TL.Name="1L" + $CHART1.Symbol;
     $TL.Price=$L1;
     $TL.Color=Color(211,211,211);
+    $TL.time=$ct;
+    $TL.time1=$ct;
 }
 
 if($C1>=$LowerPrice && $C1<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
-    $TL.Name="1C";
+    $TL.Name="1C" + $CHART1.Symbol;
     $TL.Price=$C1;
     $TL.Color=Color(211,211,211);
+    $TL.time=$ct;
+    $TL.time1=$ct;
 }
 
 ConfigTrendLine Text SolidLine:FFFFFF:2;

@@ -1,5 +1,6 @@
 //Draw Key Resistance
-
+//Current Time
+$ct=$CHART1.getbar(0).Time;
 //Finds the top two highest vol candles today, marks important levels within range of current trading price.
 exechotkey("FindIntradayLevels_1");
 
@@ -8,7 +9,7 @@ if($M=="PM"){
     //PM HOD
     $p=$MONTAGE1.HI;
     $color=color(211,211,211);
-    $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;
+    $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL.time=$ct;$TL.time1=$ct;
     }
 if($M=="AH"){
     //after hours only
@@ -16,24 +17,24 @@ if($M=="AH"){
     $p=$MONTAGE1.HI;
     $label="AH High";
     $color=color(211,211,211);
-    $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;
+    $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL.time=$ct;$TL.time1=$ct;
     }
 if($M=="MH"){
     //Market Hours Only
     $p=$MONTAGE1.HI;
     $label="HOD";
     $color=color(211,211,211);
-    $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;
+    $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL.time=$ct;$TL.time1=$ct;
     }
 ConfigTrendLine Text SolidLine:FFFFFF:2;
 //Daily 200SMA
 $p=$CHARTD.getstudyval("StudyD200SMA");
 $label="200 SMA";
 $color=color(152,107,187);
-$TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;
+$TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL.time=$ct;$TL.time1=$ct;
 
 //Daily 200 EMA
 $p=$CHARTD.getstudyval("StudyD200EMA");
 $label="200 EMA";
 $color=color(160,43,250);
-$TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;
+$TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL.time=$ct;$TL.time1=$ct;
