@@ -1,5 +1,15 @@
 $IDX=1;
-$MAXBARS=600;
+
+$SEC=GetSecond();
+
+if($SEC>=14400)
+{
+    $MAXBARS=($SEC-14400)/60;
+}
+else
+{
+    $MAXBARS=0;
+}
 
 // ============================================================
 // CONFIGURATION
@@ -12,24 +22,6 @@ $LowerPrice=$MPRICE*(1-($LowerPercent/100));
 $UpperPrice=$MPRICE*(1+($UpperPercent/100));
 
 // ============================================================
-// DETERMINE BARS SINCE 4:00 AM
-// GetSecond() returns seconds since midnight
-// 4:00 AM = 14400 seconds
-// ============================================================
-
-$MAXBARS=Floor(($CHART1.GetSecond()-14400)/60)+1;
-
-if($MAXBARS<1)
-{
-    $MAXBARS=1;
-}
-
-if($MAXBARS>600)
-{
-    $MAXBARS=600;
-}
-
-// ============================================================
 // TOP VOLUME CANDLE
 // ============================================================
 
@@ -38,9 +30,10 @@ $O1=0;
 $H1=0;
 $L1=0;
 $C1=0;
+$T1="";
 
 // ============================================================
-// SCAN BARS
+// SCAN BARS FROM 4:00 AM TO CURRENT TIME
 // ============================================================
 
 while($IDX<=$MAXBARS)
@@ -55,6 +48,7 @@ while($IDX<=$MAXBARS)
         $H1=$BAR.Hi;
         $L1=$BAR.Lo;
         $C1=$BAR.Close;
+        $T1=$BAR.Time;
     }
 
     $IDX=$IDX+1;
@@ -67,7 +61,7 @@ while($IDX<=$MAXBARS)
 if($O1>=$LowerPrice && $O1<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
-    $TL.name="1O";
+    $TL.Name="1O";
     $TL.Price=$O1;
     $TL.Color=Color(211,211,211);
 }
@@ -75,7 +69,7 @@ if($O1>=$LowerPrice && $O1<=$UpperPrice)
 if($H1>=$LowerPrice && $H1<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
-    $TL.name="1H";
+    $TL.Name="1H";
     $TL.Price=$H1;
     $TL.Color=Color(211,211,211);
 }
@@ -83,7 +77,7 @@ if($H1>=$LowerPrice && $H1<=$UpperPrice)
 if($L1>=$LowerPrice && $L1<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
-    $TL.name="1L";
+    $TL.Name="1L";
     $TL.Price=$L1;
     $TL.Color=Color(211,211,211);
 }
@@ -91,11 +85,11 @@ if($L1>=$LowerPrice && $L1<=$UpperPrice)
 if($C1>=$LowerPrice && $C1<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
-    $TL.name="1C";
+    $TL.Name="1C";
     $TL.Price=$C1;
     $TL.Color=Color(211,211,211);
 }
 
 ConfigTrendLine Text SolidLine:FFFFFF:2;
 
-msgbox("MaxBars="+$MAXBARS+" | V1="+$V1+" | O1="+$O1+" | H1="+$H1+" | L1="+$L1+" | C1="+$C1);
+//msgbox("IDX="+$IDX+" | MaxBars="+$MAXBARS+" | Time="+$T1+" | V1="+$V1+" | O1="+$O1+" | H1="+$H1+" | L1="+$L1+" | C1="+$C1);
