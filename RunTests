@@ -17,5 +17,6 @@ if($RunTestsEnabled==1 && $RunningTests==0)
 	exechotkey("TestVolume");
 	exechotkey("TestSpread");
 	exechotkey("TestStop");
+	exechotkey("Test10MinRollingVolume");
 	$RunningTests=0;
 }

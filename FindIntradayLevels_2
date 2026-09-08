@@ -89,6 +89,8 @@ if($O1>=$LowerPrice && $O1<=$UpperPrice)
     $TL.Color=Color(211,211,211);
     $TL.time=$ct;
     $TL.time1=$ct;
+    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelBgColor=Color(211,211,211);
 }
 
 if($H1>=$LowerPrice && $H1<=$UpperPrice)
@@ -99,6 +101,8 @@ if($H1>=$LowerPrice && $H1<=$UpperPrice)
     $TL.Color=Color(211,211,211);
     $TL.time=$ct;
     $TL.time1=$ct;
+    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelBgColor=Color(211,211,211);
 }
 
 if($L1>=$LowerPrice && $L1<=$UpperPrice)
@@ -109,6 +113,8 @@ if($L1>=$LowerPrice && $L1<=$UpperPrice)
     $TL.Color=Color(211,211,211);
     $TL.time=$ct;
     $TL.time1=$ct;
+    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelBgColor=Color(211,211,211);
 }
 
 if($C1>=$LowerPrice && $C1<=$UpperPrice)
@@ -119,6 +125,8 @@ if($C1>=$LowerPrice && $C1<=$UpperPrice)
     $TL.Color=Color(211,211,211);
     $TL.time=$ct;
     $TL.time1=$ct;
+    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelBgColor=Color(211,211,211);
 }
 
 // ============================================================
@@ -133,6 +141,8 @@ if($O2>=$LowerPrice && $O2<=$UpperPrice)
     $TL.Color=Color(120,120,120);
     $TL.time=$ct;
     $TL.time1=$ct;
+    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelBgColor=Color(211,211,211);
 }
 
 if($H2>=$LowerPrice && $H2<=$UpperPrice)
@@ -143,6 +153,8 @@ if($H2>=$LowerPrice && $H2<=$UpperPrice)
     $TL.Color=Color(120,120,120);
     $TL.time=$ct;
     $TL.time1=$ct;
+    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelBgColor=Color(211,211,211);
 }
 
 if($L2>=$LowerPrice && $L2<=$UpperPrice)
@@ -153,6 +165,8 @@ if($L2>=$LowerPrice && $L2<=$UpperPrice)
     $TL.Color=Color(120,120,120);
     $TL.time=$ct;
     $TL.time1=$ct;
+    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelBgColor=Color(211,211,211);
 }
 
 if($C2>=$LowerPrice && $C2<=$UpperPrice)
@@ -163,6 +177,8 @@ if($C2>=$LowerPrice && $C2<=$UpperPrice)
     $TL.Color=Color(120,120,120);
     $TL.time=$ct;
     $TL.time1=$ct;
+    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelBgColor=Color(211,211,211);
 }
 
 //msgbox("IDX="+$IDX+" | MaxBars="+$MAXBARS+" | Candle1 Time="+$T1+" | V1="+$V1+" | O1="+$O1+" | H1="+$H1+" | L1="+$L1+" | C1="+$C1+" | Candle2 Time="+$T2+" | V2="+$V2+" | O2="+$O2+" | H2="+$H2+" | L2="+$L2+" | C2="+$C2);

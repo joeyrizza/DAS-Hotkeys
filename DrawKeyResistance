@@ -9,32 +9,37 @@ if($M=="PM"){
     //PM HOD
     $p=$MONTAGE1.HI;
     $color=color(211,211,211);
-    $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL.time=$ct;$TL.time1=$ct;
+    $lcolor=color(0,0,0);
+    $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL.time=$ct;$TL.time1=$ct;$TL.LabelTextColor=$lcolor;$TL.LabelBgColor=$color;
     }
 if($M=="AH"){
     //after hours only
     //AH HOD
     $p=$MONTAGE1.HI;
     $label="AH High";
+    $lcolor=color(0,0,0);
     $color=color(211,211,211);
-    $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL.time=$ct;$TL.time1=$ct;
+    $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL.time=$ct;$TL.time1=$ct;$TL.LabelTextColor=$lcolor;$TL.LabelBgColor=$color;
     }
 if($M=="MH"){
     //Market Hours Only
     $p=$MONTAGE1.HI;
     $label="HOD";
+    $lcolor=color(0,0,0);
     $color=color(211,211,211);
-    $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL.time=$ct;$TL.time1=$ct;
+    $TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL.time=$ct;$TL.time1=$ct;$TL.LabelTextColor=$lcolor;$TL.LabelBgColor=$color;
     }
 ConfigTrendLine Text SolidLine:FFFFFF:2;
 //Daily 200SMA
 $p=$CHARTD.getstudyval("StudyD200SMA");
 $label="200 SMA";
 $color=color(152,107,187);
-$TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL.time=$ct;$TL.time1=$ct;
+$lcolor=color(255,255,255);
+$TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL.time=$ct;$TL.time1=$ct;$TL.LabelTextColor=$lcolor;$TL.LabelBgColor=$color;
 
 //Daily 200 EMA
 $p=$CHARTD.getstudyval("StudyD200EMA");
 $label="200 EMA";
 $color=color(160,43,250);
-$TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL.time=$ct;$TL.time1=$ct;
+$lcolor=color(255,255,255);
+$TL = $CHART1.CreateTrendline("HorizLine");$TL.color=$color;$TL.name=$label + $CHART1.Symbol;$TL.Price=$p;$TL.text=$p;$TL.time=$ct;$TL.time1=$ct;$TL.LabelTextColor=$lcolor;$TL.LabelBgColor=$color;

@@ -12,12 +12,13 @@ $Vol9=$CHART1.GetBar(-9).Volume;
 $Vol10=$CHART1.GetBar(-10).Volume;
 
 $Avg10MinVol=($Vol1+$Vol2+$Vol3+$Vol4+$Vol5+$Vol6+$Vol7+$Vol8+$Vol9+$Vol10)/10;
+$Avg10MinVolK=Round($Avg10MinVol/1000,0);
 
 if($Avg10MinVol<200000)
 {
-  $CHART1.GetCustButObj("btn_10minvol").text ="Low 10 Min Vol";
+  $CHART1.GetCustButObj("btn_10minvol").text = "Low Vol: " + $Avg10MinVolK+"K";
   $CHART1.GetCustButObj("btn_10minvol").bkcolor=red;
 } else {
-  $CHART1.GetCustButObj("btn_10minvol").text ="10 Min Vol OK";
+  $CHART1.GetCustButObj("btn_10minvol").text =$Avg10MinVolK+"K";
   $CHART1.GetCustButObj("btn_10minvol").bkcolor=green;
 }

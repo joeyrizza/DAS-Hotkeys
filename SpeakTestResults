@@ -72,8 +72,7 @@ if($Spread > .10){
   Speak("Stock has a moderate spread.");
 }
 //Check Catalyst
-$STATE=0;
-$STATE=getvar("news_"+$SYMBOL);
+$STATE=getvar("news_"+$CHART1.SYMBOL);
 if($STATE==2) {
   Speak("Poor catalyst.");
 }
