@@ -11,7 +11,7 @@ if($Float>20){
   return;
 }
 //Gap
-if($GAPPERCENT<=10){
+if($GAP<=10){
   Speak("Gap less than 10%."); $OKtoArm=0;
   return;
 }
