@@ -1,13 +1,24 @@
 $BuyPrice=Ask;
 $MaxShares=25;
 $MaxLongVal=2000;
-$Route=LIMIT;
 $Debug=0;
 
 $StopLimitPriceOffset=.05;
 $MinimumAllowedStopDistance=.05;
 $MaximumRiskPerTrade=($MaxShares * .15);
 $SelectedStopPrice=price;
+
+
+if (SubString($MONTAGE1.Account,0,2) == "TR")
+{
+    //Training Acount
+    $Route="ARCAL";
+}
+else
+{
+    //Margin Account
+    $Route="ARCA1L";
+}
 
 if(Pos > 0){
     Speak("Position is not flat");
