@@ -1,45 +1,5 @@
 //Test for Extended Candle
 //Also does Avg Candle Size
-/* 
-$EXTENDED=0;
-$EMA9=getstudyval("Study9EMA");
-
-$C=getstudyval("StudyBar");
-$bar1 = $CHART1.GetBar(-1);
-$bar2 = $CHART1.GetBar(-2);
-$bar3 = $CHART1.GetBar(-3);
-$bar4 = $CHART1.GetBar(-4);
-$bar5 = $CHART1.GetBar(-5);
-$bar6 = $CHART1.GetBar(-6);
-$bar7 = $CHART1.GetBar(-7);
-$bar8 = $CHART1.GetBar(-8);
-$bar9 = $CHART1.GetBar(-9);
-$bar10 = $CHART1.GetBar(-10);
-$bar11 = $CHART1.GetBar(-11);
-
-$Range1 = $bar1.hi - $bar1.lo;
-$Range2 = $bar2.hi - $bar2.lo;
-$Range3 = $bar3.hi - $bar3.lo;
-$Range4 = $bar4.hi - $bar4.lo;
-$Range5 = $bar5.hi - $bar5.lo;
-$Range6 = $bar6.hi - $bar6.lo;
-$Range7 = $bar7.hi - $bar7.lo;
-$Range8 = $bar8.hi - $bar8.lo;
-$Range9 = $bar9.hi - $bar9.lo;
-$Range10 = $bar10.hi - $bar10.lo;
-$Range11 = $bar11.hi - $bar11.lo;
-
-$AverageRange = ($Range2+$Range3+$Range4+$Range5+$Range6+$Range7+$Range8+$Range9+$Range10+$Range11) / 10;
-$Extension=($EMA9+$AverageRange);
-
-if($MPRICE < $Extension){
-  $CHART1.GetCustButObj("btn_extended").text ="9 EMA Extension: " + Round($MPRICE-$EMA9,103);
-  $CHART1.GetCustButObj("btn_extended").bkcolor=color(211,211,211);
-} else {
-  $EXTENDED=1;  
-  $CHART1.GetCustButObj("btn_extended").text ="Extended: " + Round($MPRICE-$EMA9,103);
-  $CHART1.GetCustButObj("btn_extended").bkcolor=red;
-} */
 $EXTENDED=0;
 
 $ExtensionWarningMultiplier=2;
@@ -127,14 +87,14 @@ if($MPRICE<$ExtensionWarning){
     $CHART1.GetCustButObj("btn_extended").bkcolor=red;
 }
 //Average Candle Size
-$CHART1.GetCustButObj("btn_range").text ="Avg Range: $" + Round($AverageRange,103);
-if($AverageRange > .4){
+$CHART1.GetCustButObj("btn_range").text ="Avg Range: $" + Round($AverageRange10,103);
+if($AverageRange10 > .4){
   $CHART1.GetCustButObj("btn_range").bkcolor=red;
 }
 //Risk Per Candle
-$rpc=$rpcval*Round($AverageRange,103);
+$rpc=$rpcval*Round($AverageRange10,103);
 if($MPRICE <= 2){
-  $rpc=$rpcval*Round($AverageRange,4);
+  $rpc=$rpcval*Round($AverageRange10,4);
 }
 $CHART1.GetCustButObj("btn_risk").text ="Risk per candle: $" + $rpc;
 

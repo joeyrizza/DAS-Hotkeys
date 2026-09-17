@@ -22,7 +22,7 @@ if($RVOL>0 && $RVOL<=5){
 }
 //Average Range
 if($AverageRange > .4){
-  Speak("Candles have very large range."); $OKtoArm=0;
+  Speak("Candle range too large."); $OKtoArm=0;
   return;
 }
 //Volume
