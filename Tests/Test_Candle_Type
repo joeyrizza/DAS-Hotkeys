@@ -1,0 +1,95 @@
+// f_detect_previous_candle_type
+$time = getsecond();
+$THEBAR = getwindowobj("CHART1").getbar($time);
+$THEBAR_BODY = ABS($THEBAR.CLOSE - $THEBAR.OPEN);
+$THEBAR_USHADOW = $THEBAR.HI - MAX($THEBAR.CLOSE, $THEBAR.OPEN);
+$THEBAR_LSHADOW = MIN($THEBAR.CLOSE, $THEBAR.OPEN) - $THEBAR.LO;
+$THEBAR_RANGE = $THEBAR.HI - $THEBAR.LO;
+
+$negligible_shadow = $THEBAR_RANGE * 0.13;
+$doji_threshold = $THEBAR_RANGE * 0.13;
+
+$THEBAR_COLOR = "NO COLOR";
+if ($THEBAR.OPEN > $THEBAR.CLOSE)
+    {
+        $THEBAR_COLOR = "RED";
+    }
+else
+{
+    $THEBAR_COLOR = "GREEN";
+}
+
+$candle_type = "Undefined";
+
+if ($THEBAR_USHADOW < $negligible_shadow)
+{
+    $THEBAR_USHADOW = 0;
+}
+if ($THEBAR_LSHADOW < $negligible_shadow)
+{
+    $THEBAR_LSHADOW = 0;
+}
+
+if ($THEBAR_BODY <= $doji_threshold)
+{
+    if ($THEBAR_USHADOW > 0)
+    {
+        if ($THEBAR_LSHADOW > 0)
+        {
+            $candle_type = "Doji";
+        }
+    }
+}
+
+if ($THEBAR_USHADOW > 0)
+{
+    if ($THEBAR_LSHADOW == 0)
+    {
+        $candle_type = "Topping Tail";
+    }
+}
+
+if ($THEBAR_LSHADOW > 0)
+{
+    if ($THEBAR_USHADOW == 0)
+    {
+        $candle_type = "Bottoming Tail";
+    }
+}
+
+if ($THEBAR_USHADOW == 0)
+{
+    if ($THEBAR_LSHADOW == 0)
+    {
+        $candle_type = "Full bodied";
+    }
+}
+
+if ($THEBAR_USHADOW > 0)
+{
+    if ($THEBAR_LSHADOW > 0)
+    {
+        if ($THEBAR_BODY > $doji_threshold)
+        {
+            $candle_type = "Doji";
+        }
+    }
+}
+
+if ($THEBAR_LSHADOW >= $THEBAR_BODY * 1.5)
+{
+    if ($THEBAR_USHADOW == 0)
+    {
+        $candle_type = "Hammer";
+    }
+}
+
+if ($THEBAR_USHADOW >= $THEBAR_BODY * 1.5)
+{
+    if ($THEBAR_LSHADOW == 0)
+    {
+        $candle_type = "Inverted Hammer";
+    }
+}
+
+$CHART1.GetCustButObj("btn_candle_type").text = $Candle_type;
