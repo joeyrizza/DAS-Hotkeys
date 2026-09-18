@@ -1,0 +1,37 @@
+$THEBAR0 = getwindowobj("CHART1").getbar(0);
+$THEBAR1 = getwindowobj("CHART1").getbar(-1);
+$THEBAR2 = getwindowobj("CHART1").getbar(-2);
+$THEBAR3 = getwindowobj("CHART1").getbar(-3);
+$THEBAR4 = getwindowobj("CHART1").getbar(-4);
+
+$BODY0 = $THEBAR0.CLOSE - $THEBAR0.OPEN;
+$BODY1 = $THEBAR1.CLOSE - $THEBAR1.OPEN;
+$BODY2 = $THEBAR2.CLOSE - $THEBAR2.OPEN;
+$BODY3 = $THEBAR3.CLOSE - $THEBAR3.OPEN;
+$BODY4 = $THEBAR4.CLOSE - $THEBAR4.OPEN;
+
+$CANDLE_COLOR_0_VAL="Gray";
+$CANDLE_COLOR_0 = 0;
+$CANDLE_COLOR_1 = 0;
+$CANDLE_COLOR_2 = 0;
+$CANDLE_COLOR_3 = 0;
+$CANDLE_COLOR_4 = 0;
+
+if ($BODY0 > 0) {$CANDLE_COLOR_0 = 1;}
+if ($BODY0 < 0) {$CANDLE_COLOR_0 = -1;}
+
+if ($BODY1 > 0) {$CANDLE_COLOR_1 = 1;}
+if ($BODY1 < 0) {$CANDLE_COLOR_1 = -1;}
+
+if ($BODY2 > 0) {$CANDLE_COLOR_2 = 1;}
+if ($BODY2 < 0) {$CANDLE_COLOR_2 = -1;}
+
+if ($BODY3 > 0) {$CANDLE_COLOR_3 = 1;}
+if ($BODY3 < 0) {$CANDLE_COLOR_3 = -1;}
+
+if ($BODY4 > 0) {$CANDLE_COLOR_4 = 1;}
+if ($BODY4 < 0) {$CANDLE_COLOR_4 = -1;}
+
+
+if($CANDLE_COLOR_0 == 1){ $CANDLE_COLOR_0_VAL = "green"; }
+if($CANDLE_COLOR_0 == -1){ $CANDLE_COLOR_0_VAL = "red"; }

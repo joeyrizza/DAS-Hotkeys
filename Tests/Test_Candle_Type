@@ -1,34 +1,130 @@
-// f_detect_previous_candle_type
-$time = getsecond();
-$THEBAR = getwindowobj("CHART1").getbar($time);
-$THEBAR_BODY = ABS($THEBAR.CLOSE - $THEBAR.OPEN);
-$THEBAR_USHADOW = $THEBAR.HI - MAX($THEBAR.CLOSE, $THEBAR.OPEN);
-$THEBAR_LSHADOW = MIN($THEBAR.CLOSE, $THEBAR.OPEN) - $THEBAR.LO;
-$THEBAR_RANGE = $THEBAR.HI - $THEBAR.LO;
+// =========================================================
+// CANDLE PATTERN + SHORT-TERM TREND + CANDLE BIAS
+// =========================================================
+
+
+// ---------------------------------------------------------
+// Get current and previous candles
+// ---------------------------------------------------------
+
+$THEBAR0 = getwindowobj("CHART1").getbar(0);
+$THEBAR1 = getwindowobj("CHART1").getbar(-1);
+$THEBAR2 = getwindowobj("CHART1").getbar(-2);
+$THEBAR3 = getwindowobj("CHART1").getbar(-3);
+
+
+// ---------------------------------------------------------
+// Current candle measurements
+// ---------------------------------------------------------
+
+$THEBAR_BODY = ABS($THEBAR0.CLOSE - $THEBAR0.OPEN);
+$THEBAR_USHADOW = $THEBAR0.HI - MAX($THEBAR0.CLOSE, $THEBAR0.OPEN);
+$THEBAR_LSHADOW = MIN($THEBAR0.CLOSE, $THEBAR0.OPEN) - $THEBAR0.LO;
+$THEBAR_RANGE = $THEBAR0.HI - $THEBAR0.LO;
+
+
+// ---------------------------------------------------------
+// Candle thresholds
+// ---------------------------------------------------------
 
 $negligible_shadow = $THEBAR_RANGE * 0.13;
 $doji_threshold = $THEBAR_RANGE * 0.13;
 
+// Meaningful tail must be at least 1.5x the body
+$tail_threshold = $THEBAR_BODY * 1.5;
+
+// Mostly full bodied = body occupies at least 70% of range
+$mostly_full_threshold = $THEBAR_RANGE * 0.70;
+
+
+// ---------------------------------------------------------
+// Determine current candle color
+// ---------------------------------------------------------
+
 $THEBAR_COLOR = "NO COLOR";
-if ($THEBAR.OPEN > $THEBAR.CLOSE)
-    {
-        $THEBAR_COLOR = "RED";
-    }
-else
+
+if ($THEBAR0.OPEN > $THEBAR0.CLOSE)
+{
+    $THEBAR_COLOR = "RED";
+}
+
+if ($THEBAR0.OPEN < $THEBAR0.CLOSE)
 {
     $THEBAR_COLOR = "GREEN";
 }
 
-$candle_type = "Undefined";
+
+// ---------------------------------------------------------
+// Determine short-term trend
+//
+// UPTREND:
+// Higher highs + higher lows
+//
+// DOWNTREND:
+// Lower highs + lower lows
+//
+// Otherwise:
+// SIDEWAYS
+// ---------------------------------------------------------
+
+$SHORT_TERM_TREND = "SIDEWAYS";
+
+if ($THEBAR1.HI > $THEBAR2.HI)
+{
+    if ($THEBAR2.HI > $THEBAR3.HI)
+    {
+        if ($THEBAR1.LO > $THEBAR2.LO)
+        {
+            if ($THEBAR2.LO > $THEBAR3.LO)
+            {
+                $SHORT_TERM_TREND = "UPTREND";
+            }
+        }
+    }
+}
+
+if ($THEBAR1.HI < $THEBAR2.HI)
+{
+    if ($THEBAR2.HI < $THEBAR3.HI)
+    {
+        if ($THEBAR1.LO < $THEBAR2.LO)
+        {
+            if ($THEBAR2.LO < $THEBAR3.LO)
+            {
+                $SHORT_TERM_TREND = "DOWNTREND";
+            }
+        }
+    }
+}
+
+
+// ---------------------------------------------------------
+// Remove negligible shadows
+// ---------------------------------------------------------
 
 if ($THEBAR_USHADOW < $negligible_shadow)
 {
     $THEBAR_USHADOW = 0;
 }
+
 if ($THEBAR_LSHADOW < $negligible_shadow)
 {
     $THEBAR_LSHADOW = 0;
 }
+
+
+// ---------------------------------------------------------
+// Default candle type
+// ---------------------------------------------------------
+
+$CANDLE_TYPE = "Normal Candle";
+
+
+// ---------------------------------------------------------
+// Basic candle structures
+// ---------------------------------------------------------
+
+// DOJI
 
 if ($THEBAR_BODY <= $doji_threshold)
 {
@@ -36,60 +132,354 @@ if ($THEBAR_BODY <= $doji_threshold)
     {
         if ($THEBAR_LSHADOW > 0)
         {
-            $candle_type = "Doji";
+            $CANDLE_TYPE = "Doji";
         }
     }
 }
 
-if ($THEBAR_USHADOW > 0)
+
+// ---------------------------------------------------------
+// TOPPING TAIL
+//
+// Meaningful upper wick:
+// - Upper wick >= body
+// - Upper wick > lower wick
+// ---------------------------------------------------------
+
+if ($THEBAR_USHADOW >= $THEBAR_BODY)
 {
-    if ($THEBAR_LSHADOW == 0)
+    if ($THEBAR_USHADOW > $THEBAR_LSHADOW)
     {
-        $candle_type = "Topping Tail";
+        $CANDLE_TYPE = "Topping Tail";
     }
 }
 
-if ($THEBAR_LSHADOW > 0)
+// ---------------------------------------------------------
+// BOTTOMING TAIL
+//
+// Meaningful lower wick:
+// - Lower wick >= body
+// - Lower wick > upper wick
+// ---------------------------------------------------------
+
+if ($THEBAR_LSHADOW >= $THEBAR_BODY)
 {
-    if ($THEBAR_USHADOW == 0)
+    if ($THEBAR_LSHADOW > $THEBAR_USHADOW)
     {
-        $candle_type = "Bottoming Tail";
+        $CANDLE_TYPE = "Bottoming Tail";
     }
 }
 
-if ($THEBAR_USHADOW == 0)
+
+// ---------------------------------------------------------
+// MOSTLY FULL BODIED
+//
+// Body occupies at least 70% of the candle range.
+// Small wicks are allowed.
+//
+// Examples:
+// Large green body = bullish pressure
+// Large red body   = bearish pressure
+// ---------------------------------------------------------
+
+if ($THEBAR_BODY >= $mostly_full_threshold)
 {
-    if ($THEBAR_LSHADOW == 0)
-    {
-        $candle_type = "Full bodied";
-    }
+    $CANDLE_TYPE = "Mostly Full Bodied";
 }
 
-if ($THEBAR_USHADOW > 0)
-{
-    if ($THEBAR_LSHADOW > 0)
-    {
-        if ($THEBAR_BODY > $doji_threshold)
-        {
-            $candle_type = "Doji";
-        }
-    }
-}
+
+// ---------------------------------------------------------
+// HAMMER / HANGING MAN
+//
+// Long lower wick
+// Little or no upper wick
+//
+// Downtrend = Hammer
+// Uptrend   = Hanging Man
+// ---------------------------------------------------------
 
 if ($THEBAR_LSHADOW >= $THEBAR_BODY * 1.5)
 {
-    if ($THEBAR_USHADOW == 0)
+    if ($THEBAR_USHADOW <= $negligible_shadow)
     {
-        $candle_type = "Hammer";
+        if ($SHORT_TERM_TREND == "DOWNTREND")
+        {
+            $CANDLE_TYPE = "Hammer";
+        }
+
+        if ($SHORT_TERM_TREND == "UPTREND")
+        {
+            $CANDLE_TYPE = "Hanging Man";
+        }
     }
 }
 
-if ($THEBAR_USHADOW >= $THEBAR_BODY * 1.5)
+
+// ---------------------------------------------------------
+// SPINNING TOP
+//
+// Small body
+// Both wicks present
+// Both wicks >= body
+// Body reasonably close to center of range
+// ---------------------------------------------------------
+
+$BODY_CENTER = ($THEBAR0.OPEN + $THEBAR0.CLOSE) / 2;
+$RANGE_CENTER = ($THEBAR0.HI + $THEBAR0.LO) / 2;
+$CENTER_DISTANCE = ABS($BODY_CENTER - $RANGE_CENTER);
+
+if ($THEBAR_BODY <= $THEBAR_RANGE * 0.25)
 {
-    if ($THEBAR_LSHADOW == 0)
+    if ($THEBAR_USHADOW >= $THEBAR_BODY)
     {
-        $candle_type = "Inverted Hammer";
+        if ($THEBAR_LSHADOW >= $THEBAR_BODY)
+        {
+            if ($CENTER_DISTANCE <= $THEBAR_RANGE * 0.25)
+            {
+                $CANDLE_TYPE = "Spinning Top";
+            }
+        }
     }
 }
 
-$CHART1.GetCustButObj("btn_candle_type").text = $Candle_type;
+
+// ---------------------------------------------------------
+// DRAGONFLY DOJI
+//
+// Open, close and high approximately equal
+// Long lower wick
+// ---------------------------------------------------------
+
+$DOJI_TOLERANCE = $THEBAR_RANGE * 0.05;
+
+if (ABS($THEBAR0.OPEN - $THEBAR0.HI) <= $DOJI_TOLERANCE)
+{
+    if (ABS($THEBAR0.CLOSE - $THEBAR0.HI) <= $DOJI_TOLERANCE)
+    {
+        if ($THEBAR_LSHADOW > $THEBAR_RANGE * 0.5)
+        {
+            $CANDLE_TYPE = "Dragonfly Doji";
+        }
+    }
+}
+
+
+// ---------------------------------------------------------
+// GRAVESTONE DOJI
+//
+// Open, close and low approximately equal
+// Long upper wick
+// ---------------------------------------------------------
+
+if (ABS($THEBAR0.OPEN - $THEBAR0.LO) <= $DOJI_TOLERANCE)
+{
+    if (ABS($THEBAR0.CLOSE - $THEBAR0.LO) <= $DOJI_TOLERANCE)
+    {
+        if ($THEBAR_USHADOW > $THEBAR_RANGE * 0.5)
+        {
+            $CANDLE_TYPE = "Gravestone Doji";
+        }
+    }
+}
+
+
+// ---------------------------------------------------------
+// BULLISH ENGULFING
+//
+// Previous = RED
+// Current  = GREEN
+// Current high >= previous high
+// Current low  <= previous low
+//
+// Requires DOWNTREND context
+// ---------------------------------------------------------
+
+if ($THEBAR1.OPEN > $THEBAR1.CLOSE)
+{
+    if ($THEBAR0.OPEN < $THEBAR0.CLOSE)
+    {
+        if ($THEBAR0.HI >= $THEBAR1.HI)
+        {
+            if ($THEBAR0.LO <= $THEBAR1.LO)
+            {
+                if ($SHORT_TERM_TREND == "DOWNTREND")
+                {
+                    $CANDLE_TYPE = "Bullish Engulfing";
+                }
+            }
+        }
+    }
+}
+
+
+// ---------------------------------------------------------
+// BEARISH ENGULFING
+//
+// Previous = GREEN
+// Current  = RED
+// Current high >= previous high
+// Current low  <= previous low
+//
+// Requires UPTREND context
+// ---------------------------------------------------------
+
+if ($THEBAR1.OPEN < $THEBAR1.CLOSE)
+{
+    if ($THEBAR0.OPEN > $THEBAR0.CLOSE)
+    {
+        if ($THEBAR0.HI >= $THEBAR1.HI)
+        {
+            if ($THEBAR0.LO <= $THEBAR1.LO)
+            {
+                if ($SHORT_TERM_TREND == "UPTREND")
+                {
+                    $CANDLE_TYPE = "Bearish Engulfing";
+                }
+            }
+        }
+    }
+}
+
+
+// =========================================================
+// CANDLE BIAS
+// =========================================================
+//
+// BULLISH = buying pressure / bullish reversal
+// BEARISH = selling pressure / bearish reversal
+// SIDEWAYS = indecision / neutral
+// =========================================================
+
+$CANDLE_BIAS = "Indecision";
+
+
+// ---------------------------------------------------------
+// Bullish patterns
+// ---------------------------------------------------------
+
+if ($CANDLE_TYPE == "Bullish Engulfing")
+{
+    $CANDLE_BIAS = "BULLISH";
+}
+
+if ($CANDLE_TYPE == "Hammer")
+{
+    $CANDLE_BIAS = "BULLISH";
+}
+
+if ($CANDLE_TYPE == "Dragonfly Doji")
+{
+    if ($SHORT_TERM_TREND == "DOWNTREND")
+    {
+        $CANDLE_BIAS = "BULLISH";
+    }
+}
+
+
+// ---------------------------------------------------------
+// Mostly Full Bodied
+//
+// Direction follows candle color
+// ---------------------------------------------------------
+
+if ($CANDLE_TYPE == "Mostly Full Bodied")
+{
+    if ($THEBAR_COLOR == "GREEN")
+    {
+        $CANDLE_BIAS = "BULLISH";
+    }
+
+    if ($THEBAR_COLOR == "RED")
+    {
+        $CANDLE_BIAS = "BEARISH";
+    }
+}
+
+
+// ---------------------------------------------------------
+// Bearish patterns
+// ---------------------------------------------------------
+
+if ($CANDLE_TYPE == "Bearish Engulfing")
+{
+    $CANDLE_BIAS = "BEARISH";
+}
+
+if ($CANDLE_TYPE == "Hanging Man")
+{
+    $CANDLE_BIAS = "BEARISH";
+}
+
+if ($CANDLE_TYPE == "Gravestone Doji")
+{
+    if ($SHORT_TERM_TREND == "UPTREND")
+    {
+        $CANDLE_BIAS = "BEARISH";
+    }
+}
+
+
+// ---------------------------------------------------------
+// Indecision patterns
+// ---------------------------------------------------------
+
+if ($CANDLE_TYPE == "Doji")
+{
+    $CANDLE_BIAS = "Indecision";
+}
+
+if ($CANDLE_TYPE == "Spinning Top")
+{
+    $CANDLE_BIAS = "Indecision";
+}
+
+
+// =========================================================
+// BUTTON TEXT
+// =========================================================
+
+$CHART1.GetCustButObj("btn_candle_type").text =
+    $CANDLE_TYPE + " / " + $CANDLE_BIAS;
+
+
+// =========================================================
+// BUTTON COLOR
+// =========================================================
+
+// Only change button color when less than 30 seconds remain
+
+$SECONDS_IN_MINUTE = getsecond() % 60;
+
+if ($SECONDS_IN_MINUTE > 30)
+{
+    if ($CANDLE_BIAS == "BULLISH")
+    {
+        $CHART1.GetCustButObj("btn_candle_type").bkcolor = green;
+    }
+
+    if ($CANDLE_BIAS == "BEARISH")
+    {
+        $CHART1.GetCustButObj("btn_candle_type").bkcolor = red;
+    }
+
+    if ($CANDLE_BIAS == "Indecision")
+    {
+        $CHART1.GetCustButObj("btn_candle_type").bkcolor = orange;
+    }
+}
+else
+{
+    $CHART1.GetCustButObj("btn_candle_type").bkcolor = color(211,211,211);
+}
+
+
+// ---------------------------------------------------------
+// Special Check for Pronunciation
+// ---------------------------------------------------------
+
+$CANDLE_TYPE_SP = $CANDLE_TYPE;
+
+if ($CANDLE_TYPE == "Doji")
+{
+    $CANDLE_TYPE_SP = "Doh-gee";
+}

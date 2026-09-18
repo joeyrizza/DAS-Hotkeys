@@ -17,6 +17,12 @@ if($RunTestsEnabled==1 && $RunningTests==0)
 	exechotkey("TestVolume");
 	exechotkey("TestSpread");
 	exechotkey("TestStop");
-	exechotkey("Test10MinRollingVolume");
+	exechotkey("Test_PriceChange");
+	exechotkey("Test_ST_RVOL10");
+	exechotkey("Test_ST_PriceContext");
+	exechotkey("Test_Candle_Color");
+	exechotkey("Test_Candle_Type");
+	exechotkey("Test_ST_InterpretVol");
+	exechotkey("Test_ST_InterpretPriceAction");
 	$RunningTests=0;
 }

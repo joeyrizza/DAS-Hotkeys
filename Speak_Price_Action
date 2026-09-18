@@ -1,0 +1,39 @@
+// Interpret Price Action 
+// depends on: Test_Candle_Type
+
+$ANNOUNCE=0;
+if($SETUPARMED == 1 || $MONTAGE1.Pos > 0){
+    $ANNOUNCE=1;
+}
+
+//Announce Relative Volume
+if($ANNOUNCE == 1 && $SECONDS_IN_MINUTE > 53 && $VOL_ANNOUNCED == 0)
+{
+    if($ST_Interpretation != "Neutral")
+    {
+        Speak($ST_Interpretation);
+        $VOL_ANNOUNCED = 1;
+    }
+}
+if($SECONDS_IN_MINUTE < 30)
+{
+    $VOL_ANNOUNCED = 0;
+}
+
+// Speak as candle is closing
+
+if($ANNOUNCE == 1 && $SECONDS_IN_MINUTE > 55 && $CANDLE_ANNOUNCED == 0)
+{
+    if($CANDLE_TYPE != "Normal Candle")
+    {
+        speak("Candle closing " + $CANDLE_COLOR_0_VAL);
+        speak($CANDLE_BIAS);
+        speak($CANDLE_TYPE_SP);
+        $CANDLE_ANNOUNCED = 1;
+    }
+}
+if($SECONDS_IN_MINUTE < 30)
+{
+    $CANDLE_ANNOUNCED = 0;
+}
+

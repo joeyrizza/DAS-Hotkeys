@@ -1,5 +1,8 @@
 //VWAP Test
 $VWAP=getquoteobj($CHART1.SYMBOL).vwap;
+$ABOVEVWAP=0;
+$VWAP_DISTANCE = $VWAP - $MPRICE;
+
 if($MPRICE>$VWAP){
   $ABOVEVWAP=1;
   $CHART1.GetCustButObj("btn_vwap").text ="Above VWAP";
