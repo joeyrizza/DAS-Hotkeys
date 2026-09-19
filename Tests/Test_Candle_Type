@@ -347,7 +347,7 @@ if ($THEBAR1.OPEN < $THEBAR1.CLOSE)
 //
 // BULLISH = buying pressure / bullish reversal
 // BEARISH = selling pressure / bearish reversal
-// SIDEWAYS = indecision / neutral
+// INDECISION = indecision / neutral
 // =========================================================
 
 $CANDLE_BIAS = "Indecision";
