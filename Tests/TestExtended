@@ -91,7 +91,7 @@ $CHART1.GetCustButObj("btn_range").text ="Avg Range: $" + Round($AverageRange10,
 if($AverageRange10 > .4){
   $CHART1.GetCustButObj("btn_range").bkcolor=red;
 }
-//Risk Per Candle
+//Risk Per Candle: Uses rpcval defined in desktop load script. If price is below $2, uses a penny style rounding for rpc calculation.
 $rpc=$rpcval*Round($AverageRange10,103);
 if($MPRICE <= 2){
   $rpc=$rpcval*Round($AverageRange10,4);

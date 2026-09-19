@@ -1,4 +1,5 @@
-// Interpret Price Action 
+// Speak Price Action 
+// If the setup is armed or the montage is in a position, announce price action at the end of the minute.
 // depends on: Test_Candle_Type
 
 $ANNOUNCE=0;
