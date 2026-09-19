@@ -462,7 +462,7 @@ if ($SECONDS_IN_MINUTE > 30)
         $CHART1.GetCustButObj("btn_candle_type").bkcolor = red;
     }
 
-    if ($CANDLE_BIAS == "Indecision")
+    if ($CANDLE_BIAS == "Indecision" && $SHORT_TERM_TREND == "UPTREND")
     {
         $CHART1.GetCustButObj("btn_candle_type").bkcolor = orange;
     }
