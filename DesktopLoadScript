@@ -1,4 +1,7 @@
+// Desktop Load Script
 $CHART1= GetWindowObj("Chart1");
 $CHARTD= GetWindowObj("ChartDaily");
 $MONTAGE1=GetWindowObj("MONTAGE1");
+
+//Risk Per Candle val
 $rpcval=25;
