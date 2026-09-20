@@ -1,0 +1,435 @@
+// =========================================================
+// MULTI-CANDLE PATTERNS
+// =========================================================
+$CANDLE_PATTERN="No Pattern";
+$PATTERN_BIAS="Neutral";
+// ---------------------------------------------------------
+// Get current and previous candles
+// ---------------------------------------------------------
+
+$THEBAR0 = getwindowobj("CHART1").getbar(0);
+$THEBAR1 = getwindowobj("CHART1").getbar(-1);
+$THEBAR2 = getwindowobj("CHART1").getbar(-2);
+$THEBAR3 = getwindowobj("CHART1").getbar(-3);
+$THEBAR4 = getwindowobj("CHART1").getbar(-4);
+$THEBAR5 = getwindowobj("CHART1").getbar(-5);
+
+
+// ---------------------------------------------------------
+// BULL FLAG
+// ---------------------------------------------------------
+// 1. Three consecutive green impulse candles
+//
+// Bars 5, 4, 3 = GREEN
+// ---------------------------------------------------------
+
+$BULLISH_IMPULSE = 0;
+
+if ($THEBAR5.OPEN < $THEBAR5.CLOSE)
+{
+    if ($THEBAR4.OPEN < $THEBAR4.CLOSE)
+    {
+        if ($THEBAR3.OPEN < $THEBAR3.CLOSE)
+        {
+            if ($THEBAR4.HI > $THEBAR5.HI)
+            {
+                if ($THEBAR3.HI > $THEBAR4.HI)
+                {
+                    if ($THEBAR4.LO > $THEBAR5.LO)
+                    {
+                        if ($THEBAR3.LO > $THEBAR4.LO)
+                        {
+                            $BULLISH_IMPULSE = 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------
+// 2. Two consecutive red pullback candles
+//
+// Bars 2 and 1 = RED
+//
+// This intentionally requires at least two candles.
+// A one-candle pullback is NOT a bull flag.
+// ---------------------------------------------------------
+
+$BULLFLAG_PULLBACK = 0;
+
+if ($THEBAR2.OPEN > $THEBAR2.CLOSE)
+{
+    if ($THEBAR1.OPEN > $THEBAR1.CLOSE)
+    {
+        if ($THEBAR1.HI < $THEBAR2.HI)
+        {
+            if ($THEBAR1.LO < $THEBAR2.LO)
+            {
+                $BULLFLAG_PULLBACK = 1;
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------
+// 3. Pullback highs cannot exceed previous candle highs
+//
+// Bar 2 high <= bar 3 high
+// Bar 1 high <= bar 2 high
+// ---------------------------------------------------------
+
+$BULLFLAG_PULLBACK_HIGH_OK = 0;
+
+if ($THEBAR2.HI < $THEBAR3.HI)
+{
+    if ($THEBAR1.HI < $THEBAR2.HI)
+    {
+        $BULLFLAG_PULLBACK_HIGH_OK = 1;
+    }
+}
+
+// ---------------------------------------------------------
+// 4. Calculate bullish impulse range
+//
+// Lowest low of impulse
+// Highest high of impulse
+// ---------------------------------------------------------
+
+$BULLISH_IMPULSE_LOW = $THEBAR5.LO;
+$BULLISH_IMPULSE_HIGH = $THEBAR3.HI;
+$BULLISH_IMPULSE_RANGE = $BULLISH_IMPULSE_HIGH - $BULLISH_IMPULSE_LOW;
+$BULLFLAG_50_PERCENT_LEVEL = $BULLISH_IMPULSE_LOW + ($BULLISH_IMPULSE_RANGE * 0.50);
+
+// ---------------------------------------------------------
+// 5. Bull flag cannot retrace more than 50%
+//
+// Use the lowest low of the pullback.
+// ---------------------------------------------------------
+
+$BULLFLAG_PULLBACK_LOW = $THEBAR1.LO;
+$BULLFLAG_RETRACE_OK = 0;
+
+if ($BULLFLAG_PULLBACK_LOW >= $BULLFLAG_50_PERCENT_LEVEL)
+{
+    $BULLFLAG_RETRACE_OK = 1;
+}
+
+// ---------------------------------------------------------
+// 6. Volume profile
+//
+// Initial move should have greater volume than pullback.
+//
+// Average impulse volume:
+// bars 5, 4, 3
+//
+// Average pullback volume:
+// bars 2, 1
+// ---------------------------------------------------------
+
+$BULLISH_IMPULSE_AVG_VOL = ($THEBAR5.VOLUME + $THEBAR4.VOLUME + $THEBAR3.VOLUME) / 3;
+$BULLFLAG_PULLBACK_AVG_VOL = ($THEBAR2.VOLUME + $THEBAR1.VOLUME) / 2;
+$BULLFLAG_VOLUME_OK = 0;
+
+if ($BULLFLAG_PULLBACK_AVG_VOL < $BULLISH_IMPULSE_AVG_VOL)
+{
+    $BULLFLAG_VOLUME_OK = 1;
+}
+
+// ---------------------------------------------------------
+// 7. Current candle must break the pullback
+//
+// Current candle makes a new high above the most recent
+// pullback candle.
+//
+// Volume should also begin increasing.
+// ---------------------------------------------------------
+
+$BULLFLAG_BREAKOUT_OK = 0;
+
+if ($THEBAR0.OPEN < $THEBAR0.CLOSE)
+{
+    if ($THEBAR0.HI > $THEBAR1.HI)
+    {
+        if ($THEBAR0.VOLUME > $THEBAR1.VOLUME)
+        {
+            $BULLFLAG_BREAKOUT_OK = 1;
+        }
+    }
+}
+
+
+// ---------------------------------------------------------
+// 8. Assemble Bull Flag
+// ---------------------------------------------------------
+$BULLFLAG = 0;
+
+if ($BULLISH_IMPULSE == 1)
+{
+    $CANDLE_PATTERN="Bullish Impulse";
+    if ($BULLFLAG_PULLBACK == 1)
+    {
+        $CANDLE_PATTERN="Pullback";
+        if ($BULLFLAG_PULLBACK_HIGH_OK == 1)
+        {
+            if ($BULLFLAG_RETRACE_OK == 1)
+            {
+                if ($BULLFLAG_VOLUME_OK == 1)
+                {
+                    $CANDLE_PATTERN="Bull Flag Forming";
+                    if ($BULLFLAG_BREAKOUT_OK == 1)
+                    {
+                        $CANDLE_PATTERN="Bull Flag";
+                    }
+                }
+            }
+        }
+    }
+}
+
+// =========================================================
+// BEAR FLAG
+// =========================================================
+
+
+// ---------------------------------------------------------
+// 1. Three consecutive red impulse candles
+//
+// Bars 5, 4, 3 = RED
+// ---------------------------------------------------------
+
+$BEARISH_IMPULSE = 0;
+
+if ($THEBAR5.OPEN > $THEBAR5.CLOSE)
+{
+    if ($THEBAR4.OPEN > $THEBAR4.CLOSE)
+    {
+        if ($THEBAR3.OPEN > $THEBAR3.CLOSE)
+        {
+            if ($THEBAR4.HI < $THEBAR5.HI)
+            {
+                if ($THEBAR3.HI < $THEBAR4.HI)
+                {
+                    if ($THEBAR4.LO < $THEBAR5.LO)
+                    {
+                        if ($THEBAR3.LO < $THEBAR4.LO)
+                        {
+                            $BEARISH_IMPULSE = 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------
+// 2. Two consecutive green pullback candles
+//
+// Bars 2 and 1 = GREEN
+// ---------------------------------------------------------
+
+$BEARFLAG_PULLBACK = 0;
+
+if ($THEBAR2.OPEN < $THEBAR2.CLOSE)
+{
+    if ($THEBAR1.OPEN < $THEBAR1.CLOSE)
+    {
+        if ($THEBAR1.HI > $THEBAR2.HI)
+        {
+            if ($THEBAR1.LO > $THEBAR2.LO)
+            {
+                $BEARFLAG_PULLBACK = 1;
+            }
+        }
+    }
+}
+
+
+
+// ---------------------------------------------------------
+// 3. Pullback lows cannot break the previous candle lows
+//
+// Bar 2 low >= bar 3 low
+// Bar 1 low >= bar 2 low
+// ---------------------------------------------------------
+
+$BEARFLAG_PULLBACK_LOW_OK = 0;
+
+if ($THEBAR2.LO > $THEBAR3.LO)
+{
+    if ($THEBAR1.LO > $THEBAR2.LO)
+    {
+        $BEARFLAG_PULLBACK_LOW_OK = 1;
+    }
+}
+
+
+// ---------------------------------------------------------
+// 4. Calculate bearish impulse range
+// ---------------------------------------------------------
+
+$BEARISH_IMPULSE_LOW = $THEBAR3.LO;
+$BEARISH_IMPULSE_HIGH = $THEBAR5.HI;
+$BEARISH_IMPULSE_RANGE = $BEARISH_IMPULSE_HIGH - $BEARISH_IMPULSE_LOW;
+$BEARFLAG_50_PERCENT_LEVEL = $BEARISH_IMPULSE_HIGH - ($BEARISH_IMPULSE_RANGE * 0.50);
+
+// ---------------------------------------------------------
+// 5. Bear flag cannot retrace more than 50%
+//
+// Use the highest high of the pullback.
+// ---------------------------------------------------------
+
+$BEARFLAG_PULLBACK_HIGH = $THEBAR1.HI;
+$BEARFLAG_RETRACE_OK = 0;
+
+if ($BEARFLAG_PULLBACK_HIGH <= $BEARFLAG_50_PERCENT_LEVEL)
+{
+    $BEARFLAG_RETRACE_OK = 1;
+}
+
+
+// ---------------------------------------------------------
+// 6. Volume profile
+//
+// Initial selling volume should be greater than
+// pullback buying volume.
+// ---------------------------------------------------------
+
+$BEARFLAG_IMPULSE_AVG_VOL = ($THEBAR5.VOLUME + $THEBAR4.VOLUME + $THEBAR3.VOLUME) / 3;
+$BEARFLAG_PULLBACK_AVG_VOL = ($THEBAR2.VOLUME + $THEBAR1.VOLUME) / 2;
+$BEARFLAG_VOLUME_OK = 0;
+
+if ($BEARFLAG_PULLBACK_AVG_VOL < $BEARFLAG_IMPULSE_AVG_VOL)
+{
+    $BEARFLAG_VOLUME_OK = 1;
+}
+
+// ---------------------------------------------------------
+// 7. Current candle must break the pullback
+//
+// Current candle makes a new low below the most recent
+// pullback candle.
+//
+// Volume should begin increasing.
+// ---------------------------------------------------------
+
+$BEARFLAG_BREAKOUT_OK = 0;
+
+if ($THEBAR0.OPEN > $THEBAR0.CLOSE)
+{
+    if ($THEBAR0.LO < $THEBAR1.LO)
+    {
+        if ($THEBAR0.VOLUME > $THEBAR1.VOLUME)
+        {
+            $BEARFLAG_BREAKOUT_OK = 1;
+        }
+    }
+}
+
+// ---------------------------------------------------------
+// 8. Assemble Bear Flag
+// ---------------------------------------------------------
+$BEARFLAG = 0;
+
+if ($BEARISH_IMPULSE == 1)
+{
+    $CANDLE_PATTERN="Bearish Impulse";
+    if ($BEARFLAG_PULLBACK == 1)
+    {
+        $CANDLE_PATTERN="Pullback";
+        if ($BEARFLAG_PULLBACK_LOW_OK == 1)
+        {
+            if ($BEARFLAG_RETRACE_OK == 1)
+            {
+                if ($BEARFLAG_VOLUME_OK == 1)
+                {
+                    $CANDLE_PATTERN="Bear Flag Forming";
+                    if ($BEARFLAG_BREAKOUT_OK == 1)
+                    {
+                        $CANDLE_PATTERN="Bear Flag";
+                    }
+                }
+            }
+        }
+    }
+}
+
+// =========================================================
+// MULTI-CANDLE PATTERN BIAS
+// =========================================================
+//
+// BULLISH = buying pressure / bullish reversal
+// BEARISH = selling pressure / bearish reversal
+// INDECISION = indecision / neutral
+// =========================================================
+
+if ($CANDLE_PATTERN == "Bull Flag")
+{
+    $PATTERN_BIAS = "BULLISH";
+}
+if ($CANDLE_PATTERN == "Bull Flag Forming")
+{
+    $PATTERN_BIAS = "BULLISH";
+}
+if( $CANDLE_PATTERN == "Bullish Impulse")
+{
+    $PATTERN_BIAS = "BULLISH";
+}
+
+if ($CANDLE_PATTERN == "Bear Flag")
+{
+    $PATTERN_BIAS = "BEARISH";
+}
+if ($CANDLE_PATTERN == "Bear Flag Forming")
+{
+    $PATTERN_BIAS = "BEARISH";
+}
+if( $CANDLE_PATTERN == "Bearish Impulse")
+{
+    $PATTERN_BIAS = "BEARISH";
+}
+
+if ($CANDLE_PATTERN == "Pullback")
+{
+    $PATTERN_BIAS = "Indecision";
+}
+
+// =========================================================
+// BUTTON TEXT
+// =========================================================
+$CHART1.GetCustButObj("btn_pattern").text =
+    $CANDLE_PATTERN + " / " + $PATTERN_BIAS;
+
+
+// =========================================================
+// BUTTON COLOR
+// =========================================================
+
+// Only change button color when more than 30 seconds remain
+
+$SECONDS_IN_MINUTE = getsecond() % 60;
+
+if ($SECONDS_IN_MINUTE > 30)
+{
+    if ($PATTERN_BIAS == "BULLISH")
+    {
+        $CHART1.GetCustButObj("btn_pattern").bkcolor = green;
+    }
+
+    if ($PATTERN_BIAS == "BEARISH")
+    {
+        $CHART1.GetCustButObj("btn_pattern").bkcolor = red;
+    }
+
+    if ($PATTERN_BIAS == "Indecision")
+    {
+        $CHART1.GetCustButObj("btn_pattern").bkcolor = orange;
+    }
+}
+else
+{
+    $CHART1.GetCustButObj("btn_pattern").bkcolor = color(211,211,211);
+}
+

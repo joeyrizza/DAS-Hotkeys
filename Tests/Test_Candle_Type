@@ -30,8 +30,6 @@ $THEBAR_RANGE = $THEBAR0.HI - $THEBAR0.LO;
 $negligible_shadow = $THEBAR_RANGE * 0.13;
 $doji_threshold = $THEBAR_RANGE * 0.13;
 
-// Meaningful tail must be at least 1.5x the body
-$tail_threshold = $THEBAR_BODY * 1.5;
 
 // Mostly full bodied = body occupies at least 70% of range
 $mostly_full_threshold = $THEBAR_RANGE * 0.70;
@@ -342,7 +340,7 @@ if ($THEBAR1.OPEN < $THEBAR1.CLOSE)
 
 
 // =========================================================
-// CANDLE BIAS
+// ONE CANDLE AND TWO CANDLE PATTERN BIAS
 // =========================================================
 //
 // BULLISH = buying pressure / bullish reversal
@@ -351,11 +349,6 @@ if ($THEBAR1.OPEN < $THEBAR1.CLOSE)
 // =========================================================
 
 $CANDLE_BIAS = "Indecision";
-
-
-// ---------------------------------------------------------
-// Bullish patterns
-// ---------------------------------------------------------
 
 if ($CANDLE_TYPE == "Bullish Engulfing")
 {
@@ -375,13 +368,6 @@ if ($CANDLE_TYPE == "Dragonfly Doji")
     }
 }
 
-
-// ---------------------------------------------------------
-// Mostly Full Bodied
-//
-// Direction follows candle color
-// ---------------------------------------------------------
-
 if ($CANDLE_TYPE == "Mostly Full Bodied")
 {
     if ($THEBAR_COLOR == "GREEN")
@@ -394,11 +380,6 @@ if ($CANDLE_TYPE == "Mostly Full Bodied")
         $CANDLE_BIAS = "BEARISH";
     }
 }
-
-
-// ---------------------------------------------------------
-// Bearish patterns
-// ---------------------------------------------------------
 
 if ($CANDLE_TYPE == "Bearish Engulfing")
 {
@@ -417,12 +398,6 @@ if ($CANDLE_TYPE == "Gravestone Doji")
         $CANDLE_BIAS = "BEARISH";
     }
 }
-
-
-// ---------------------------------------------------------
-// Indecision patterns
-// ---------------------------------------------------------
-
 if ($CANDLE_TYPE == "Doji")
 {
     $CANDLE_BIAS = "Indecision";
@@ -432,7 +407,6 @@ if ($CANDLE_TYPE == "Spinning Top")
 {
     $CANDLE_BIAS = "Indecision";
 }
-
 
 // =========================================================
 // BUTTON TEXT
