@@ -399,12 +399,10 @@ if ($CANDLE_PATTERN == "Pullback")
 // =========================================================
 // BUTTON TEXT
 // =========================================================
-$CHART1.GetCustButObj("btn_pattern").text =
-    $CANDLE_PATTERN + " / " + $PATTERN_BIAS;
-
+$CHART1.GetCustButObj("btn_pattern").text = $CANDLE_PATTERN + " / " + $PATTERN_BIAS;
 
 // =========================================================
-// BUTTON COLOR
+// BUTTON COLOR & SPEECH
 // =========================================================
 
 // Only change button color when more than 30 seconds remain
@@ -413,6 +411,7 @@ $SECONDS_IN_MINUTE = getsecond() % 60;
 
 if ($SECONDS_IN_MINUTE > 30 && "No Pattern" != $CANDLE_PATTERN)
 {
+    speak($CANDLE_PATTERN);
     if ($PATTERN_BIAS == "BULLISH")
     {
         $CHART1.GetCustButObj("btn_pattern").bkcolor = green;
