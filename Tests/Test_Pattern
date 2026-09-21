@@ -181,9 +181,17 @@ if ($BULLISH_IMPULSE == 1)
                     if ($BULLFLAG_BREAKOUT_OK == 1)
                     {
                         $CANDLE_PATTERN="Bull Flag";
+                    } else {
+                        $CANDLE_PATTERN="Pattern Rejected: No Breakout";
                     }
+                } else {
+                    $CANDLE_PATTERN="Pattern Rejected: Volume Profile Not Met";
                 }
+            } else {
+                $CANDLE_PATTERN="Pattern Rejected: Retrace Exceeds 50%";
             }
+        } else {
+            $CANDLE_PATTERN="Pattern Rejected: Pullback High Broke Previous Candle High";
         }
     }
 }
@@ -349,9 +357,18 @@ if ($BEARISH_IMPULSE == 1)
                     if ($BEARFLAG_BREAKOUT_OK == 1)
                     {
                         $CANDLE_PATTERN="Bear Flag";
+                    } else{
+                        $CANDLE_PATTERN="Pattern Rejected: No Breakout";
                     }
+                } else{
+                    $CANDLE_PATTERN="Pattern Rejected: Volume Profile Not Met";
                 }
+            } else {
+                $CANDLE_PATTERN="Pattern Rejected: Retrace Exceeds 50%";
             }
+        } else
+        {
+            $CANDLE_PATTERN="Pattern Rejected: Pullback Low Broke Previous Candle Low";
         }
     }
 }
