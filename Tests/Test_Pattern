@@ -411,7 +411,7 @@ $CHART1.GetCustButObj("btn_pattern").text =
 
 $SECONDS_IN_MINUTE = getsecond() % 60;
 
-if ($SECONDS_IN_MINUTE > 30)
+if ($SECONDS_IN_MINUTE > 30 && "No Pattern" != $CANDLE_PATTERN)
 {
     if ($PATTERN_BIAS == "BULLISH")
     {
