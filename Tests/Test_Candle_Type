@@ -12,6 +12,17 @@ $THEBAR1 = getwindowobj("CHART1").getbar(-1);
 $THEBAR2 = getwindowobj("CHART1").getbar(-2);
 $THEBAR3 = getwindowobj("CHART1").getbar(-3);
 
+// =========================================================
+// PREVIOUS CANDLE TYPE INFORMATION
+// =========================================================
+
+if ($THEBAR0.Time != $PREV_CANDLE_TIME)
+{
+    // New candle has started.
+    $PREV_CANDLE_TYPE = $CANDLE_TYPE;
+    $PREV_CANDLE_BIAS = $CANDLE_BIAS;
+    $PREV_CANDLE_TIME = $THEBAR0.Time;
+}
 
 // ---------------------------------------------------------
 // Current candle measurements
@@ -30,6 +41,8 @@ $THEBAR_RANGE = $THEBAR0.HI - $THEBAR0.LO;
 $negligible_shadow = $THEBAR_RANGE * 0.13;
 $doji_threshold = $THEBAR_RANGE * 0.13;
 
+// Large tail threshold = 2x body
+$LARGE_TAIL_THRESHOLD = $THEBAR_BODY * 1.5;
 
 // Mostly full bodied = body occupies at least 70% of range
 $mostly_full_threshold = $THEBAR_RANGE * 0.70;
@@ -214,6 +227,33 @@ if ($THEBAR_LSHADOW >= $THEBAR_BODY * 1.5)
 
 
 // ---------------------------------------------------------
+// INVERTED HAMMER / SHOOTING STAR
+//
+// Long upper wick
+// Little or no lower wick
+//
+// Downtrend = Hammer
+// Uptrend   = Hanging Man
+// ---------------------------------------------------------
+
+if ($THEBAR_USHADOW >= $THEBAR_BODY * 1.5)
+{
+    if ($THEBAR_LSHADOW <= $negligible_shadow)
+    {
+        if ($SHORT_TERM_TREND == "DOWNTREND")
+        {
+            $CANDLE_TYPE = "Inverted Hammer";
+        }
+
+        if ($SHORT_TERM_TREND == "UPTREND")
+        {
+            $CANDLE_TYPE = "Shooting Star";
+        }
+    }
+}
+
+
+// ---------------------------------------------------------
 // SPINNING TOP
 //
 // Small body
@@ -391,6 +431,11 @@ if ($CANDLE_TYPE == "Hanging Man")
     $CANDLE_BIAS = "BEARISH";
 }
 
+if ($CANDLE_TYPE == "Shooting Star")
+{
+    $CANDLE_BIAS = "BEARISH";
+}
+
 if ($CANDLE_TYPE == "Gravestone Doji")
 {
     if ($SHORT_TERM_TREND == "UPTREND")
@@ -398,23 +443,79 @@ if ($CANDLE_TYPE == "Gravestone Doji")
         $CANDLE_BIAS = "BEARISH";
     }
 }
+if ($CANDLE_TYPE == "Topping Tail")
+{
+    if ($SHORT_TERM_TREND == "UPTREND")
+    {
+        if ($THEBAR_USHADOW >= $LARGE_TAIL_THRESHOLD)
+        {
+            $CANDLE_BIAS = "BEARISH";
+        }
+    }
+}
+if ($CANDLE_TYPE == "Bottoming Tail")
+{
+    if ($SHORT_TERM_TREND == "DOWNTREND")
+    {
+        if ($THEBAR_LSHADOW >= $LARGE_TAIL_THRESHOLD)
+        {
+            $CANDLE_BIAS = "BULLISH";
+        }
+    }
+}
 if ($CANDLE_TYPE == "Doji")
 {
-    $CANDLE_BIAS = "Indecision";
+    if ($SHORT_TERM_TREND != "SIDEWAYS")
+    {
+        $CANDLE_BIAS = "Indecision";
+    }
 }
 
 if ($CANDLE_TYPE == "Spinning Top")
+{    
+    if ($SHORT_TERM_TREND != "SIDEWAYS")
+    {
+        $CANDLE_BIAS = "Indecision";
+    }
+}
+
+// =========================================================
+// TWO-CANDLE PATTERN CONFIRMATION
+// =========================================================
+$CANDLE_CONFIRMATION = "No Confirmation";
+if ($PREV_CANDLE_BIAS == "BEARISH")
 {
-    $CANDLE_BIAS = "Indecision";
+    if ($THEBAR0.LO < $THEBAR1.LO)
+    {
+       $CANDLE_CONFIRMATION="Confirmed";
+    } else {
+       $CANDLE_CONFIRMATION="Rejected";
+    }
+}
+if ($PREV_CANDLE_BIAS == "BULLISH")
+{
+    if ($THEBAR0.HI > $THEBAR1.HI)
+    {
+       $CANDLE_CONFIRMATION="Confirmed";
+    } else {
+       $CANDLE_CONFIRMATION="Rejected";
+    }
 }
 
 // =========================================================
 // BUTTON TEXT
 // =========================================================
 
-$CHART1.GetCustButObj("btn_candle_type").text =
-    $CANDLE_TYPE + " / " + $CANDLE_BIAS;
+$CHART1.GetCustButObj("btn_candle_type").text = $CANDLE_TYPE + " / " + $CANDLE_BIAS;
 
+if($CANDLE_CONFIRMATION == "No Confirmation")
+{
+    $CHART1.GetCustButObj("btn_candle_confirmation").text = $CANDLE_CONFIRMATION;
+}
+else
+{
+    $CHART1.GetCustButObj("btn_candle_confirmation").text = $PREV_CANDLE_TYPE + " " + $CANDLE_CONFIRMATION;
+}
 
 // =========================================================
 // BUTTON COLOR
@@ -440,10 +541,24 @@ if ($SECONDS_IN_MINUTE > 30)
     {
         $CHART1.GetCustButObj("btn_candle_type").bkcolor = orange;
     }
+    if( $CANDLE_TYPE == "Normal Candle")
+    {
+    $CHART1.GetCustButObj("btn_candle_type").bkcolor = color(211,211,211);
+    }
+
+    if(($PREV_CANDLE_BIAS == "BULLISH" && $CANDLE_CONFIRMATION == "Confirmed") || ($PREV_CANDLE_BIAS == "BEARISH" && $CANDLE_CONFIRMATION == "Rejected"))
+    {
+        $CHART1.GetCustButObj("btn_candle_confirmation").bkcolor = green;
+    }    
+    if(($PREV_CANDLE_BIAS == "BULLISH" && $CANDLE_CONFIRMATION == "Rejected") || ($PREV_CANDLE_BIAS == "BEARISH" && $CANDLE_CONFIRMATION == "Confirmed"))
+    {
+        $CHART1.GetCustButObj("btn_candle_confirmation").bkcolor = red;
+    }
 }
 else
 {
     $CHART1.GetCustButObj("btn_candle_type").bkcolor = color(211,211,211);
+    $CHART1.GetCustButObj("btn_candle_confirmation").bkcolor = color(211,211,211);
 }
 
 
@@ -456,4 +571,15 @@ $CANDLE_TYPE_SP = $CANDLE_TYPE;
 if ($CANDLE_TYPE == "Doji")
 {
     $CANDLE_TYPE_SP = "Doh-gee";
+}
+
+// =========================================================
+// SAVE CURRENT CANDLE INFORMATION
+// =========================================================
+
+if ($PREV_CANDLE_TIME != $THEBAR0.Time)
+{
+    setvar("CANDLE_BIAS_"+$CHART1.SYMBOL, $CANDLE_BIAS);
+    setvar("CANDLE_TYPE_"+$CHART1.SYMBOL, $CANDLE_TYPE);
+    setvar("CANDLE_TIME_"+$CHART1.SYMBOL, $THEBAR0.Time);
 }

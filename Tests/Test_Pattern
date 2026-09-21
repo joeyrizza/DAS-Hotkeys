@@ -14,7 +14,46 @@ $THEBAR3 = getwindowobj("CHART1").getbar(-3);
 $THEBAR4 = getwindowobj("CHART1").getbar(-4);
 $THEBAR5 = getwindowobj("CHART1").getbar(-5);
 
+// ---------------------------------------------------------
+// BULLISH IMPULSE
+// ---------------------------------------------------------
 
+// Three consecutive green impulse candles
+//
+// Bars 3, 2, 1 = GREEN
+// Increasing volume: 3 < 2 < 1
+// ---------------------------------------------------------
+
+$BULLISH_IMPULSE = 0;
+
+if ($THEBAR3.OPEN < $THEBAR3.CLOSE)
+{
+    if ($THEBAR2.OPEN < $THEBAR2.CLOSE)
+    {
+        if ($THEBAR1.OPEN < $THEBAR1.CLOSE)
+        {
+            if ($THEBAR2.HI > $THEBAR3.HI)
+            {
+                if ($THEBAR1.HI > $THEBAR2.HI)
+                {
+                    if ($THEBAR2.LO > $THEBAR3.LO)
+                    {
+                        if ($THEBAR1.LO > $THEBAR2.LO)
+                        {
+                            if ($THEBAR2.VOLUME > $THEBAR3.VOLUME)
+                            {
+                                if ($THEBAR1.VOLUME > $THEBAR2.VOLUME)
+                                {
+                                    $BULLISH_IMPULSE = 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 // ---------------------------------------------------------
 // BULL FLAG
 // ---------------------------------------------------------
@@ -167,10 +206,8 @@ $BULLFLAG = 0;
 
 if ($BULLISH_IMPULSE == 1)
 {
-    $CANDLE_PATTERN="Bullish Impulse";
     if ($BULLFLAG_PULLBACK == 1)
     {
-        $CANDLE_PATTERN="Pullback";
         if ($BULLFLAG_PULLBACK_HIGH_OK == 1)
         {
             if ($BULLFLAG_RETRACE_OK == 1)
@@ -343,10 +380,8 @@ $BEARFLAG = 0;
 
 if ($BEARISH_IMPULSE == 1)
 {
-    $CANDLE_PATTERN="Bearish Impulse";
     if ($BEARFLAG_PULLBACK == 1)
     {
-        $CANDLE_PATTERN="Pullback";
         if ($BEARFLAG_PULLBACK_LOW_OK == 1)
         {
             if ($BEARFLAG_RETRACE_OK == 1)
@@ -428,7 +463,10 @@ $SECONDS_IN_MINUTE = getsecond() % 60;
 
 if ($SECONDS_IN_MINUTE > 30 && "No Pattern" != $CANDLE_PATTERN)
 {
-    speak($CANDLE_PATTERN);
+    if(getvar("pattern_"+$CHART1.SYMBOL) != $THEBAR0.Time){
+        speak($CANDLE_PATTERN);
+        setvar("pattern_"+$CHART1.SYMBOL, $THEBAR0.Time);
+    }
     if ($PATTERN_BIAS == "BULLISH")
     {
         $CHART1.GetCustButObj("btn_pattern").bkcolor = green;
