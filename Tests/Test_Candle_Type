@@ -447,20 +447,14 @@ if ($CANDLE_TYPE == "Topping Tail")
 {
     if ($SHORT_TERM_TREND == "UPTREND")
     {
-        if ($THEBAR_USHADOW >= $LARGE_TAIL_THRESHOLD)
-        {
             $CANDLE_BIAS = "BEARISH";
-        }
     }
 }
 if ($CANDLE_TYPE == "Bottoming Tail")
 {
     if ($SHORT_TERM_TREND == "DOWNTREND")
     {
-        if ($THEBAR_LSHADOW >= $LARGE_TAIL_THRESHOLD)
-        {
             $CANDLE_BIAS = "BULLISH";
-        }
     }
 }
 if ($CANDLE_TYPE == "Doji")
@@ -476,29 +470,6 @@ if ($CANDLE_TYPE == "Spinning Top")
     if ($SHORT_TERM_TREND != "SIDEWAYS")
     {
         $CANDLE_BIAS = "Indecision";
-    }
-}
-
-// =========================================================
-// TWO-CANDLE PATTERN CONFIRMATION
-// =========================================================
-$CANDLE_CONFIRMATION = "No Confirmation";
-if ($PREV_CANDLE_BIAS == "BEARISH")
-{
-    if ($THEBAR0.LO < $THEBAR1.LO)
-    {
-       $CANDLE_CONFIRMATION="Confirmed";
-    } else {
-       $CANDLE_CONFIRMATION="Rejected";
-    }
-}
-if ($PREV_CANDLE_BIAS == "BULLISH")
-{
-    if ($THEBAR0.HI > $THEBAR1.HI)
-    {
-       $CANDLE_CONFIRMATION="Confirmed";
-    } else {
-       $CANDLE_CONFIRMATION="Rejected";
     }
 }
 
@@ -561,6 +532,38 @@ else
     $CHART1.GetCustButObj("btn_candle_confirmation").bkcolor = color(211,211,211);
 }
 
+
+// =========================================================
+// TWO-CANDLE PATTERN CONFIRMATION
+// =========================================================
+
+$CANDLE_CONFIRMATION = "No Confirmation";
+
+if ($PREV_CANDLE_BIAS == "BEARISH")
+{
+    if ($THEBAR0.CLOSE < $THEBAR1.LO)
+    {
+        $CANDLE_CONFIRMATION = "Confirmed";
+    }
+
+    if ($THEBAR0.CLOSE > $THEBAR1.HI)
+    {
+        $CANDLE_CONFIRMATION = "Rejected";
+    }
+}
+
+if ($PREV_CANDLE_BIAS == "BULLISH")
+{
+    if ($THEBAR0.CLOSE > $THEBAR1.HI)
+    {
+        $CANDLE_CONFIRMATION = "Confirmed";
+    }
+
+    if ($THEBAR0.CLOSE < $THEBAR1.LO)
+    {
+        $CANDLE_CONFIRMATION = "Rejected";
+    }
+}
 
 // ---------------------------------------------------------
 // Special Check for Pronunciation

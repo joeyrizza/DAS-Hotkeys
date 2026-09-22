@@ -1,14 +1,26 @@
-// Speak Price Action 
+// Speak  Price Action 
 // If the setup is armed or the montage is in a position, announce price action at the end of the minute.
 // depends on: Test_Candle_Type
+// depends on: Test_ST_PriceContext
+
+// New Candle, reset announcement flags
+
+if ($ST_LAST_BAR != $CHART1.GetBar(0).Time)
+{
+    speak*("New Candle");
+    $CANDLE_ANNOUNCED = 0;
+    $ST_LIVE_EVENT = 0;
+    $ST_LAST_BAR = $CHART1.GetBar(0).Time;
+}
 
 $ANNOUNCE=0;
-if($SETUPARMED == 1 || $MONTAGE1.Pos > 0){
+if($SETUPARMED == 1 || $MONTAGE1.Pos > 0)
+{
     $ANNOUNCE=1;
 }
 
 //Announce Relative Volume
-if($ANNOUNCE == 1 && $SECONDS_IN_MINUTE > 53 && $VOL_ANNOUNCED == 0)
+if(($SETUPARMED == 1 || $MONTAGE1.Pos > 0) && $SECONDS_IN_MINUTE > 53 && $VOL_ANNOUNCED == 0)
 {
     if($ST_Interpretation != "Neutral")
     {
@@ -20,10 +32,33 @@ if($SECONDS_IN_MINUTE < 30)
 {
     $VOL_ANNOUNCED = 0;
 }
+// ==========================================
+// LIVE SHORT-TERM VOLUME EVENT DETECTION
+// ==========================================
 
+// High Volume Pullback
+if ($ANNOUNCE == 1 && $ST_RVOL10 >= 1.5 && $PriceChange < -0.25 && $PricePosition >= 50 && $ST_LIVE_EVENT == 0)
+{
+    Speak("High Volume Pullback");
+    $ST_LIVE_EVENT = 3;
+}
+
+// Strong Buying
+if ($ANNOUNCE == 1 && $ST_RVOL10 >= 1.5 && $PriceChange > 0.25 && $ST_LIVE_EVENT == 0)
+{
+    Speak("Strong Buying");
+    $ST_LIVE_EVENT = 1;
+}
+
+// Strong Selling
+if ($ANNOUNCE == 1 && $ST_RVOL10 >= 1.5 && $PriceChange < -0.25 && $PricePosition < 50 && $ST_LIVE_EVENT == 0)
+{
+    Speak("Strong Selling");
+    $ST_LIVE_EVENT = 2;
+}
 // Speak as candle is closing
 
-if($ANNOUNCE == 1 && $SECONDS_IN_MINUTE > 55 && $CANDLE_ANNOUNCED == 0)
+if($SECONDS_IN_MINUTE > 55 && $CANDLE_ANNOUNCED == 0)
 {
     if($CANDLE_TYPE != "Normal Candle")
     {
@@ -32,9 +67,5 @@ if($ANNOUNCE == 1 && $SECONDS_IN_MINUTE > 55 && $CANDLE_ANNOUNCED == 0)
         speak($CANDLE_TYPE_SP);
         $CANDLE_ANNOUNCED = 1;
     }
-}
-if($SECONDS_IN_MINUTE < 30)
-{
-    $CANDLE_ANNOUNCED = 0;
 }
 

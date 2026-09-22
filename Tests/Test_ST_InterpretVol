@@ -30,16 +30,6 @@ else if ($PricePosition <= 25 && $ST_RVOL10 < 1.0 && $PriceChange > 0.25)
     $ST_Interpretation="Bounce From Low";
 }
 
-// Normal-volume directional movement
-else if ($ST_RVOL10 >= 1.0 && $PriceChange > 0.25)
-{
-    $ST_Interpretation="Buying";
-}
-else if ($ST_RVOL10 >= 1.0 && $PriceChange < -0.25)
-{
-    $ST_Interpretation="Selling";
-}
-
 // Low-volume directional movement
 else if ($ST_RVOL10 < 1.0 && $PriceChange < -0.25)
 {
