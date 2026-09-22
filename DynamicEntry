@@ -2,7 +2,7 @@ $BuyPrice=Ask;
 $MaxShares=25;
 $MaxLongVal=2000;
 $Debug=0;
-
+Stopread;
 $StopLimitPriceOffset=.05;
 $MinimumAllowedStopDistance=.05;
 $MaximumRiskPerTrade=($MaxShares * .15);
