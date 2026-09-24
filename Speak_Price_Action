@@ -7,7 +7,7 @@
 
 if ($ST_LAST_BAR != $CHART1.GetBar(0).Time)
 {
-    speak*("New Candle");
+    speak("New Candle");
     $CANDLE_ANNOUNCED = 0;
     $ST_LIVE_EVENT = 0;
     $ST_LAST_BAR = $CHART1.GetBar(0).Time;
