@@ -1,0 +1,15 @@
+$M=$MONTAGE1;
+CXL ALLSYMB;
+$qty=$M.Pos*0.75;
+
+$M.ROUTE=LIMIT;
+$M.Price=$M.Bid-0.10;
+$M.Share=$qty;
+$M.SELL=Send;
+
+$M.ROUTE=STOP;
+$M.StopType=LimitP;
+$M.StopPrice=$M.AvgCost;
+$M.Price=$M.AvgCost;
+$M.Share=$M.Pos-$qty;
+$M.SELL=Send;

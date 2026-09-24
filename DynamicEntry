@@ -1,4 +1,5 @@
-$BuyPrice=Ask;
+$MONTAGE1 = GetWindowObj("MONTAGE1");
+$BuyPrice=$MONTAGE1.Ask;
 $MaxShares=25;
 $MaxLongVal=2000;
 $Debug=0;
@@ -6,7 +7,7 @@ Stopread;
 $StopLimitPriceOffset=.05;
 $MinimumAllowedStopDistance=.05;
 $MaximumRiskPerTrade=($MaxShares * .15);
-$SelectedStopPrice=price;
+$SelectedStopPrice=$MONTAGE1.Price;
 
 
 if (SubString($MONTAGE1.Account,0,2) == "TR")
@@ -30,7 +31,7 @@ Speak You cannot trade just because you feel like trading. You must first explic
 return;
 }
 
-if($SelectedStopPrice >= Bid){
+if($SelectedStopPrice >= $MONTAGE1.Bid){
     Speak("Stop is above Bid price");
     Price=$SelectedStopPrice;
     return;
@@ -42,7 +43,6 @@ if($BuyPrice-$SelectedStopPrice <= $MinimumAllowedStopDistance){
     return;
 }
 $SetupArmed=0;
-SwitchTWnd;
 CXL ALLSYMB;
 
 $TechnicalStopDistance=$BuyPrice-$SelectedStopPrice;
@@ -67,11 +67,15 @@ $TechnicalStopRisk=$FinalShareCount*$TechnicalStopDistance;
 $AdditionalOffsetRisk=$FinalShareCount*$StopLimitPriceOffset;
 $WorstCasePlannedRisk=$FinalShareCount*$EffectiveRiskPerShare;
 
-SShare=$amount;Share=$FinalShareCount;TogSShare;ROUTE=$Route;Price=$BuyPrice;TIF=DAY+;
+//SShare=$amount;Share=$FinalShareCount;TogSShare;ROUTE=$Route;Price=$BuyPrice;TIF=DAY+;
+$MONTAGE1.Share=$FinalShareCount;
+$MONTAGE1.ROUTE=$Route;
+$MONTAGE1.Price=$BuyPrice;
+$MONTAGE1.TIF="DAY+";
 
 if($Debug == 0){
     BUY=Send;
-    TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$SelectedStopPrice-$StopLimitPriceOffset ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
+    $MONTAGE1.TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$SelectedStopPrice-$StopLimitPriceOffset ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
 } else {
     MsgBox(
         "\nSelectedStopPrice: $" + $SelectedStopPrice
