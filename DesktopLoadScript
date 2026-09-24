@@ -2,6 +2,6 @@
 $CHART1= GetWindowObj("Chart1");
 $CHARTD= GetWindowObj("ChartDaily");
 $MONTAGE1=GetWindowObj("MONTAGE1");
-
+$LADDER1=GetWindowObj("LADDER1");
 //Risk Per Candle val
 $rpcval=25;
