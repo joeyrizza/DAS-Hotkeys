@@ -1,5 +1,5 @@
-$MONTAGE1 = GetWindowObj("MONTAGE1");
-$BuyPrice=$MONTAGE1.Ask;
+$M=$MONTAGE1;
+$BuyPrice=$M.Ask;
 $MaxShares=25;
 $MaxLongVal=2000;
 $Debug=0;
@@ -7,10 +7,10 @@ Stopread;
 $StopLimitPriceOffset=.05;
 $MinimumAllowedStopDistance=.05;
 $MaximumRiskPerTrade=($MaxShares * .15);
-$SelectedStopPrice=$MONTAGE1.Price;
+$SelectedStopPrice=$M.Price;
 
 
-if (SubString($MONTAGE1.Account,0,2) == "TR")
+if (SubString($M.Account,0,2) == "TR")
 {
     //Training Acount
     $Route="ARCAL";
@@ -21,17 +21,17 @@ else
     $Route="ARCA1L";
 }
 
-if(Pos > 0){
+if($M.Pos > 0){
     Speak("Position is not flat");
     return;
 }
 
 if($SetupArmed==0){
-Speak You cannot trade just because you feel like trading. You must first explicitly declare that you have identified a setup.;
+Speak("You cannot trade just because you feel like trading. You must first explicitly declare that you have identified a setup.");
 return;
 }
 
-if($SelectedStopPrice >= $MONTAGE1.Bid){
+if($SelectedStopPrice >= $M.Bid){
     Speak("Stop is above Bid price");
     Price=$SelectedStopPrice;
     return;
@@ -68,14 +68,14 @@ $AdditionalOffsetRisk=$FinalShareCount*$StopLimitPriceOffset;
 $WorstCasePlannedRisk=$FinalShareCount*$EffectiveRiskPerShare;
 
 //SShare=$amount;Share=$FinalShareCount;TogSShare;ROUTE=$Route;Price=$BuyPrice;TIF=DAY+;
-$MONTAGE1.Share=$FinalShareCount;
-$MONTAGE1.ROUTE=$Route;
-$MONTAGE1.Price=$BuyPrice;
-$MONTAGE1.TIF="DAY+";
+$M.Share=$FinalShareCount;
+$M.ROUTE=$Route;
+$M.Price=$BuyPrice;
+$M.TIF="DAY+";
 
 if($Debug == 0){
-    BUY=Send;
-    $MONTAGE1.TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$SelectedStopPrice-$StopLimitPriceOffset ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
+    $M.BUY=Send;
+    $M.TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$SelectedStopPrice-$StopLimitPriceOffset ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
 } else {
     MsgBox(
         "\nSelectedStopPrice: $" + $SelectedStopPrice
@@ -89,4 +89,4 @@ if($Debug == 0){
     );
 }
 
-Price=$SelectedStopPrice;
+$M.Price=$SelectedStopPrice;
