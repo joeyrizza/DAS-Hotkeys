@@ -14,39 +14,136 @@ $THEBAR3 = getwindowobj("CHART1").getbar(-3);
 $THEBAR4 = getwindowobj("CHART1").getbar(-4);
 $THEBAR5 = getwindowobj("CHART1").getbar(-5);
 
-// ---------------------------------------------------------
+/// ---------------------------------------------------------
 // BULLISH IMPULSE
 // ---------------------------------------------------------
-
-// Three consecutive green impulse candles
 //
-// Bars 3, 2, 1 = GREEN
-// Increasing volume: 3 < 2 < 1
+// Detects a meaningful bullish price expansion.
+// The impulse can occur in 1, 2, or 3 candles.
+//
+// Measures:
+//   1. Bullish price movement
+//   2. Percentage expansion
+//   3. Higher-high / higher-low structure
+//   4. Meaningful volume
+//
+// Does NOT require 3 consecutive green candles.
+// Does NOT require increasing volume on every candle.
 // ---------------------------------------------------------
 
 $BULLISH_IMPULSE = 0;
 
-if ($THEBAR3.OPEN < $THEBAR3.CLOSE)
+// ---------------------------------------------------------
+// IMPULSE THRESHOLDS
+// ---------------------------------------------------------
+
+$ImpulseStart = $THEBAR3.OPEN;
+$ImpulseHigh  = $THEBAR1.HI;
+
+$ImpulseMove = $ImpulseHigh - $ImpulseStart;
+
+if ($ImpulseStart > 0)
 {
-    if ($THEBAR2.OPEN < $THEBAR2.CLOSE)
+    $ImpulsePercent = ($ImpulseMove / $ImpulseStart) * 100;
+}
+else
+{
+    $ImpulsePercent = 0;
+}
+
+
+// ---------------------------------------------------------
+// ONE-CANDLE IMPULSE
+// ---------------------------------------------------------
+//
+// A single large bullish candle can be an impulse.
+//
+// Requires:
+//   - bullish candle
+//   - meaningful % move
+//   - meaningful volume
+// ---------------------------------------------------------
+
+if ($THEBAR1.OPEN < $THEBAR1.CLOSE)
+{
+    if ($THEBAR1.CLOSE > $THEBAR1.OPEN)
     {
-        if ($THEBAR1.OPEN < $THEBAR1.CLOSE)
+        $OneCandleMove = $THEBAR1.CLOSE - $THEBAR1.OPEN;
+
+        if ($THEBAR1.OPEN > 0)
         {
-            if ($THEBAR2.HI > $THEBAR3.HI)
+            $OneCandlePercent = ($OneCandleMove / $THEBAR1.OPEN) * 100;
+        }
+        else
+        {
+            $OneCandlePercent = 0;
+        }
+
+        if ($OneCandlePercent >= 3)
+        {
+            if ($THEBAR1.VOLUME >= 250000)
             {
-                if ($THEBAR1.HI > $THEBAR2.HI)
+                $BULLISH_IMPULSE = 1;
+            }
+        }
+    }
+}
+
+
+// ---------------------------------------------------------
+// TWO-CANDLE IMPULSE
+// ---------------------------------------------------------
+//
+// Price must make meaningful upward expansion.
+// Does not require both candles to be green.
+// ---------------------------------------------------------
+
+if ($THEBAR2.OPEN > 0)
+{
+    $TwoCandleMove = $THEBAR1.HI - $THEBAR2.OPEN;
+    $TwoCandlePercent = ($TwoCandleMove / $THEBAR2.OPEN) * 100;
+
+    if ($TwoCandlePercent >= 3)
+    {
+        if ($THEBAR1.HI > $THEBAR2.HI)
+        {
+            if ($THEBAR1.LO >= $THEBAR2.LO)
+            {
+                if ($THEBAR2.VOLUME + $THEBAR1.VOLUME >= 250000)
                 {
-                    if ($THEBAR2.LO > $THEBAR3.LO)
+                    $BULLISH_IMPULSE = 1;
+                }
+            }
+        }
+    }
+}
+
+
+// ---------------------------------------------------------
+// THREE-CANDLE IMPULSE
+// ---------------------------------------------------------
+//
+// Allows a slower developing impulse.
+// ---------------------------------------------------------
+
+if ($THEBAR3.OPEN > 0)
+{
+    $ThreeCandleMove = $THEBAR1.HI - $THEBAR3.OPEN;
+    $ThreeCandlePercent = ($ThreeCandleMove / $THEBAR3.OPEN) * 100;
+
+    if ($ThreeCandlePercent >= 3)
+    {
+        if ($THEBAR2.HI > $THEBAR3.HI)
+        {
+            if ($THEBAR1.HI > $THEBAR2.HI)
+            {
+                if ($THEBAR2.LO >= $THEBAR3.LO)
+                {
+                    if ($THEBAR1.LO >= $THEBAR2.LO)
                     {
-                        if ($THEBAR1.LO > $THEBAR2.LO)
+                        if ($THEBAR3.VOLUME + $THEBAR2.VOLUME + $THEBAR1.VOLUME >= 250000)
                         {
-                            if ($THEBAR2.VOLUME > $THEBAR3.VOLUME)
-                            {
-                                if ($THEBAR1.VOLUME > $THEBAR2.VOLUME)
-                                {
-                                    $BULLISH_IMPULSE = 1;
-                                }
-                            }
+                            $BULLISH_IMPULSE = 1;
                         }
                     }
                 }
@@ -54,6 +151,7 @@ if ($THEBAR3.OPEN < $THEBAR3.CLOSE)
         }
     }
 }
+
 // ---------------------------------------------------------
 // BULL FLAG
 // ---------------------------------------------------------
@@ -234,181 +332,6 @@ if ($BULLISH_IMPULSE == 1)
 }
 
 // =========================================================
-// BEAR FLAG
-// =========================================================
-
-
-// ---------------------------------------------------------
-// 1. Three consecutive red impulse candles
-//
-// Bars 5, 4, 3 = RED
-// ---------------------------------------------------------
-
-$BEARISH_IMPULSE = 0;
-
-if ($THEBAR5.OPEN > $THEBAR5.CLOSE)
-{
-    if ($THEBAR4.OPEN > $THEBAR4.CLOSE)
-    {
-        if ($THEBAR3.OPEN > $THEBAR3.CLOSE)
-        {
-            if ($THEBAR4.HI < $THEBAR5.HI)
-            {
-                if ($THEBAR3.HI < $THEBAR4.HI)
-                {
-                    if ($THEBAR4.LO < $THEBAR5.LO)
-                    {
-                        if ($THEBAR3.LO < $THEBAR4.LO)
-                        {
-                            $BEARISH_IMPULSE = 1;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-// ---------------------------------------------------------
-// 2. Two consecutive green pullback candles
-//
-// Bars 2 and 1 = GREEN
-// ---------------------------------------------------------
-
-$BEARFLAG_PULLBACK = 0;
-
-if ($THEBAR2.OPEN < $THEBAR2.CLOSE)
-{
-    if ($THEBAR1.OPEN < $THEBAR1.CLOSE)
-    {
-        if ($THEBAR1.HI > $THEBAR2.HI)
-        {
-            if ($THEBAR1.LO > $THEBAR2.LO)
-            {
-                $BEARFLAG_PULLBACK = 1;
-            }
-        }
-    }
-}
-
-
-
-// ---------------------------------------------------------
-// 3. Pullback lows cannot break the previous candle lows
-//
-// Bar 2 low >= bar 3 low
-// Bar 1 low >= bar 2 low
-// ---------------------------------------------------------
-
-$BEARFLAG_PULLBACK_LOW_OK = 0;
-
-if ($THEBAR2.LO > $THEBAR3.LO)
-{
-    if ($THEBAR1.LO > $THEBAR2.LO)
-    {
-        $BEARFLAG_PULLBACK_LOW_OK = 1;
-    }
-}
-
-
-// ---------------------------------------------------------
-// 4. Calculate bearish impulse range
-// ---------------------------------------------------------
-
-$BEARISH_IMPULSE_LOW = $THEBAR3.LO;
-$BEARISH_IMPULSE_HIGH = $THEBAR5.HI;
-$BEARISH_IMPULSE_RANGE = $BEARISH_IMPULSE_HIGH - $BEARISH_IMPULSE_LOW;
-$BEARFLAG_50_PERCENT_LEVEL = $BEARISH_IMPULSE_HIGH - ($BEARISH_IMPULSE_RANGE * 0.50);
-
-// ---------------------------------------------------------
-// 5. Bear flag cannot retrace more than 50%
-//
-// Use the highest high of the pullback.
-// ---------------------------------------------------------
-
-$BEARFLAG_PULLBACK_HIGH = $THEBAR1.HI;
-$BEARFLAG_RETRACE_OK = 0;
-
-if ($BEARFLAG_PULLBACK_HIGH <= $BEARFLAG_50_PERCENT_LEVEL)
-{
-    $BEARFLAG_RETRACE_OK = 1;
-}
-
-
-// ---------------------------------------------------------
-// 6. Volume profile
-//
-// Initial selling volume should be greater than
-// pullback buying volume.
-// ---------------------------------------------------------
-
-$BEARFLAG_IMPULSE_AVG_VOL = ($THEBAR5.VOLUME + $THEBAR4.VOLUME + $THEBAR3.VOLUME) / 3;
-$BEARFLAG_PULLBACK_AVG_VOL = ($THEBAR2.VOLUME + $THEBAR1.VOLUME) / 2;
-$BEARFLAG_VOLUME_OK = 0;
-
-if ($BEARFLAG_PULLBACK_AVG_VOL < $BEARFLAG_IMPULSE_AVG_VOL)
-{
-    $BEARFLAG_VOLUME_OK = 1;
-}
-
-// ---------------------------------------------------------
-// 7. Current candle must break the pullback
-//
-// Current candle makes a new low below the most recent
-// pullback candle.
-//
-// Volume should begin increasing.
-// ---------------------------------------------------------
-
-$BEARFLAG_BREAKOUT_OK = 0;
-
-if ($THEBAR0.OPEN > $THEBAR0.CLOSE)
-{
-    if ($THEBAR0.LO < $THEBAR1.LO)
-    {
-        if ($THEBAR0.VOLUME > $THEBAR1.VOLUME)
-        {
-            $BEARFLAG_BREAKOUT_OK = 1;
-        }
-    }
-}
-
-// ---------------------------------------------------------
-// 8. Assemble Bear Flag
-// ---------------------------------------------------------
-$BEARFLAG = 0;
-
-if ($BEARISH_IMPULSE == 1)
-{
-    if ($BEARFLAG_PULLBACK == 1)
-    {
-        if ($BEARFLAG_PULLBACK_LOW_OK == 1)
-        {
-            if ($BEARFLAG_RETRACE_OK == 1)
-            {
-                if ($BEARFLAG_VOLUME_OK == 1)
-                {
-                    $CANDLE_PATTERN="Bear Flag Forming";
-                    if ($BEARFLAG_BREAKOUT_OK == 1)
-                    {
-                        $CANDLE_PATTERN="Bear Flag";
-                    } else{
-                        $CANDLE_PATTERN="Pattern Rejected: No Breakout";
-                    }
-                } else{
-                    $CANDLE_PATTERN="Pattern Rejected: Volume Profile Not Met";
-                }
-            } else {
-                $CANDLE_PATTERN="Pattern Rejected: Retrace Exceeds 50%";
-            }
-        } else
-        {
-            $CANDLE_PATTERN="Pattern Rejected: Pullback Low Broke Previous Candle Low";
-        }
-    }
-}
-
-// =========================================================
 // MULTI-CANDLE PATTERN BIAS
 // =========================================================
 //
@@ -430,19 +353,6 @@ if( $CANDLE_PATTERN == "Bullish Impulse")
     $PATTERN_BIAS = "BULLISH";
 }
 
-if ($CANDLE_PATTERN == "Bear Flag")
-{
-    $PATTERN_BIAS = "BEARISH";
-}
-if ($CANDLE_PATTERN == "Bear Flag Forming")
-{
-    $PATTERN_BIAS = "BEARISH";
-}
-if( $CANDLE_PATTERN == "Bearish Impulse")
-{
-    $PATTERN_BIAS = "BEARISH";
-}
-
 if ($CANDLE_PATTERN == "Pullback")
 {
     $PATTERN_BIAS = "Indecision";
@@ -451,7 +361,7 @@ if ($CANDLE_PATTERN == "Pullback")
 // =========================================================
 // BUTTON TEXT
 // =========================================================
-$CHART1.GetCustButObj("btn_pattern").text = $CANDLE_PATTERN + " / " + $PATTERN_BIAS;
+$LADDER1.GetCustButObj("btn_pattern").text = $CANDLE_PATTERN + " / " + $PATTERN_BIAS;
 
 // =========================================================
 // BUTTON COLOR & SPEECH
@@ -469,21 +379,21 @@ if ($SECONDS_IN_MINUTE > 30 && "No Pattern" != $CANDLE_PATTERN)
     }
     if ($PATTERN_BIAS == "BULLISH")
     {
-        $CHART1.GetCustButObj("btn_pattern").bkcolor = green;
+        $LADDER1.GetCustButObj("btn_pattern").bkcolor = green;
     }
 
     if ($PATTERN_BIAS == "BEARISH")
     {
-        $CHART1.GetCustButObj("btn_pattern").bkcolor = red;
+        $LADDER1.GetCustButObj("btn_pattern").bkcolor = red;
     }
 
     if ($PATTERN_BIAS == "Indecision")
     {
-        $CHART1.GetCustButObj("btn_pattern").bkcolor = orange;
+        $LADDER1.GetCustButObj("btn_pattern").bkcolor = orange;
     }
 }
 else
 {
-    $CHART1.GetCustButObj("btn_pattern").bkcolor = color(211,211,211);
+    $LADDER1.GetCustButObj("btn_pattern").bkcolor = color(211,211,211);
 }
 
