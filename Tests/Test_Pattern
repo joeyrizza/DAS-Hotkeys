@@ -220,16 +220,19 @@ if ($BULLISH_IMPULSE == 0)
 
     if ($ImpulsePercent >= $MIN_IMPULSE_PERCENT)
     {
-        if ($ImpulseVolume >= $MIN_IMPULSE_VOLUME)
+        if ($BullishStructure == 1)
         {
-            if ($BullishStructure == 1)
+            if ($ImpulseVolume >= $MIN_IMPULSE_VOLUME)
             {
                 $BULLISH_IMPULSE = 1;
+                $CANDLE_PATTERN = "Bullish Impulse";
                 $IMPULSE_TYPE = "MULTI-CANDLE";
             }
-        } else {
-        $CANDLE_PATTERN = "Low Volume Impulse";
-    }
+            else
+            {
+                $CANDLE_PATTERN = "Low Volume Impulse";
+            }
+        }
     }
 
 }
