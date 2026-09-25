@@ -2,9 +2,9 @@
 $FLOAT=getquoteobj($CHART1.SYMBOL).float/1000000;
 
 if($FLOAT < 1){
-  $FLOATDISP=Round(SubString($FLOAT,2,StrLen($FLOAT)),3)+"K";
+  $FLOATDISP=Round($FLOAT*1000,0)+"K";
 } else {
-  $FLOATDISP=$FLOAT+"M";
+  $FLOATDISP=Round($FLOAT,2)+"M";
 }
 $CHART1.GetCustButObj("btn_float").text ="Float: " + $FLOATDISP;
 
