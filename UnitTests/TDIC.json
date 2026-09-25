@@ -1,0 +1,13 @@
+{
+  "name": "TDIC 12:11",
+  "expected": true,
+  "bars": {
+    "BAR1": {
+      "open": 2.60,
+      "high": 3.17,
+      "low": 2.60,
+      "close": 3.17,
+      "volume": 522650
+    }
+  }
+}
