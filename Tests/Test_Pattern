@@ -13,171 +13,225 @@ $THEBAR2 = getwindowobj("CHART1").getbar(-2);
 $THEBAR3 = getwindowobj("CHART1").getbar(-3);
 $THEBAR4 = getwindowobj("CHART1").getbar(-4);
 $THEBAR5 = getwindowobj("CHART1").getbar(-5);
-// ---------------------------------------------------------
+// =========================================================
 // BULLISH IMPULSE
-// ---------------------------------------------------------
+// =========================================================
 //
-// Detects meaningful bullish price expansion.
+// ONE-CANDLE IMPULSE:
+//   - Bullish candle
+//   - >= 3% price expansion
+//   - >= 250K volume
+//   - HH/HL structure NOT required
 //
-// The impulse is based primarily on:
-//   1. Cumulative price expansion
-//   2. Higher highs
-//   3. Higher lows
-//   4. Meaningful volume
+// MULTI-CANDLE IMPULSE:
+//   - Meaningful cumulative price expansion
+//   - Meaningful volume
+//   - Bullish HH/HL structure
 //
-// The impulse may develop over 1–4 candles.
-// Candle count is NOT the primary definition of an impulse.
+// THEBAR1 = most recent completed candle
+// THEBAR2 = previous candle
+// THEBAR3 = previous candle
+// THEBAR4 = oldest candle
 //
-// Uses completed candles only:
-//   THEBAR1 = most recent completed candle
-//   THEBAR2 = previous candle
-//   THEBAR3 = previous candle
-//   THEBAR4 = previous candle
-//
-// ---------------------------------------------------------
+// =========================================================
 
 $BULLISH_IMPULSE = 0;
-
-
-// ---------------------------------------------------------
-// IMPULSE THRESHOLDS
-// ---------------------------------------------------------
+$IMPULSE_TYPE = "NONE";
 
 $MIN_IMPULSE_PERCENT = 3;
-$MIN_IMPULSE_VOLUME  = 250000;
+$MIN_IMPULSE_VOLUME = 250000;
 
 
-// ---------------------------------------------------------
-// FIND THE START OF THE PRICE EXPANSION
-// ---------------------------------------------------------
+// =========================================================
+// ONE-CANDLE IMPULSE
+// =========================================================
 //
-// Use the lowest low in the recent 4-candle sequence.
-// This allows the impulse to begin at any point within
-// the sequence rather than assuming it starts at a
-// particular candle.
+// A single large bullish candle can itself be an impulse.
 //
-// ---------------------------------------------------------
-
-$ImpulseLow = $THEBAR4.LO;
-
-if ($THEBAR3.LO < $ImpulseLow)
-{
-    $ImpulseLow = $THEBAR3.LO;
-}
-
-if ($THEBAR2.LO < $ImpulseLow)
-{
-    $ImpulseLow = $THEBAR2.LO;
-}
-
-if ($THEBAR1.LO < $ImpulseLow)
-{
-    $ImpulseLow = $THEBAR1.LO;
-}
-
-
-// ---------------------------------------------------------
-// FIND THE HIGH OF THE EXPANSION
-// ---------------------------------------------------------
-
-$ImpulseHigh = $THEBAR1.HI;
-
-if ($THEBAR2.HI > $ImpulseHigh)
-{
-    $ImpulseHigh = $THEBAR2.HI;
-}
-
-if ($THEBAR3.HI > $ImpulseHigh)
-{
-    $ImpulseHigh = $THEBAR3.HI;
-}
-
-if ($THEBAR4.HI > $ImpulseHigh)
-{
-    $ImpulseHigh = $THEBAR4.HI;
-}
-
-
-// ---------------------------------------------------------
-// CALCULATE PRICE EXPANSION
-// ---------------------------------------------------------
-
-$ImpulseMove = $ImpulseHigh - $ImpulseLow;
-
-$ImpulsePercent = 0;
-
-if ($ImpulseLow > 0)
-{
-    $ImpulsePercent = ($ImpulseMove / $ImpulseLow) * 100;
-}
-
-
-// ---------------------------------------------------------
-// TOTAL VOLUME
-// ---------------------------------------------------------
-
-$ImpulseVolume =
-    $THEBAR1.VOLUME +
-    $THEBAR2.VOLUME +
-    $THEBAR3.VOLUME +
-    $THEBAR4.VOLUME;
-
-
-// ---------------------------------------------------------
-// BULLISH STRUCTURE
-// ---------------------------------------------------------
+// HH/HL structure does NOT apply here.
 //
-// The most recent candles should demonstrate upward
-// price progression.
-//
-// We don't require every candle to be green.
-// A small red/indecision candle can occur during
-// an otherwise bullish expansion.
-//
+// =========================================================
+
+$OneCandleMove = $THEBAR1.HI - $THEBAR1.OPEN;
+
+$OneCandlePercent = 0;
+
+if ($THEBAR1.OPEN > 0)
+{
+    $OneCandlePercent =
+        ($OneCandleMove / $THEBAR1.OPEN) * 100;
+}
+
+
+// ---------------------------------------------------------
+// TEST ONE-CANDLE CONDITIONS
 // ---------------------------------------------------------
 
-$BullishStructure = 0;
+$OneCandleBullish = 0;
+$OneCandleExpansion = 0;
+$OneCandleVolume = 0;
 
-if ($THEBAR3.HI > $THEBAR4.HI)
+if ($THEBAR1.CLOSE > $THEBAR1.OPEN)
 {
-    if ($THEBAR2.HI > $THEBAR3.HI)
+    $OneCandleBullish = 1;
+}
+
+if ($OneCandlePercent >= $MIN_IMPULSE_PERCENT)
+{
+    $OneCandleExpansion = 1;
+}
+
+if ($THEBAR1.VOLUME >= $MIN_IMPULSE_VOLUME)
+{
+    $OneCandleVolume = 1;
+}
+
+
+// ---------------------------------------------------------
+// ONE-CANDLE IMPULSE CONFIRMED
+// ---------------------------------------------------------
+
+if ($OneCandleBullish == 1)
+{
+    if ($OneCandleExpansion == 1)
     {
-        if ($THEBAR1.HI > $THEBAR2.HI)
+        if ($OneCandleVolume == 1)
         {
-            if ($THEBAR3.LO >= $THEBAR4.LO)
+            $BULLISH_IMPULSE = 1;
+            $IMPULSE_TYPE = "ONE-CANDLE";
+        }
+    }
+}
+
+
+// =========================================================
+// MULTI-CANDLE IMPULSE
+// =========================================================
+//
+// Only evaluate the multi-candle path if the most recent
+// candle did NOT already qualify as a one-candle impulse.
+//
+// =========================================================
+
+if ($BULLISH_IMPULSE == 0)
+{
+
+    // -----------------------------------------------------
+    // FIND LOWEST LOW
+    // -----------------------------------------------------
+
+    $ImpulseLow = $THEBAR4.LO;
+
+    if ($THEBAR3.LO < $ImpulseLow)
+    {
+        $ImpulseLow = $THEBAR3.LO;
+    }
+
+    if ($THEBAR2.LO < $ImpulseLow)
+    {
+        $ImpulseLow = $THEBAR2.LO;
+    }
+
+    if ($THEBAR1.LO < $ImpulseLow)
+    {
+        $ImpulseLow = $THEBAR1.LO;
+    }
+
+
+    // -----------------------------------------------------
+    // FIND HIGHEST HIGH
+    // -----------------------------------------------------
+
+    $ImpulseHigh = $THEBAR1.HI;
+
+    if ($THEBAR2.HI > $ImpulseHigh)
+    {
+        $ImpulseHigh = $THEBAR2.HI;
+    }
+
+    if ($THEBAR3.HI > $ImpulseHigh)
+    {
+        $ImpulseHigh = $THEBAR3.HI;
+    }
+
+    if ($THEBAR4.HI > $ImpulseHigh)
+    {
+        $ImpulseHigh = $THEBAR4.HI;
+    }
+
+
+    // -----------------------------------------------------
+    // CALCULATE PRICE EXPANSION
+    // -----------------------------------------------------
+
+    $ImpulseMove =
+        $ImpulseHigh - $ImpulseLow;
+
+    $ImpulsePercent = 0;
+
+    if ($ImpulseLow > 0)
+    {
+        $ImpulsePercent =
+            ($ImpulseMove / $ImpulseLow) * 100;
+    }
+
+
+    // -----------------------------------------------------
+    // TOTAL VOLUME
+    // -----------------------------------------------------
+
+    $ImpulseVolume =
+        $THEBAR1.VOLUME +
+        $THEBAR2.VOLUME +
+        $THEBAR3.VOLUME +
+        $THEBAR4.VOLUME;
+
+
+    // -----------------------------------------------------
+    // BULLISH STRUCTURE
+    // -----------------------------------------------------
+
+    $BullishStructure = 0;
+
+    if ($THEBAR3.HI > $THEBAR4.HI)
+    {
+        if ($THEBAR2.HI > $THEBAR3.HI)
+        {
+            if ($THEBAR1.HI > $THEBAR2.HI)
             {
-                if ($THEBAR2.LO >= $THEBAR3.LO)
+                if ($THEBAR3.LO >= $THEBAR4.LO)
                 {
-                    if ($THEBAR1.LO >= $THEBAR2.LO)
+                    if ($THEBAR2.LO >= $THEBAR3.LO)
                     {
-                        $BullishStructure = 1;
+                        if ($THEBAR1.LO >= $THEBAR2.LO)
+                        {
+                            $BullishStructure = 1;
+                        }
                     }
                 }
             }
         }
     }
-}
 
 
-// ---------------------------------------------------------
-// BULLISH IMPULSE
-// ---------------------------------------------------------
-//
-// Meaningful price expansion +
-// bullish structure +
-// meaningful participation
-//
-// ---------------------------------------------------------
+    // -----------------------------------------------------
+    // MULTI-CANDLE IMPULSE CONFIRMED
+    // -----------------------------------------------------
 
-if ($ImpulsePercent >= $MIN_IMPULSE_PERCENT)
-{
-    if ($ImpulseVolume >= $MIN_IMPULSE_VOLUME)
+    if ($ImpulsePercent >= $MIN_IMPULSE_PERCENT)
     {
-        if ($BullishStructure == 1)
+        if ($ImpulseVolume >= $MIN_IMPULSE_VOLUME)
         {
-            $BULLISH_IMPULSE = 1;
-        }
+            if ($BullishStructure == 1)
+            {
+                $BULLISH_IMPULSE = 1;
+                $IMPULSE_TYPE = "MULTI-CANDLE";
+            }
+        } else {
+        $CANDLE_PATTERN = "Low Volume Impulse";
     }
+    }
+
 }
 
 // =========================================================
@@ -194,12 +248,15 @@ if( $CANDLE_PATTERN == "Bullish Impulse")
 {
     $PATTERN_BIAS = "BULLISH";
 }
-
+else if( $CANDLE_PATTERN == "Low Volume Impulse")
+{
+    $PATTERN_BIAS = "Indecision";
+}
 
 // =========================================================
 // BUTTON TEXT
 // =========================================================
-$LADDER1.GetCustButObj("btn_pattern").text = $CANDLE_PATTERN + " / " + $PATTERN_BIAS;
+$LADDER1.GetCustButObj("btn_pattern").text = $CANDLE_PATTERN;
 
 // =========================================================
 // BUTTON COLOR & SPEECH
@@ -209,8 +266,8 @@ $LADDER1.GetCustButObj("btn_pattern").text = $CANDLE_PATTERN + " / " + $PATTERN_
 
 if ("No Pattern" != $CANDLE_PATTERN)
 {
-    speak($CANDLE_PATTERN);
     if(getvar("pattern_"+$CHART1.SYMBOL) != $THEBAR0.Time){
+        speak($CANDLE_PATTERN);
         setvar("pattern_"+$CHART1.SYMBOL, $THEBAR0.Time);
     }
     if ($PATTERN_BIAS == "BULLISH")
