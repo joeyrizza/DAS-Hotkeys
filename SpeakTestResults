@@ -21,7 +21,7 @@ if($RVOL>0 && $RVOL<=5){
   return;
 }
 //Average Range
-if($AverageRange > .4){
+if($AverageRange10 > .4){
   Speak("Candle range too large."); $OKtoArm=0;
   return;
 }
