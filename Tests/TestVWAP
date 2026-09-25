@@ -1,5 +1,5 @@
 //VWAP Test
-$VWAP=getquoteobj($CHART1.SYMBOL).vwap;
+$VWAP=$CHART1.GetStudyVal("StudyVWAP");
 $ABOVEVWAP=0;
 $VWAP_DISTANCE = $VWAP - $MPRICE;
 
