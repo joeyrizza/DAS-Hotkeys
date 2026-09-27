@@ -1,9 +1,9 @@
 //Intraday Levels
-$C="1H" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
-$C="1O" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
-$C="1C" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
-$C="1L" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
-$C="2H" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
-$C="2O" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
-$C="2C" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
-$C="2L" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}$L=$CHART1.GetTrendLine($C + "T");if (isobj($L)){$L.delete();}
+$C="1H" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
+$C="1O" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
+$C="1C" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
+$C="1L" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
+$C="2H" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
+$C="2O" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
+$C="2C" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
+$C="2L" + $CHART1.Symbol;$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
