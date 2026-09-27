@@ -90,3 +90,6 @@ if($STATE==2) {
 if($STATE==3) {
   Speak("No catalyst to account for move.");
 }
+if($REVERSAL==0) {
+  Speak("Price action has not yet confirmed a reversal.");
+}

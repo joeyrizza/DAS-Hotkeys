@@ -236,7 +236,26 @@ if ($BULLISH_IMPULSE == 0)
     }
 
 }
+// =========================================================
+// THREE CANDLE REVERSAL
+// =========================================================
+//
+// Detects a simple "the current candle has gone against the previous two candle pattern.
+//
+// =========================================================
+$REVERSAL = 0;
 
+if ($THEBAR1.LO < $THEBAR2.LO)
+{
+    if ($THEBAR0.LO >= $THEBAR1.LO)
+    {
+        if ($THEBAR0.HI > $THEBAR1.HI)
+        {
+            $REVERSAL = 1;
+            $CANDLE_PATTERN = "Possible Reversal";
+        }
+    }
+}
 // =========================================================
 // MULTI-CANDLE PATTERN BIAS
 // =========================================================
