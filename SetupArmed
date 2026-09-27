@@ -1,0 +1,13 @@
+exechotkey("SpeakTestResults");
+if($OKtoArm==1){
+  $SetupArmed=1;
+    GetWindowObj("CHART1").GetCustButObj("btn_arm").Text="Disarm Setup";
+    GetWindowObj("CHART1").GetCustButObj("btn_arm").bkcolor=orange;
+
+  Speak("Setup armed.");
+} else {
+
+  Speak("Non-Negotiable.");
+    GetWindowObj("CHART1").GetCustButObj("btn_arm").Text="Arm Setup";
+    GetWindowObj("CHART1").GetCustButObj("btn_arm").bkcolor=color(211,211,211);
+}
