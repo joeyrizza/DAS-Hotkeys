@@ -1,0 +1,78 @@
+{
+  "name": "WHLR 07:26",
+  "expected": true,
+  "bars": {
+    "BAR1": {
+      "open": 5.84,
+      "high": 6.20,
+      "low": 5.60,
+      "close": 5.659,
+      "volume": 468700,
+      "time": "07:26"
+    },
+    "BAR2": {
+      "open": 5.93,
+      "high": 6.10,
+      "low": 5.84,
+      "close": 5.86,
+      "volume": 219410,
+      "time": "07:25"
+    },
+    "BAR3": {
+      "open": 5.85,
+      "high": 6.07,
+      "low": 5.80,
+      "close": 5.89,
+      "volume": 301650,
+      "time": "07:24"
+    },
+    "BAR4": {
+      "open": 6.20,
+      "high": 6.23,
+      "low": 5.80,
+      "close": 5.869,
+      "volume": 253250,
+      "time": "07:23"
+    },
+    "BAR5": {
+      "open": 6.35,
+      "high": 6.409,
+      "low": 5.880,
+      "close": 6.20,
+      "volume": 340230,
+      "time": "07:22"
+    },
+    "BAR6": {
+      "open": 5.79,
+      "high": 6.880,
+      "low": 5.648,
+      "close": 6.35,
+      "volume": 488080,
+      "time": "07:21"
+    },
+    "BAR7": {
+      "open": 4.94,
+      "high": 6.00,
+      "low": 4.70,
+      "close": 5.76,
+      "volume": 370520,
+      "time": "07:20"
+    },
+    "BAR8": {
+      "open": 4.319,
+      "high": 4.94,
+      "low": 4.30,
+      "close": 4.939,
+      "volume": 106000,
+      "time": "07:19"
+    },
+    "BAR9": {
+      "open": 4.19,
+      "high": 4.3,
+      "low": 4.19,
+      "close": 4.3,
+      "volume": 15330,
+      "time": "07:18"
+    }
+  }
+}
