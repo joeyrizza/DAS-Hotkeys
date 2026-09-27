@@ -1,5 +1,5 @@
 $SetupArmed=0;
 Speak("Setup disarmed.");
-
+    exechotkey("CleanupLines_Risk");
     GetWindowObj("CHART1").GetCustButObj("btn_arm").Text="Arm Setup";
     GetWindowObj("CHART1").GetCustButObj("btn_arm").bkcolor=color(211,211,211);
