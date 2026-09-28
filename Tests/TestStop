@@ -51,12 +51,11 @@ if($SETUPARMED == 1){
     if (GetSecond() - $LAST_R_LINE_UPDATE >= 2)
     {
         //Draw profit lines
-        exechotkey("CleanupLines_Risk");
         $R1 = $MONTAGE1.Ask + $TechnicalStopDistance;
         $S1 = $TestStopPrice;
 
         if($R1 != $R1_Last){
-            $C="R1";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
+            $L=$CHART1.GetTrendLine("R1");if (isobj($L)){$L.delete();}
             $TL=$CHART1.CreateTrendline("HorizLine");
             $TL.Name="R1";
             $TL.Price=$R1;
@@ -71,7 +70,7 @@ if($SETUPARMED == 1){
             $R1_Last=$R1;
         }
         if($S1 != $S1_Last){
-            $S1="S1";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
+            $L=$CHART1.GetTrendLine("S1");if (isobj($L)){$L.delete();}
             $TL=$CHART1.CreateTrendline("HorizLine");
             $TL.Name="S1";
             $TL.Price=$S1;
