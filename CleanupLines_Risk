@@ -1,4 +1,3 @@
 //Risk Levels
-$C="R05";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
-$C="R10";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
-$C="R15";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
+$C="R1";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
+$C="S1";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}

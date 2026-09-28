@@ -46,43 +46,48 @@ $CHART1.GetCustButObj("btn_shares").text="Shares: " + $TestShareCount;
 $CHART1.GetCustButObj("btn_plannedrisk").text="Risk: " + Round($TestPlannedRiskR,2) + "R";
 
 if($SETUPARMED == 1){
-    //Draw profit lines
-    ConfigTrendLine HorzLine DotLine:00FF00:1;
-    $R05 = $MONTAGE1.Ask + (TechnicalStopDistance * 0.5);
-    $R10 = $MONTAGE1.Ask + $TechnicalStopDistance;
-    $R15 = $MONTAGE1.Ask + ($TechnicalStopDistance * 1.5);
+    $setuparmed=1;
 
-    $TL=$CHART1.CreateTrendline("HorizLine");
-    $TL.Name="R05";
-    $TL.Price=$R05;
-    $TL.Color=Color(0,255,0);
-    $TL.LineStyle=2;
-    $TL.LineWidth=1;
-    $TL.time=$ct;
-    $TL.time1=$ct;
-    $TL.LabelTextColor=Color(0,0,0);;
-    $TL.LabelBgColor=Color(0,255,0);
+    if (GetSecond() - $LAST_R_LINE_UPDATE >= 2)
+    {
+        //Draw profit lines
+        exechotkey("CleanupLines_Risk");
+        $R1 = $MONTAGE1.Ask + $TechnicalStopDistance;
+        $S1 = $TestStopPrice;
 
-    $TL=$CHART1.CreateTrendline("HorizLine");
-    $TL.Name="R10";
-    $TL.Price=$R10;
-    $TL.Color=Color(0,100,0);
-    $TL.LineStyle=2;
-    $TL.LineWidth=1;
-    $TL.time=$ct;
-    $TL.time1=$ct;
-    $TL.LabelTextColor=Color(0,0,0);;
-    $TL.LabelBgColor=Color(0,100,0);
-
-    $TL=$CHART1.CreateTrendline("HorizLine");
-    $TL.Name="R15";
-    $TL.Price=$R15;
-    $TL.Color=Color(0,100,0);
-    $TL.LineStyle=2;
-    $TL.LineWidth=1;
-    $TL.time=$ct;
-    $TL.time1=$ct;
-    $TL.LabelTextColor=Color(0,0,0);;
-    $TL.LabelBgColor=Color(0,100,0);
+        if($R1 != $R1_Last){
+            $C="R1";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
+            $TL=$CHART1.CreateTrendline("HorizLine");
+            $TL.Name="R1";
+            $TL.Price=$R1;
+            $TL.Color=Color(0,200,0);
+            $TL.LineStyle=2;
+            $TL.LineWidth=2;
+            $TL.time=$ct;
+            $TL.time1=$ct;
+            $TL.LabelTextColor=Color(0,0,0);;
+            $TL.LabelBgColor=Color(0,200,0);
+            GlobalTrendLineToLocal($TL);
+            $R1_Last=$R1;
+        }
+        if($S1 != $S1_Last){
+            $S1="S1";$L=$CHART1.GetTrendLine($C);if (isobj($L)){$L.delete();}
+            $TL=$CHART1.CreateTrendline("HorizLine");
+            $TL.Name="S1";
+            $TL.Price=$S1;
+            $TL.Color=Color(200,0,0);
+            $TL.LineStyle=2;
+            $TL.LineWidth=2;
+            $TL.time=$ct;
+            $TL.time1=$ct;
+            $TL.LabelTextColor=Color(0,0,0);;
+            $TL.LabelBgColor=Color(200,0,0);
+            GlobalTrendLineToLocal($TL);
+            $LAST_R_LINE_UPDATE = GetSecond();
+            $S1_Last=$S1;
+        }
+        $LAST_R_LINE_UPDATE = GetSecond();
+    }
+    
 
 }
