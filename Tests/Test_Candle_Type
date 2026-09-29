@@ -575,6 +575,14 @@ if ($CANDLE_TYPE == "Doji")
 {
     $CANDLE_TYPE_SP = "Doh-gee";
 }
+if ($CANDLE_TYPE == "Gravestone Doji")
+{
+    $CANDLE_TYPE_SP = "Gravestone Doh-gee";
+}
+if ($CANDLE_TYPE == "Dragonfly Doji")
+{
+    $CANDLE_TYPE_SP = "Dragonfly Doh-gee";
+}
 
 // =========================================================
 // SAVE CURRENT CANDLE INFORMATION
