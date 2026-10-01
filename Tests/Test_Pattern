@@ -7,12 +7,12 @@ $PATTERN_BIAS="Neutral";
 // Get current and previous candles
 // ---------------------------------------------------------
 
-$THEBAR0 = getwindowobj("CHART1").getbar(0);
-$THEBAR1 = getwindowobj("CHART1").getbar(-1);
-$THEBAR2 = getwindowobj("CHART1").getbar(-2);
-$THEBAR3 = getwindowobj("CHART1").getbar(-3);
-$THEBAR4 = getwindowobj("CHART1").getbar(-4);
-$THEBAR5 = getwindowobj("CHART1").getbar(-5);
+$THEBAR0 = $CHART1.getbar(0);
+$THEBAR1 = $CHART1.getbar(-1);
+$THEBAR2 = $CHART1.getbar(-2);
+$THEBAR3 = $CHART1.getbar(-3);
+$THEBAR4 = $CHART1.getbar(-4);
+$THEBAR5 = $CHART1.getbar(-5);
 // =========================================================
 // BULLISH IMPULSE
 // =========================================================
