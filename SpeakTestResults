@@ -21,7 +21,7 @@ if($RVOL>0 && $RVOL<=5){
   return;
 }
 //Average Range
-if($AverageRange10 > .4){
+if($AverageRange4 > .3){
   Speak("Candle range too large."); $OKtoArm=0;
   return;
 }
@@ -69,8 +69,13 @@ if($ETB == 1){
   Speak("Stock is easy to borrow.");
 }
 //Check for Large Candle Range
-if($AverageRange > .2){
+if($AverageRange4 > .2){
   Speak("Candles have large range.");
+}
+//Check for Very Large Candle Range
+if($AverageRange10 > .40){
+  Speak("Very large range."); 
+  return;
 }
 //Check for Extended
 if($Extended == 1){
