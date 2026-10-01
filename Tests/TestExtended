@@ -94,7 +94,7 @@ if($MPRICE<$ExtensionWarning){
 }
 //Average Candle Size
 $CHART1.GetCustButObj("btn_range").text ="Rng4: $" + Round($AverageRange4,103) + " Rng10: $" + Round($AverageRange10,103);
-if($AverageRange4 > .3 && $AverageRange10 > .40){
+if($AverageRange4 > .3 || $AverageRange10 > .40){
   $CHART1.GetCustButObj("btn_range").bkcolor=red;
 } else {
     if($AverageRange4 <= .3 ){
