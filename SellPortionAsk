@@ -1,27 +1,26 @@
-$M=$MONTAGE1;
 if($M.Bid > $M.AvgCost) {
-    CXL ALLSYMB;
+    $M.CXL ALLSYMB;
 
     $qty=$M.Pos*0.5;
 
     $M.ROUTE=LIMIT;
-    $M.Price=Ask;
+    $M.Price=$M.Ask;
     $M.Share=$qty;
     $M.SELL=Send;
 
     $M.ROUTE=STOP;
     $M.StopType=LimitP;
-    $M.StopPrice=AvgCost;
-    $M.Price=AvgCost;
+    $M.StopPrice=$M.AvgCost;
+    $M.Price=$M.AvgCost;
     $M.Share=$M.Pos-$qty;
     $M.SELL=Send;
 } else {
     Speak "Trade is not profitable, exiting on bid";
 
-    CXL ALLSYMB;
+    $M.CXL ALLSYMB;
 
-    $M.Price=Bid-0.10;
+    $M.Price=$M.Bid-0.10;
     $M.ROUTE=LIMIT;
     $M.Share=$M.Pos;
-    $M.SELL;
+    $M.SELL=Send;
 }

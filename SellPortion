@@ -1,5 +1,4 @@
-$M=$MONTAGE1;
-CXL ALLSYMB;
+$M.CXL ALLSYMB;
 $qty=$M.Pos*0.75;
 
 $M.ROUTE=LIMIT;
