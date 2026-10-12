@@ -1,9 +1,12 @@
 //Run Tests chartupdate interval
 if($RunTestsEnabled==1 && $RunningTestsChart==0)
 {
-	$RunningTestsChart=1;
-	
-
-
-	$RunningTestsChart=0;
+  $RunningTestsChart=1;	
+  exechotkey("TestPrice");
+  exechotkey("TestVWAP");
+  exechotkey("TestGap");
+  exechotkey("TestRVOL");
+  exechotkey("TestSpread");
+  exechotkey("Test_PriceChange");
+  $RunningTestsChart=0;
 }
