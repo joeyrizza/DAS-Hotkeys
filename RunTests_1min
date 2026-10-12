@@ -1,0 +1,7 @@
+//Run Tests
+if($RunTestsEnabled==1 && $RunningTests1==0)
+{
+	$RunningTests1=1;
+	
+	$RunningTests1=0;
+}
