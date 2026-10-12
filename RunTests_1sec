@@ -1,9 +1,15 @@
 //Run Tests 1 sec interval
 if($RunTestsEnabled==1 && $RunningTests1s==0)
 {
-	$RunningTests1s=1;
-	
-
-
-	$RunningTests1s=0;
+  $RunningTests1s=1;
+  exechotkey("TestExtended");
+  exechotkey("TestVolume");
+  exechotkey("TestStop");
+  exechotkey("Test_ST_RVOL10");
+  exechotkey("Test_Candle_Color");
+  exechotkey("Test_Candle_Type");
+  exechotkey("Test_ST_InterpretVol");
+  exechotkey("Test_Pattern");
+  exechotkey("Speak_Price_Action");
+  $RunningTests1s=0;
 }
