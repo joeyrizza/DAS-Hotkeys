@@ -15,7 +15,7 @@ if($CHART1.Symbol==$selectedsymbol){
   if($TIMENOW>=57600){
       $MH="AH";//After Hours
     }
-  if($TIMENOW>=34200 && TIMENOW <57600){
+  if($TIMENOW>=34200 && $TIMENOW <57600){
       $MH="MH";//Market Hours
     }
 } else {
@@ -24,6 +24,7 @@ if($CHART1.Symbol==$selectedsymbol){
   $SetupArmed=0;
   exechotkey("CatalystButtonColor");
   exchotkey("CacheCandles");
+  $LAST_BAR = $CHART1.GetBar(0).Time;
 }
 
 //Run only on new candle
