@@ -15,43 +15,13 @@ if($CHART1.Symbol==$selectedsymbol){
 	}
 } else {
 	//run on symbol change only.
-	$selectedsymbol=$Chart1.Symbol;
-	$SetupArmed=0;
 	exechotkey("RunTests_Symb");
+	$selectedsymbol=$CHART1.Symbol;
 }
 
 //Run only on new 1-min candle
 if ($LAST_BAR != $CURRENT_BAR_TIME)
 {
-	exechotkey("RunTests_1sec");
+	exechotkey("RunTests_1min");
 	$LAST_BAR = $CURRENT_BAR_TIME;
 }
-
-/*
-if($RunTestsEnabled==1 && $RunningTests==0)
-{
-	$RunningTests=1;
-	exechotkey("TestEMAAlignment");
-	exechotkey("TestVWAP");
-	exechotkey("TestExtended");
-	exechotkey("TestFloat");
-	exechotkey("TestPrice");
-	exechotkey("TestRVOL");
-	exechotkey("TestGap");
-	exechotkey("TestETB");
-	exechotkey("TestDaily");
-	exechotkey("TestMACD");
-	exechotkey("TestVolume");
-	exechotkey("TestSpread");
-	exechotkey("TestStop");
-	exechotkey("Test_PriceChange");
-	exechotkey("Test_ST_RVOL10");
-	exechotkey("Test_ST_PriceContext");
-	exechotkey("Test_Candle_Color");
-	exechotkey("Test_Candle_Type");
-	exechotkey("Test_ST_InterpretVol");
-	exechotkey("Test_Pattern");
-	exechotkey("Speak_Price_Action");
-	$RunningTests=0;
-}
-*/
