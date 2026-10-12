@@ -55,11 +55,16 @@ Speak("Price is below veewap");
 if($MACD<$Signal){
 Speak("Macdee is closed.");
 }
-//200
-if ($MPRICE < $D200EMA && ($D200EMA - $MPRICE) <= $D200EMA * 0.05)
+
+ // 200 EMA / SMA proximity warning
+if (
+    ($MPRICE < $D200EMA && ($D200EMA - $MPRICE) <= $D200EMA * 0.05) ||
+    ($MPRICE < $D200SMA && ($D200SMA - $MPRICE) <= $D200SMA * 0.05)
+)
 {
-    Speak("Stock is under daily 200 EMA");
+    Speak("Stock is under daily 200");
 }
+
 //Volume Check
 //if($VOL < 1000000){
 //  Speak("Low Volume.");
