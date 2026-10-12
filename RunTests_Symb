@@ -1,0 +1,8 @@
+//Run Tests on symbol change
+if($RunTestsEnabled==1 && $RunningTestsSymb==0)
+{
+	$RunningTestsSymb=1;
+	exechotkey("CatalystButtonColor");
+	exchotkey("CacheCandles");
+	$RunningTestsSymb=0;
+}

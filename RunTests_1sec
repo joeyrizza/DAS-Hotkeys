@@ -1,0 +1,9 @@
+//Run Tests 1 sec interval
+if($RunTestsEnabled==1 && $RunningTests1s==0)
+{
+	$RunningTests1s=1;
+	
+
+
+	$RunningTests1s=0;
+}

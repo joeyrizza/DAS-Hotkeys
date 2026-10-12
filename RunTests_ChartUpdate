@@ -1,0 +1,9 @@
+//Run Tests chartupdate interval
+if($RunTestsEnabled==1 && $RunningTestsChart==0)
+{
+	$RunningTestsChart=1;
+	
+
+
+	$RunningTestsChart=0;
+}
