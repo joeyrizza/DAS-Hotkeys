@@ -1,7 +1,7 @@
 //Compares the Bid and Ask, gets the difference.
 //Runs on: chartupdate.
 
-$Spread=getquoteobj($CHART1.SYMBOL).Ask-getquoteobj($CHART1.SYMBOL).Bid;
+$Spread=$MONTAGE1.Ask-$MONTAGE1.Bid;
 $CHART1.GetCustButObj("btn_spread").text ="Spread: $" + Round($Spread,103);
 
 if ($Spread < .05) {
