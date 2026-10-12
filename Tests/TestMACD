@@ -1,5 +1,5 @@
 //Interprets the MAVD study value from DAS.
-//Runs on: new 1 minute candle.
+//Runs on: new 1 minute candle and on symbol change.
 
 $MACDInfo=$CHART1.GetStudyVal("StudyMACD",ByBarNum,0);
 $CommaPos=StrFind($MACDInfo,", Signal:");
