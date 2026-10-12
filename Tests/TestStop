@@ -3,7 +3,7 @@
 //TODO: It's possible that drawing lines is expensive. may want to investiate
 
 
-$TestPrice=getquoteobj($CHART1.SYMBOL).Ask;
+$TestPrice=$MONTAGE1.Ask;
 $TestShareSize=25;
 $TestMaxLongVal=2000;
 $TestOffsetRisk=.05;
