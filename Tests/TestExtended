@@ -1,6 +1,7 @@
 //Test for Extended Candle
 //Also does Avg Candle Size
 //Requires CandleCache
+//Runs: every 1 second
 
 $EXTENDED=0;
 $ExtensionWarningMultiplier=2;

@@ -1,4 +1,7 @@
 //This script uses basically the same logic as DynamicEntry, but it uses different variables to not step on the toes of the original script. This allows for multiple entries to be calculated and sent at the same time.
+//Runs on: 1 sec
+//TODO: It's possible that drawing lines is expensive. may want to investiate
+
 
 $TestPrice=getquoteobj($CHART1.SYMBOL).Ask;
 $TestShareSize=25;

@@ -1,4 +1,6 @@
-//test the price
+//Interprets the price of the current symbol and changes the color of the price button based on thresholds.
+//Runs on: chartupdate
+
 $CHART1.GetCustButObj("btn_price").text ="Price: "  + Round($MPRICE,103);
 
 if($MPRICE>1 && $MPRICE<2){

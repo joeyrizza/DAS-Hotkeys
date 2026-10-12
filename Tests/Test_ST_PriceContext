@@ -2,6 +2,7 @@
 // Current price compared to the high/low range of the previous 5 completed candles.
 // Answers the question: Where is the current price relative to the recent move?
 //Requires CandleCache
+//Runs on: chartupdate
 
 $RecentHigh=Max($C1.HI,Max($C2.HI,Max($C3.HI,Max($C4.HI,$C5.HI))));
 $RecentLow=Min($C1.LO,Min($C2.LO,Min($C3.LO,Min($C4.LO,$C5.LO))));

@@ -1,4 +1,6 @@
-//get the float value
+//get the float value from the quote object. Divide by 1 million to get float in millions.
+//Runs on: Symbol change
+
 $FLOAT=getquoteobj($CHART1.SYMBOL).float/1000000;
 
 if($FLOAT < 1){

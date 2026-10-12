@@ -1,4 +1,8 @@
 //get the yclose value
+//Interprets gap from DAS value.
+//Runs on: new 1 minute candle. if <10% maybe run every second
+//TODO: Maybe add functionality to warn if price approaches certain % thresholds
+
 $YCLOSE=getquoteobj($CHART1.SYMBOL).yClose;
 $Gap=($MPRICE-$YCLOSE)/$YCLOSE*100;
 $GapPercent=Round($Gap);
@@ -8,7 +12,6 @@ $CHART1.GetCustButObj("btn_gap").text ="Gap: " + $GapPercent + "%";
 if($Gap >= 10){
   $CHART1.GetCustButObj("btn_gap").bkcolor=green;
   $GAPPER=1;
-  $PILLARS=$PILLARS+1;
 } else {
   $CHART1.GetCustButObj("btn_gap").bkcolor=red;
 }

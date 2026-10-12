@@ -2,6 +2,8 @@
 // CANDLE PATTERN + SHORT-TERM TREND + CANDLE BIAS
 // =========================================================
 //Requires CandleCache
+//Runs on: variable
+//TODO: Can run once after 30 seconds, then run every 1 second after that. This will allow for more accurate candle type detection and confirmation.
 
 // ---------------------------------------------------------
 // Get current and previous candles

@@ -1,4 +1,5 @@
 // Interpret Short-Term Relative Volume + Price Change + Price Context
+//Runs on: chartupdate
 
 // Strong directional movement
 if ($ST_RVOL10 >= 1.5 && $PriceChange > 0.25)

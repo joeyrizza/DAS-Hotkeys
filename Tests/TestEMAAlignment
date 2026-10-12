@@ -1,4 +1,8 @@
 //Test EMA Alignment
+//Gets 1 minute studies and looks for alignment. 
+//Runs on: new 1 minute candle.
+//TODO: Maybe only retrieve studies periodically based on length. 200 probably only needs to be checked every 5 minutes, 9 and 20 could be checked every minute.?
+
 $EMA9=getstudyval("Study9EMA");
 $EMA20=getstudyval("Study20EMA");
 $EMA200=getstudyval("Study200EMA");

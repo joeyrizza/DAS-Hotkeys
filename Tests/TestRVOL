@@ -1,4 +1,5 @@
-//get the rvol value - 2wk
+//RVOL - Tests the average volume over a 14 day period.
+//Runs on: The 2w volume avg can be calculated one time, but the rest should be done every minute?
 
 $AvgVolume2W = (
     $C1.Volume + $C2.Volume + $C3.Volume + $C4.Volume + $C5.Volume +

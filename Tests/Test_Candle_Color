@@ -1,3 +1,7 @@
+//Determines color of current candle. 
+//Requires CandleCache
+//TODO: Is this in use?
+
 $THEBAR0 = $CHART1.getbar(0);
 
 $BODY0 = $THEBAR0.CLOSE - $THEBAR0.OPEN;

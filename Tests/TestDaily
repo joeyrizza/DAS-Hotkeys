@@ -1,4 +1,7 @@
 //Test Daily
+//Checks for daily resistance levels.
+//Runs on: new 1 minute candle.
+//TODO: This could be split into two checks. The daily study val checks could be done one time on symbol change, and the comparison to the current price could be done every minute.
 
 $D200SMA=$CHARTD.getstudyval("StudyD200SMA");
 $D200EMA=$CHARTD.getstudyval("StudyD200EMA");

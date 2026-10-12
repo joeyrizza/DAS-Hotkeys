@@ -1,4 +1,6 @@
-//VWAP Test
+//Determines the vwap study from das and compares the current price to it.
+//Runs on: chartupdate
+
 $VWAP=$CHART1.GetStudyVal("StudyVWAP");
 $ABOVEVWAP=0;
 $VWAP_DISTANCE = $VWAP - $MPRICE;

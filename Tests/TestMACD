@@ -1,4 +1,6 @@
-//Tests the MACD Study
+//Interprets the MAVD study value from DAS.
+//Runs on: new 1 minute candle.
+
 $MACDInfo=$CHART1.GetStudyVal("StudyMACD",ByBarNum,0);
 $CommaPos=StrFind($MACDInfo,", Signal:");
 $MACD=Round(SubString($MACDInfo,5,$CommaPos),3);

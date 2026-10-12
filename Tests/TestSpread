@@ -1,4 +1,6 @@
-//Spread
+//Compares the Bid and Ask, gets the difference.
+//Runs on: chartupdate.
+
 $Spread=getquoteobj($CHART1.SYMBOL).Ask-getquoteobj($CHART1.SYMBOL).Bid;
 $CHART1.GetCustButObj("btn_spread").text ="Spread: $" + Round($Spread,103);
 

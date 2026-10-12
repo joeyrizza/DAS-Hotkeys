@@ -1,4 +1,6 @@
 //get etb/htb/ssr status
+//Runs on: Symbol change
+
 $ETB=getquoteobj($CHART1.SYMBOL).ETB;
 $SSR=getquoteobj($CHART1.SYMBOL).SSR;
 $HTB=getquoteobj($CHART1.SYMBOL).HTB;

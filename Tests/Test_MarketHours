@@ -1,0 +1,13 @@
+//Checks the current market and sets a variable for later action.
+//Runs on: 1s 
+
+$TIMENOW=getsecond();
+if($TIMENOW<34200){
+    $MH="PM";//Pre Market 
+    }
+if($TIMENOW>=57600){
+    $MH="AH";//After Hours
+    }
+if($TIMENOW>=34200 && $TIMENOW <57600){
+    $MH="MH";//Market Hours
+    }
