@@ -1,26 +1,27 @@
-if($M.Bid > $M.AvgCost) {
-    $M.CXL ALLSYMB;
 
-    $qty=$M.Pos*0.5;
+if($MONTAGE1.Bid > $MONTAGE1.AvgCost) {
+    $MONTAGE1.CXL ALLSYMB;
 
-    $M.ROUTE=LIMIT;
-    $M.Price=$M.Ask;
-    $M.Share=$qty;
-    $M.SELL=Send;
+    $qty=$MONTAGE1.Pos*0.5;
 
-    $M.ROUTE=STOP;
-    $M.StopType=LimitP;
-    $M.StopPrice=$M.AvgCost;
-    $M.Price=$M.AvgCost;
-    $M.Share=$M.Pos-$qty;
-    $M.SELL=Send;
+    $MONTAGE1.ROUTE=LIMIT;
+    $MONTAGE1.Price=$MONTAGE1.Ask;
+    $MONTAGE1.Share=$qty;
+    $MONTAGE1.SELL=Send;
+
+    $MONTAGE1.ROUTE=STOP;
+    $MONTAGE1.StopType=LimitP;
+    $MONTAGE1.StopPrice=$MONTAGE1.AvgCost;
+    $MONTAGE1.Price=$MONTAGE1.AvgCost;
+    $MONTAGE1.Share=$MONTAGE1.Pos-$qty;
+    $MONTAGE1.SELL=Send;
 } else {
     Speak "Trade is not profitable, exiting on bid";
 
-    $M.CXL ALLSYMB;
+    $MONTAGE1.CXL ALLSYMB;
 
-    $M.Price=$M.Bid-0.10;
-    $M.ROUTE=LIMIT;
-    $M.Share=$M.Pos;
-    $M.SELL=Send;
+    $MONTAGE1.Price=$MONTAGE1.Bid-0.10;
+    $MONTAGE1.ROUTE=LIMIT;
+    $MONTAGE1.Share=$MONTAGE1.Pos;
+    $MONTAGE1.SELL=Send;
 }

@@ -1,5 +1,4 @@
-$M=$MONTAGE1;
-$BuyPrice=$M.Ask;
+$BuyPrice=$MONTAGE1.Ask;
 $MaxShares=25;
 $MaxLongVal=2000;
 $Debug=0;
@@ -7,12 +6,12 @@ Stopread;
 $StopLimitPriceOffset=.05;
 $MinimumAllowedStopDistance=.05;
 $MaximumRiskPerTrade=($MaxShares * .15);
-$SelectedStopPrice=$M.Price;
+$SelectedStopPrice=$MONTAGE1.Price;
 
 
-if (SubString($M.Account,0,2) == "TR")
+if (SubString($MONTAGE1.Account,0,2) == "TR")
 {
-    //Training Acount
+    //Training Account
     $Route="ARCAL";
 }
 else
@@ -21,17 +20,17 @@ else
     $Route="ARCA1L";
 }
 
-if($M.Pos > 0){
+if($MONTAGE1.Pos > 0){
     Speak("Position is not flat");
     return;
 }
 
 if($SetupArmed==0){
-Speak("You cannot trade just because you feel like trading. You must first explicitly declare that you have identified a setup.");
-return;
+    Speak("You cannot trade just because you feel like trading. You must first explicitly declare that you have identified a setup.");
+    return;
 }
 
-if($SelectedStopPrice >= $M.Bid){
+if($SelectedStopPrice >= $MONTAGE1.Bid){
     Speak("Stop is above Bid price");
     Price=$SelectedStopPrice;
     return;
@@ -42,8 +41,9 @@ if($BuyPrice-$SelectedStopPrice <= $MinimumAllowedStopDistance){
     Price=$SelectedStopPrice;
     return;
 }
+
 $SetupArmed=0;
-CXL ALLSYMB;
+$MONTAGE1.CXL ALLSYMB;
 
 $TechnicalStopDistance=$BuyPrice-$SelectedStopPrice;
 $EffectiveRiskPerShare=$TechnicalStopDistance+$StopLimitPriceOffset;
@@ -61,21 +61,20 @@ if($CalculatedPositionValue > $MaxLongVal){
     $FinalShareCount=$MaxSharesAllowedByPositionValue;
 }
 
-
 $ActualPosVal=$BuyPrice*$FinalShareCount;
 $TechnicalStopRisk=$FinalShareCount*$TechnicalStopDistance;
 $AdditionalOffsetRisk=$FinalShareCount*$StopLimitPriceOffset;
 $WorstCasePlannedRisk=$FinalShareCount*$EffectiveRiskPerShare;
 
 //SShare=$amount;Share=$FinalShareCount;TogSShare;ROUTE=$Route;Price=$BuyPrice;TIF=DAY+;
-$M.Share=$FinalShareCount;
-$M.ROUTE=$Route;
-$M.Price=$BuyPrice;
-$M.TIF="DAY+";
+$MONTAGE1.Share=$FinalShareCount;
+$MONTAGE1.ROUTE=$Route;
+$MONTAGE1.Price=$BuyPrice;
+$MONTAGE1.TIF="DAY+";
 
 if($Debug == 0){
-    $M.BUY=Send;
-    $M.TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$SelectedStopPrice-$StopLimitPriceOffset ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
+    $MONTAGE1.BUY=Send;
+    $MONTAGE1.TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$SelectedStopPrice-$StopLimitPriceOffset ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
 } else {
     MsgBox(
         "\nSelectedStopPrice: $" + $SelectedStopPrice
@@ -89,4 +88,4 @@ if($Debug == 0){
     );
 }
 
-$M.Price=$SelectedStopPrice;
+$MONTAGE1.Price=$SelectedStopPrice;
