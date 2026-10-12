@@ -1,5 +1,6 @@
 //Volume Test. Reads today's volume from the quote object.
-//Runs on: <1M chartupdate, >1M 1 min
+//Runs on: 1s
+//TODO: <1M chartupdate, >1M 1 min
 $VOL=getquoteobj($CHART1.SYMBOL).Volume;
 
 if($VOL>=1000000)
