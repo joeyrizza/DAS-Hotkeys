@@ -8,6 +8,3 @@ $LADDER1=GetWindowObj("LADDER1");
 
 //Window Object Shorthand
 $M=GetWindowObj("MONTAGE1");
-
-//Risk Per Candle val
-$rpcval=25;
