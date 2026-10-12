@@ -1,13 +1,18 @@
 //RVOL - Tests the average volume over a 14 day period.
-//Runs on: The 2w volume avg can be calculated one time, but the rest should be done every minute?
+//Runs on: chartupdate
 
-$AvgVolume2W = (
-    $C1.Volume + $C2.Volume + $C3.Volume + $C4.Volume + $C5.Volume +
-    $C6.Volume + $C7.Volume + $C8.Volume + $C9.Volume + $C10.Volume
-) / 10;
+if($rvolsymbol != $CHART1.Symbol){
+  $AvgVolume2W = (
+      $C1.Volume + $C2.Volume + $C3.Volume + $C4.Volume + $C5.Volume +
+      $C6.Volume + $C7.Volume + $C8.Volume + $C9.Volume + $C10.Volume
+  ) / 10;
+  $DASRVOL=getquoteobj($CHART1.SYMBOL).RVOL;
+  $rvolsymbol = $CHART1.SYMBOL;
+}
+if($AvgVolume2W > 0){
+  $RVOL=getquoteobj($CHART1.SYMBOL).Volume/$AvgVolume2W;
+}
 
-$DASRVOL=getquoteobj($CHART1.SYMBOL).RVOL;
-$RVOL=getquoteobj($CHART1.SYMBOL).Volume/$AvgVolume2W;
 $RVOL=MAX($RVOL,$DASRVOL);
 $CHART1.GetCustButObj("btn_rvol").text ="RVOL: " + $RVOL + "x";
 
