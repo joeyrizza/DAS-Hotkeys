@@ -4,8 +4,15 @@
 //Requires CandleCache
 //Runs on: 1 sec
 
-$Avg10MinVol=($C1.Volume+$C2.Volume+$C3.Volume+$C4.Volume+$C5.Volume+$C6.Volume+$C7.Volume+$C8.Volume+$C9.Volume+$C10.Volume)/10;
-$Avg10MinVolK=$Avg10MinVol/1000;
+//Update this every new 1 min candle
+if($STRVOL10TIME != $CURRENT_BAR_TIME){
+    $Avg10MinVol=($C1.Volume+$C2.Volume+$C3.Volume+$C4.Volume+$C5.Volume+$C6.Volume+$C7.Volume+$C8.Volume+$C9.Volume+$C10.Volume)/10;
+    $Avg10MinVolK=$Avg10MinVol/1000;
+    $STRVOL10TIME = $CURRENT_BAR_TIME;
+}
 
 $CurrentVol=$CHART1.GetBar(0).Volume;
-$ST_RVOL10=$CurrentVol/$Avg10MinVol;
+
+if($Avg10MinVol > 0){
+    $ST_RVOL10=$CurrentVol/$Avg10MinVol;
+}
