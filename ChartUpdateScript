@@ -10,18 +10,26 @@ if($CHART1.Symbol==$selectedsymbol){
   }
   $TIMENOW=getsecond();
   if($TIMENOW<34200){
-      $M="PM";//Pre Market 
+      $MH="PM";//Pre Market 
     }
   if($TIMENOW>=57600){
-      $M="AH";//After Hours
+      $MH="AH";//After Hours
     }
   if($TIMENOW>=34200 && TIMENOW <57600){
-      $M="MH";//Market Hours
+      $MH="MH";//Market Hours
     }
 } else {
   //symbol change only.
   $selectedsymbol=$Chart1.Symbol;
   $SetupArmed=0;
   exechotkey("CatalystButtonColor");
+  exchotkey("CacheCandles");
 }
 
+//Run only on new candle
+$CURRENT_BAR_TIME = $CHART1.GetBar(0).Time;
+if ($LAST_BAR != $CURRENT_BAR_TIME)
+{
+  exchotkey("CacheCandles");
+  $LAST_BAR = $CURRENT_BAR_TIME;
+}
