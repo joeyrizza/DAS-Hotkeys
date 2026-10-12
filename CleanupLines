@@ -3,17 +3,17 @@ $C="200 EMA";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.dele
 //Intraday Levels
 exechotkey("CleanupLines_Intraday");
 
-if($M=="PM"){
+if($MH=="PM"){
     //premarket only
     //PM HOD
     $C="PM High";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
 }
-if($M=="AH"){
+if($MH=="AH"){
     //after hours only
     //AH HOD
     $C="AH High";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
 }
-if($M=="MH"){
+if($MH=="MH"){
     //Market Hours Only
     $C="HOD";$L=$CHART1.GetTrendLine($C + $CHART1.Symbol);if (isobj($L)){$L.delete();}
 }
