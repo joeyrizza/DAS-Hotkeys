@@ -1,0 +1,13 @@
+// Candle Cache
+// Refresh on new candle or symbol change.
+
+$C1=$CHART1.GetBar(-1);
+$C2=$CHART1.GetBar(-2);
+$C3=$CHART1.GetBar(-3);
+$C4=$CHART1.GetBar(-4);
+$C5=$CHART1.GetBar(-5);
+$C6=$CHART1.GetBar(-6);
+$C7=$CHART1.GetBar(-7);
+$C8=$CHART1.GetBar(-8);
+$C9=$CHART1.GetBar(-9);
+$C10=$CHART1.GetBar(-10);
