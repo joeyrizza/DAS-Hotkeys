@@ -1,3 +1,4 @@
+
 $IDX=1;
 $ct=$CHART1.getbar(0).Time;
 $SEC=GetSecond();
@@ -26,17 +27,17 @@ $UpperPrice=$MPRICE*(1+($UpperPercent/100));
 // ============================================================
 
 $V1=0;
-$O1=0;
-$H1=0;
-$L1=0;
-$C1=0;
+$TopVol1Open=0;
+$TopVol1High=0;
+$TopVol1Low=0;
+$TopVol1Close=0;
 $T1="";
 
 $V2=0;
-$O2=0;
-$H2=0;
-$L2=0;
-$C2=0;
+$TopVol2Open=0;
+$TopVol2High=0;
+$TopVol2Low=0;
+$TopVol2Close=0;
 $T2="";
 
 // ============================================================
@@ -51,26 +52,26 @@ while($IDX<=$MAXBARS)
     if($VOL>$V1)
     {
         $V2=$V1;
-        $O2=$O1;
-        $H2=$H1;
-        $L2=$L1;
-        $C2=$C1;
+        $TopVol2Open=$TopVol1Open;
+        $TopVol2High=$TopVol1High;
+        $TopVol2Low=$TopVol1Low;
+        $TopVol2Close=$TopVol1Close;
         $T2=$T1;
 
         $V1=$VOL;
-        $O1=$BAR.Open;
-        $H1=$BAR.Hi;
-        $L1=$BAR.Lo;
-        $C1=$BAR.Close;
+        $TopVol1Open=$BAR.Open;
+        $TopVol1High=$BAR.Hi;
+        $TopVol1Low=$BAR.Lo;
+        $TopVol1Close=$BAR.Close;
         $T1=$BAR.Time;
     }
     else if($VOL>$V2)
     {
         $V2=$VOL;
-        $O2=$BAR.Open;
-        $H2=$BAR.Hi;
-        $L2=$BAR.Lo;
-        $C2=$BAR.Close;
+        $TopVol2Open=$BAR.Open;
+        $TopVol2High=$BAR.Hi;
+        $TopVol2Low=$BAR.Lo;
+        $TopVol2Close=$BAR.Close;
         $T2=$BAR.Time;
     }
 
@@ -81,51 +82,51 @@ while($IDX<=$MAXBARS)
 // CANDLE 1
 // ============================================================
 
-if($O1>=$LowerPrice && $O1<=$UpperPrice)
+if($TopVol1Open>=$LowerPrice && $TopVol1Open<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
     $TL.Name="1O" + $CHART1.Symbol;
-    $TL.Price=$O1;
+    $TL.Price=$TopVol1Open;
     $TL.Color=Color(211,211,211);
     $TL.time=$ct;
     $TL.time1=$ct;
-    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
 }
 
-if($H1>=$LowerPrice && $H1<=$UpperPrice)
+if($TopVol1High>=$LowerPrice && $TopVol1High<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
     $TL.Name="1H" + $CHART1.Symbol;
-    $TL.Price=$H1;
+    $TL.Price=$TopVol1High;
     $TL.Color=Color(211,211,211);
     $TL.time=$ct;
     $TL.time1=$ct;
-    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
 }
 
-if($L1>=$LowerPrice && $L1<=$UpperPrice)
+if($TopVol1Low>=$LowerPrice && $TopVol1Low<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
     $TL.Name="1L" + $CHART1.Symbol;
-    $TL.Price=$L1;
+    $TL.Price=$TopVol1Low;
     $TL.Color=Color(211,211,211);
     $TL.time=$ct;
     $TL.time1=$ct;
-    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
 }
 
-if($C1>=$LowerPrice && $C1<=$UpperPrice)
+if($TopVol1Close>=$LowerPrice && $TopVol1Close<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
     $TL.Name="1C" + $CHART1.Symbol;
-    $TL.Price=$C1;
+    $TL.Price=$TopVol1Close;
     $TL.Color=Color(211,211,211);
     $TL.time=$ct;
     $TL.time1=$ct;
-    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
 }
 
@@ -133,54 +134,54 @@ if($C1>=$LowerPrice && $C1<=$UpperPrice)
 // CANDLE 2
 // ============================================================
 
-if($O2>=$LowerPrice && $O2<=$UpperPrice)
+if($TopVol2Open>=$LowerPrice && $TopVol2Open<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
     $TL.Name="2O" + $CHART1.Symbol;
-    $TL.Price=$O2;
+    $TL.Price=$TopVol2Open;
     $TL.Color=Color(120,120,120);
     $TL.time=$ct;
     $TL.time1=$ct;
-    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
 }
 
-if($H2>=$LowerPrice && $H2<=$UpperPrice)
+if($TopVol2High>=$LowerPrice && $TopVol2High<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
     $TL.Name="2H" + $CHART1.Symbol;
-    $TL.Price=$H2;
+    $TL.Price=$TopVol2High;
     $TL.Color=Color(120,120,120);
     $TL.time=$ct;
     $TL.time1=$ct;
-    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
 }
 
-if($L2>=$LowerPrice && $L2<=$UpperPrice)
+if($TopVol2Low>=$LowerPrice && $TopVol2Low<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
     $TL.Name="2L" + $CHART1.Symbol;
-    $TL.Price=$L2;
+    $TL.Price=$TopVol2Low;
     $TL.Color=Color(120,120,120);
     $TL.time=$ct;
     $TL.time1=$ct;
-    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
 }
 
-if($C2>=$LowerPrice && $C2<=$UpperPrice)
+if($TopVol2Close>=$LowerPrice && $TopVol2Close<=$UpperPrice)
 {
     $TL=$CHART1.CreateTrendline("HorizLine");
     $TL.Name="2C" + $CHART1.Symbol;
-    $TL.Price=$C2;
+    $TL.Price=$TopVol2Close;
     $TL.Color=Color(120,120,120);
     $TL.time=$ct;
     $TL.time1=$ct;
-    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
 }
 
-//msgbox("IDX="+$IDX+" | MaxBars="+$MAXBARS+" | Candle1 Time="+$T1+" | V1="+$V1+" | O1="+$O1+" | H1="+$H1+" | L1="+$L1+" | C1="+$C1+" | Candle2 Time="+$T2+" | V2="+$V2+" | O2="+$O2+" | H2="+$H2+" | L2="+$L2+" | C2="+$C2);
+//msgbox("IDX="+$IDX+" | MaxBars="+$MAXBARS+" | Candle1 Time="+$T1+" | V1="+$V1+" | O1="+$TopVol1Open+" | H1="+$TopVol1High+" | L1="+$TopVol1Low+" | C1="+$TopVol1Close+" | Candle2 Time="+$T2+" | V2="+$V2+" | O2="+$TopVol2Open+" | H2="+$TopVol2High+" | L2="+$TopVol2Low+" | C2="+$TopVol2Close);
 
 ConfigTrendLine Text SolidLine:FFFFFF:2;

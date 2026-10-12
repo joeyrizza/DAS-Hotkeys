@@ -1,5 +1,4 @@
 // Current live price compared to the previous 1-minute candle close.
 // Answers the question: How much has the price moved during the current minute?
 
-$PrevClose=$CHART1.GetBar(-1).Close;
-$PriceChange=(($MPRICE-$PrevClose)/$PrevClose)*100;
+$PriceChange=(($MPRICE-$C1.Close)/$C1.Close)*100;

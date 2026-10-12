@@ -1,18 +1,8 @@
+
 //This is a test script that is checking the short term relative volume over the last 10 minutes.
-//Answers the question: How much participation is occuring right now?
+//Answers the question: How much participation is occurring right now?
 
-$Vol1=$CHART1.GetBar(-1).Volume;
-$Vol2=$CHART1.GetBar(-2).Volume;
-$Vol3=$CHART1.GetBar(-3).Volume;
-$Vol4=$CHART1.GetBar(-4).Volume;
-$Vol5=$CHART1.GetBar(-5).Volume;
-$Vol6=$CHART1.GetBar(-6).Volume;
-$Vol7=$CHART1.GetBar(-7).Volume;
-$Vol8=$CHART1.GetBar(-8).Volume;
-$Vol9=$CHART1.GetBar(-9).Volume;
-$Vol10=$CHART1.GetBar(-10).Volume;
-
-$Avg10MinVol=($Vol1+$Vol2+$Vol3+$Vol4+$Vol5+$Vol6+$Vol7+$Vol8+$Vol9+$Vol10)/10;
+$Avg10MinVol=($C1.Volume+$C2.Volume+$C3.Volume+$C4.Volume+$C5.Volume+$C6.Volume+$C7.Volume+$C8.Volume+$C9.Volume+$C10.Volume)/10;
 $Avg10MinVolK=$Avg10MinVol/1000;
 
 $CurrentVol=$CHART1.GetBar(0).Volume;

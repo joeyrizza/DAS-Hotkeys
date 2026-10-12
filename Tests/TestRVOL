@@ -1,23 +1,13 @@
 //get the rvol value - 2wk
-/*
-$vol1 = $CHARTD.GetBar(-1).Volume;
-$vol2 = $CHARTD.GetBar(-2).Volume;
-$vol3 = $CHARTD.GetBar(-3).Volume;
-$vol4 = $CHARTD.GetBar(-4).Volume;
-$vol5 = $CHARTD.GetBar(-5).Volume;
-$vol6 = $CHARTD.GetBar(-6).Volume;
-$vol7 = $CHARTD.GetBar(-7).Volume;
-$vol8 = $CHARTD.GetBar(-8).Volume;
-$vol9 = $CHARTD.GetBar(-9).Volume;
-$vol10 = $CHARTD.GetBar(-10).Volume;
+
 $AvgVolume2W = (
-    $vol1 + $vol2 + $vol3 + $vol4 + $vol5 +
-    $vol6 + $vol7 + $vol8 + $vol9 + $vol10
+    $C1.Volume + $C2.Volume + $C3.Volume + $C4.Volume + $C5.Volume +
+    $C6.Volume + $C7.Volume + $C8.Volume + $C9.Volume + $C10.Volume
 ) / 10;
-*/
-$RVOL=getquoteobj($CHART1.SYMBOL).RVOL;
-//$RVOL=getquoteobj($CHART1.SYMBOL).Volume/getquoteobj($CHART1.SYMBOL).AvgVol_4wk;
-//$RVOL=getquoteobj($CHART1.SYMBOL).Volume/$AvgVolume2W;
+
+$DASRVOL=getquoteobj($CHART1.SYMBOL).RVOL;
+$RVOL=getquoteobj($CHART1.SYMBOL).Volume/$AvgVolume2W;
+$RVOL=MAX($RVOL,$DASRVOL);
 $CHART1.GetCustButObj("btn_rvol").text ="RVOL: " + $RVOL + "x";
 
 if($RVOL>5){
