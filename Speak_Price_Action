@@ -4,13 +4,13 @@
 // depends on: Test_ST_PriceContext
 
 // New Candle, reset announcement flags
+$CURRENT_BAR_TIME = $CHART1.GetBar(0).Time;
 
-if ($ST_LAST_BAR != $CHART1.GetBar(0).Time)
+if ($ST_LAST_BAR != $CURRENT_BAR_TIME)
 {
-    // New Candle, reset announcement flags
     $CANDLE_ANNOUNCED = 0;
     $ST_LIVE_EVENT = 0;
-    $ST_LAST_BAR = $CHART1.GetBar(0).Time;
+    $ST_LAST_BAR = $CURRENT_BAR_TIME;
 }
 
 $ANNOUNCE=0;
