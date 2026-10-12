@@ -1,7 +1,9 @@
 //Run Tests new candle
 if($RunTestsEnabled==1 && $RunningTests1==0)
 {
-	$RunningTests1=1;
-	exchotkey("CacheCandles");
-	$RunningTests1=0;
+  $RunningTests1=1;
+  exechotkey("CacheCandles");
+  exechotkey("TestDaily");
+  exechotkey("TestMACD");
+  $RunningTests1=0;
 }
