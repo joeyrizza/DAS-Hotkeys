@@ -1,6 +1,5 @@
 //Test for Extended Candle
 //Also does Avg Candle Size
-//Requires CandleCache
 //Runs: every 1 second
 
 $EXTENDED=0;
@@ -10,17 +9,26 @@ $ExtensionMultiplier=4;
 $EMA9=getstudyval("Study9EMA");
 
 $bar0=$CHART1.GetBar(0);
+$bar1=$CHART1.GetBar(-1);
+$bar2=$CHART1.GetBar(-2);
+$bar3=$CHART1.GetBar(-3);
+$bar4=$CHART1.GetBar(-4);
+$bar5=$CHART1.GetBar(-5);
+$bar6=$CHART1.GetBar(-6);
+$bar7=$CHART1.GetBar(-7);
+$bar8=$CHART1.GetBar(-8);
+$bar9=$CHART1.GetBar(-9);
 
-$Range0=$bar0.hi-$bar0.lo;
-$Range1=$C1.Hi-$C1.Lo;
-$Range2=$C2.Hi-$C2.Lo;
-$Range3=$C3.Hi-$C3.Lo;
-$Range4=$C4.Hi-$C4.Lo;
-$Range5=$C5.Hi-$C5.Lo;
-$Range6=$C6.Hi-$C6.Lo;
-$Range7=$C7.Hi-$C7.Lo;
-$Range8=$C8.Hi-$C8.Lo;
-$Range9=$C9.Hi-$C9.Lo;
+$Range0=$bar0.Hi-$bar0.Lo;
+$Range1=$bar1.Hi-$bar1.Lo;
+$Range2=$bar2.Hi-$bar2.Lo;
+$Range3=$bar3.Hi-$bar3.Lo;
+$Range4=$bar4.Hi-$bar4.Lo;
+$Range5=$bar5.Hi-$bar5.Lo;
+$Range6=$bar6.Hi-$bar6.Lo;
+$Range7=$bar7.Hi-$bar7.Lo;
+$Range8=$bar8.Hi-$bar8.Lo;
+$Range9=$bar9.Hi-$bar9.Lo;
 
 $AverageRange10=(
     $Range0+

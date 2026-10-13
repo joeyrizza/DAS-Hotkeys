@@ -1,7 +1,6 @@
 // =========================================================
 // CANDLE PATTERN + SHORT-TERM TREND + CANDLE BIAS
 // =========================================================
-//Requires CandleCache
 //Runs on: variable
 //TODO: Can run once after 30 seconds, then run every 1 second after that. This will allow for more accurate candle type detection and confirmation.
 
@@ -10,9 +9,9 @@
 // ---------------------------------------------------------
 
 $THEBAR0 = $CHART1.getbar(0);
-$THEBAR1 = $C1;
-$THEBAR2 = $C2;
-$THEBAR3 = $C3;
+$THEBAR1 = $CHART1.getbar(-1);
+$THEBAR2 = $CHART1.getbar(-2);
+$THEBAR3 = $CHART1.getbar(-3);
 
 // =========================================================
 // PREVIOUS CANDLE TYPE INFORMATION

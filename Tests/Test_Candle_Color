@@ -1,14 +1,17 @@
 //Determines color of current candle. 
-//Requires CandleCache
 //TODO: Is this in use?
 
 $THEBAR0 = $CHART1.getbar(0);
+$THEBAR1 = $CHART1.getbar(-1);
+$THEBAR2 = $CHART1.getbar(-2);
+$THEBAR3 = $CHART1.getbar(-3);
+$THEBAR4 = $CHART1.getbar(-4);
 
 $BODY0 = $THEBAR0.CLOSE - $THEBAR0.OPEN;
-$BODY1 = $C1.Close - $C1.Open;
-$BODY2 = $C2.Close - $C2.Open;
-$BODY3 = $C3.Close - $C3.Open;
-$BODY4 = $C4.Close - $C4.Open;
+$BODY1 = $THEBAR1.CLOSE - $THEBAR1.OPEN;
+$BODY2 = $THEBAR2.CLOSE - $THEBAR2.OPEN;
+$BODY3 = $THEBAR3.CLOSE - $THEBAR3.OPEN;
+$BODY4 = $THEBAR4.CLOSE - $THEBAR4.OPEN;
 
 
 $CANDLE_COLOR_0_VAL="Gray";

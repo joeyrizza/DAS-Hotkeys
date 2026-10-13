@@ -3,7 +3,6 @@ if($RunTestsEnabled==1 && $RunningTestsSymb==0)
 {
   $RunningTestsSymb=1;
   exechotkey("CatalystButtonColor");
-  exechotkey("CacheCandles");
   exechotkey("TestFloat");
   exechotkey("TestETB");
   exechotkey("TestDaily");
