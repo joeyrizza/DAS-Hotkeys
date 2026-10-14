@@ -1,0 +1,11 @@
+if($SpeakCandleAction == 1)
+{
+  stopread;
+  $SpeakCandleAction = 0;
+  $CHART1.GetCustButObj("btn_mute").text="🔇";
+}
+ else
+{
+  $SpeakCandleAction = 1;
+  $CHART1.GetCustButObj("btn_mute").text="🔊";
+}
