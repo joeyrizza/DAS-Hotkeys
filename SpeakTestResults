@@ -33,7 +33,7 @@ if($VOL < 750000){
 // Below VWAP: allow only when near VWAP, bullish, and buying participation is present
 if($ABOVEVWAP != 1)
 {
-    if($VWAP_DISTANCE > $VWAP * 0.05 || $CANDLE_BIAS != BULLISH || $ST_RVOL10 < 1.0)
+    if($VWAP_DISTANCE > $VWAP * 0.05 || $CANDLE_BIAS != BULLISH || $ST_RVOL10 > 1.0)
     {
         Speak("Below veewap - no confirmation");
         $OKtoArm=0;
