@@ -5,5 +5,6 @@ if($RunTestsEnabled==1 && $RunningTests1==0)
   exechotkey("Test_MarketHours");
   exechotkey("TestDaily");
   exechotkey("TestMACD");
+  exechotkey("TestEMAAlignment");
   $RunningTests1=0;
 }
