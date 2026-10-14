@@ -60,7 +60,7 @@ if ($ANNOUNCE == 1 && $ST_RVOL10 >= 1.5 && $PriceChange < -0.25 && $PricePositio
 
 if($SECONDS_IN_MINUTE > 55 && $CANDLE_ANNOUNCED == 0)
 {
-    if($CANDLE_TYPE != "Normal Candle")
+    if($CANDLE_TYPE != "Normal Candle" && $SpeakCandleAction == 1)
     {
         speak("Candle closing " + $CANDLE_COLOR_0_VAL);
         speak($CANDLE_BIAS);
