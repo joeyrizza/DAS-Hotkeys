@@ -103,9 +103,9 @@ if($STATE==3) {
 if($REVERSAL==0) {
   Speak("Price action has not yet confirmed a reversal.");
 }
-if($CHART1.GetTrendLine("1L" + $CHART1.Symbol).Price > 0){
+if($CHART1.GetTrendLine("1L" + $CHART1.Symbol) != 0){
   if($CHART1.GetTrendLine("1L" + $CHART1.Symbol).Price > $MPRICE){
     Speak("Price is below the highest volume candle.");
     return;
-  }
-}
+  } 
+} 
