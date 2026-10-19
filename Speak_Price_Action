@@ -22,7 +22,7 @@ if($SETUPARMED == 1 || $MONTAGE1.Pos > 0)
 //Announce Relative Volume
 if(($SETUPARMED == 1 || $MONTAGE1.Pos > 0) && $SECONDS_IN_MINUTE > 53 && $VOL_ANNOUNCED == 0)
 {
-    if($ST_Interpretation != "Neutral")
+    if($ST_Interpretation != "Neutral"  && $SpeakCandleAction == 1 && getquoteobj($CHART1.SYMBOL).Halted != 1)
     {
         Speak($ST_Interpretation);
         $VOL_ANNOUNCED = 1;
