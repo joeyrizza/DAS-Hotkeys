@@ -289,7 +289,9 @@ $LADDER1.GetCustButObj("btn_pattern").text = $CANDLE_PATTERN;
 if ("No Pattern" != $CANDLE_PATTERN)
 {
     if(getvar("pattern_"+$CHART1.SYMBOL) != $THEBAR0.Time){
-        speak($CANDLE_PATTERN);
+        if( $SpeakCandleAction == 1 && getquoteobj($CHART1.SYMBOL).Halted != 1){
+            speak($CANDLE_PATTERN);
+        }
         setvar("pattern_"+$CHART1.SYMBOL, $THEBAR0.Time);
     }
     if ($PATTERN_BIAS == "BULLISH")
