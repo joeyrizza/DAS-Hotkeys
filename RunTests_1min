@@ -6,5 +6,6 @@ if($RunTestsEnabled==1 && $RunningTests1==0)
   exechotkey("TestDaily");
   exechotkey("TestMACD");
   exechotkey("TestEMAAlignment");
+  exechotkey("TestEmaTrendState");
   $RunningTests1=0;
 }
