@@ -7,5 +7,6 @@ if($RunTestsEnabled==1 && $RunningTestsSymb==0)
   exechotkey("TestETB");
   exechotkey("TestDaily");
   exechotkey("TestMACD");
+  exechotkey("TestEmaTrendState");
   $RunningTestsSymb=0;
 }
