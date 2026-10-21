@@ -1,157 +1,141 @@
 
 // ============================================================
-// TEST EMA TREND STATE
-// Runs on: New 1-minute candle
-// Button: CHART1.btn_ematrend
+// CLASSIFY EMA TREND WITH DETAILS
 //
-// States:
-//   HEALTHY UP
-//   STALLING
-//   DETERIORATING
-//   MIXED
-//
-// Uses historical study values via ByBarNum.
-// -1  = most recently completed candle
-// -6  = 5 candles earlier
-// -11 = 10 candles earlier
-// ============================================================
-
-
-// ============================================================
-// CONFIGURATION
-// ============================================================
-
-// Minimum net percentage change to qualify as rising
-$EMA_TREND_UP5 = 0.05;
-$EMA_TREND_UP10 = 0.10;
-
-// Significant contraction of the 9/20 EMA spread
-$EMA_SPREAD_CONTRACTION = -0.05;
-
-
-// ============================================================
-// RETRIEVE HISTORICAL EMA VALUES
-// ============================================================
-
-$EMA9Info1 = $CHART1.GetStudyVal("Study9EMA", ByBarNum, -1);
-$EMA9Info6 = $CHART1.GetStudyVal("Study9EMA", ByBarNum, -6);
-$EMA9Info11 = $CHART1.GetStudyVal("Study9EMA", ByBarNum, -11);
-
-$EMA20Info1 = $CHART1.GetStudyVal("Study20EMA", ByBarNum, -1);
-$EMA20Info6 = $CHART1.GetStudyVal("Study20EMA", ByBarNum, -6);
-$EMA20Info11 = $CHART1.GetStudyVal("Study20EMA", ByBarNum, -11);
-
-
-// ============================================================
-// EXTRACT NUMERIC VALUES FROM "AVG:3.751"
-// ============================================================
-
-$EMA9_1 = Round(SubString($EMA9Info1, 5, StrLen($EMA9Info1)-1), 4);
-$EMA9_6 = Round(SubString($EMA9Info6, 5, StrLen($EMA9Info6)-1), 4);
-$EMA9_11 = Round(SubString($EMA9Info11, 5, StrLen($EMA9Info11)-1), 4);
-
-$EMA20_1 = Round(SubString($EMA20Info1, 5, StrLen($EMA20Info1)-1), 4);
-$EMA20_6 = Round(SubString($EMA20Info6, 5, StrLen($EMA20Info6)-1), 4);
-$EMA20_11 = Round(SubString($EMA20Info11, 5, StrLen($EMA20Info11)-1), 4);
-
-
-// ============================================================
-// CALCULATE NET EMA CHANGE (%)
-// ============================================================
-
-$EMA9_CHANGE5 = (($EMA9_1 - $EMA9_6) / $EMA9_6) * 100;
-$EMA9_CHANGE10 = (($EMA9_1 - $EMA9_11) / $EMA9_11) * 100;
-
-$EMA20_CHANGE5 = (($EMA20_1 - $EMA20_6) / $EMA20_6) * 100;
-$EMA20_CHANGE10 = (($EMA20_1 - $EMA20_11) / $EMA20_11) * 100;
-
-
-// ============================================================
-// CALCULATE CHANGE IN EMA SPREAD OVER 5 CANDLES
-// ============================================================
-
-$EMA_SPREAD_NOW = $EMA9_1 - $EMA20_1;
-$EMA_SPREAD_PAST = $EMA9_6 - $EMA20_6;
-
-$EMA_SPREAD_CHANGE = (($EMA_SPREAD_NOW - $EMA_SPREAD_PAST) / $EMA20_1) * 100;
-
-
-// ============================================================
-// CLASSIFY TREND
-//
-// 1 = HEALTHY UP
-// 2 = STALLING
+// 1 = UPTREND
+// 2 = SIDEWAYS
 // 3 = DETERIORATING
 // 4 = MIXED
 // ============================================================
 
 $EMA_TREND_STATE = 4;
 
-// Default display
-$CHART1.GetCustButObj("btn_ematrend").text = "EMAs: MIXED";
-$CHART1.GetCustButObj("btn_ematrend").bkcolor = yellow;
-
-
 // ------------------------------------------------------------
-// HEALTHY UP
-// 9 EMA rising over 5 candles
-// 20 EMA rising over 10 candles
-// EMA spread not contracting significantly
+// DESCRIBE INDIVIDUAL EMA DIRECTIONS
 // ------------------------------------------------------------
 
-if ($EMA9_CHANGE5 > $EMA_TREND_UP5 &&
-    $EMA20_CHANGE10 > $EMA_TREND_UP10 &&
-    $EMA_SPREAD_CHANGE >= $EMA_SPREAD_CONTRACTION)
+$EMA9_DIRECTION = "FLAT";
+$EMA20_DIRECTION = "FLAT";
+
+if ($EMA9_CHANGE5 > $EMA_TREND_UP5)
 {
-    $EMA_TREND_STATE = 1;
+    $EMA9_DIRECTION = "UP";
+}
+else if ($EMA9_CHANGE5 < -$EMA_TREND_UP5)
+{
+    $EMA9_DIRECTION = "DOWN";
+}
 
-    $CHART1.GetCustButObj("btn_ematrend").text = "EMAs: UPTREND";
-    $CHART1.GetCustButObj("btn_ematrend").bkcolor = green;
+if ($EMA20_CHANGE10 > $EMA_TREND_UP10)
+{
+    $EMA20_DIRECTION = "UP";
+}
+else if ($EMA20_CHANGE10 < -$EMA_TREND_UP10)
+{
+    $EMA20_DIRECTION = "DOWN";
 }
 
 
 // ------------------------------------------------------------
-// DETERIORATING
-// Both EMAs declining over their respective lookbacks
+// DESCRIBE EMA SPREAD
 // ------------------------------------------------------------
 
+$EMA_SPREAD_DIRECTION = "STABLE";
+
+if ($EMA_SPREAD_CHANGE < $EMA_SPREAD_CONTRACTION)
+{
+    $EMA_SPREAD_DIRECTION = "CONTRACTING";
+}
+else if ($EMA_SPREAD_CHANGE > 0.05)
+{
+    $EMA_SPREAD_DIRECTION = "EXPANDING";
+}
+
+
+// ============================================================
+// CLASSIFY EMA TREND WITH DETAILS
+//
+// 1 = UPTREND
+// 2 = SIDEWAYS
+// 3 = DETERIORATING
+// 4 = MIXED
+// ============================================================
+
+$EMA_TREND_STATE = 4;
+
+// ------------------------------------------------------------
+// DESCRIBE INDIVIDUAL EMA DIRECTIONS
+// ------------------------------------------------------------
+
+$EMA9_DIRECTION = "FLAT";
+$EMA20_DIRECTION = "FLAT";
+
+if ($EMA9_CHANGE5 > $EMA_TREND_UP5)
+{
+    $EMA9_DIRECTION = "UP";
+}
+else if ($EMA9_CHANGE5 < -$EMA_TREND_UP5)
+{
+    $EMA9_DIRECTION = "DOWN";
+}
+
+if ($EMA20_CHANGE10 > $EMA_TREND_UP10)
+{
+    $EMA20_DIRECTION = "UP";
+}
+else if ($EMA20_CHANGE10 < -$EMA_TREND_UP10)
+{
+    $EMA20_DIRECTION = "DOWN";
+}
+
+
+// ------------------------------------------------------------
+// DESCRIBE EMA SPREAD
+// ------------------------------------------------------------
+
+$EMA_SPREAD_DIRECTION = "STABLE";
+
+if ($EMA_SPREAD_CHANGE < $EMA_SPREAD_CONTRACTION)
+{
+    $EMA_SPREAD_DIRECTION = "CONTRACTING";
+}
+else if ($EMA_SPREAD_CHANGE > 0.05)
+{
+    $EMA_SPREAD_DIRECTION = "EXPANDING";
+}
+
+
+// ============================================================
+// CLASSIFY EMA TREND
+//
+// 1 = UPTREND
+// 2 = SIDEWAYS
+// 3 = DOWNTREND
+// ============================================================
+
+$EMA_TREND_STATE = 2;
+
+// Default: SIDEWAYS
+$CHART1.GetCustButObj("btn_ematrend").text = "EMA: SIDEWAYS";
+$CHART1.GetCustButObj("btn_ematrend").bkcolor = orange;
+
+
+// UPTREND: both EMAs rising meaningfully
+if ($EMA9_CHANGE5 > $EMA_TREND_UP5 &&
+    $EMA20_CHANGE10 > $EMA_TREND_UP10)
+{
+    $EMA_TREND_STATE = 1;
+
+    $CHART1.GetCustButObj("btn_ematrend").text = "EMA: UPTREND";
+    $CHART1.GetCustButObj("btn_ematrend").bkcolor = green;
+}
+
+// DOWNTREND: both EMAs falling meaningfully
 else if ($EMA9_CHANGE5 < -$EMA_TREND_UP5 &&
          $EMA20_CHANGE10 < -$EMA_TREND_UP10)
 {
     $EMA_TREND_STATE = 3;
 
-    $CHART1.GetCustButObj("btn_ematrend").text = "EMAs: DETERIORATING";
+    $CHART1.GetCustButObj("btn_ematrend").text = "EMA: DOWNTREND";
     $CHART1.GetCustButObj("btn_ematrend").bkcolor = red;
-}
-
-
-// ------------------------------------------------------------
-// STALLING
-// 9 EMA not rising meaningfully AND either:
-// - 20 EMA is not rising meaningfully, OR
-// - 9/20 EMA spread is contracting significantly
-// ------------------------------------------------------------
-
-else if ($EMA9_CHANGE5 <= $EMA_TREND_UP5 &&
-        ($EMA20_CHANGE10 <= $EMA_TREND_UP10 ||
-         $EMA_SPREAD_CHANGE < $EMA_SPREAD_CONTRACTION))
-{
-    $EMA_TREND_STATE = 2;
-
-    $CHART1.GetCustButObj("btn_ematrend").text = "EMAs: SIDEWAYS";
-    $CHART1.GetCustButObj("btn_ematrend").bkcolor = orange;
-}
-
-
-// ------------------------------------------------------------
-// MIXED
-// Signals don't meet the other classifications
-// ------------------------------------------------------------
-
-else
-{
-    $EMA_TREND_STATE = 4;
-
-    $CHART1.GetCustButObj("btn_ematrend").text = "EMAs: MIXED";
-    $CHART1.GetCustButObj("btn_ematrend").bkcolor = yellow;
 }
