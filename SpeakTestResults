@@ -86,6 +86,12 @@ if($AverageRange4 > .2){
 if($Extended == 1){
   Speak("Stock may be extended.");
 }
+// Check EMA Trend
+if($EMA_TREND_STATE == 2){
+  Speak("Stock is moving sideways.");
+} else if($EMA_TREND_STATE == 3){
+  Speak("Stock is in a downtrend.");
+}
 //Check Spread
 if($Spread > .10){
   Speak("Stock has a wide spread.");
