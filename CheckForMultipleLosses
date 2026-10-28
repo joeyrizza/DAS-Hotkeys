@@ -1,0 +1,22 @@
+if (GetAccountObj($MONTAGE1.Account).Realized == $TEMPTOTAL)
+{
+    return;
+}
+else if (GetAccountObj($MONTAGE1.Account).Realized > $TEMPTOTAL)
+{
+    $TEMPTOTAL=GetAccountObj($MONTAGE1.Account).Realized;
+}
+else
+{
+    if ($MONTAGE1.Pos == 0)
+    {
+        $TEMPTOTAL=GetAccountObj($MONTAGE1.Account).Realized;
+        $Losses=$Losses+1;
+
+        if ($Losses >= 2)
+        {
+            $MONTAGE1.LockAllMontage Lock;
+            Speak("You'd rather take a break!");
+        }
+    }
+}
