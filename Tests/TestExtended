@@ -88,6 +88,10 @@ if($MPRICE<$ExtensionWarning){
 $CHART1.GetCustButObj("btn_range").text ="Rng4: $" + Round($AverageRange4,103) + " Rng10: $" + Round($AverageRange10,103);
 if($AverageRange4 > .3 || $AverageRange10 > .40){
   $CHART1.GetCustButObj("btn_range").bkcolor=red;
+  if($SetupArmed==1)
+    {
+    exechotkey("Setup Disarmed due to candle size.");
+    }
 } else {
     if($AverageRange4 <= .3){
         $CHART1.GetCustButObj("btn_range").bkcolor=orange;
