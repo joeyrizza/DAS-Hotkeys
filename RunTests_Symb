@@ -2,6 +2,7 @@
 if($RunTestsEnabled==1 && $RunningTestsSymb==0)
 {
   $RunningTestsSymb=1;
+  exechotkey("Setup Disarmed");
   exechotkey("CatalystButtonColor");
   exechotkey("TestFloat");
   exechotkey("TestETB");
