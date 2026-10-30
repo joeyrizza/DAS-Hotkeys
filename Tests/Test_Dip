@@ -1,0 +1,93 @@
+
+// ============================================
+// DIP ELIGIBILITY INDICATOR
+// Runs on: ChartUpdate / 1-second interval
+// Button: btn_dip
+// ============================================
+
+
+$DIPBTN=$LADDER1.GetCustButObj("btn_dip");
+
+// ============================================
+// CURRENT VALUES
+// ============================================
+
+$PRICE=$MONTAGE1.Last;
+$SESSIONLOW=$MONTAGE1.Lo;
+$SESSIONHIGH=$MONTAGE1.Hi;
+
+// 50% session retracement
+$RETRACE50=$SESSIONLOW+(($SESSIONHIGH-$SESSIONLOW)/2);
+
+// EMA / VWAP studies
+$EMA9=GetStudyVal("StudyEMA9");
+$EMA20=GetStudyVal("StudyEMA20");
+$VWAP=GetStudyVal("StudyVWAP");
+
+// Previous completed candles
+$BAR1=$CHART1.GetBar(-1);
+$BAR2=$CHART1.GetBar(-2);
+$BAR3=$CHART1.GetBar(-3);
+
+// ============================================
+// HARD INVALIDATORS
+// ============================================
+
+$BLOCKED=0;
+$CAUTION=0;
+
+// Below VWAP
+if($PRICE < $VWAP){
+    $BLOCKED=1;
+}
+
+// At or very near LOD
+if($PRICE <= ($SESSIONLOW+0.01)){
+    $BLOCKED=1;
+}
+
+// Below 50% of session's low-to-high move
+if($PRICE < $RETRACE50){
+    $BLOCKED=1;
+}
+
+// Bearish EMA alignment
+if($EMA9 < $EMA20){
+    $BLOCKED=1;
+}
+
+// ============================================
+// CAUTION CONDITIONS
+// ============================================
+
+// Below 9 EMA while EMA alignment remains bullish
+if($PRICE < $EMA9 && $EMA9 > $EMA20){
+    $CAUTION=1;
+}
+
+// Three consecutive lower highs and lower lows
+if(
+    $BAR1.HI < $BAR2.HI &&
+    $BAR2.HI < $BAR3.HI &&
+    $BAR1.LO < $BAR2.LO &&
+    $BAR2.LO < $BAR3.LO
+){
+    $CAUTION=1;
+}
+
+// ============================================
+// BUTTON DISPLAY
+// ============================================
+
+if($BLOCKED == 1){
+    $DIPBTN.text="DIP: BLOCKED";
+    $DIPBTN.bkcolor=red;
+}
+else if($CAUTION == 1){
+    $DIPBTN.text="DIP: CAUTION";
+    $DIPBTN.bkcolor=yellow;
+}
+else{
+    $DIPBTN.text="DIP: OK";
+    $DIPBTN.bkcolor=green;
+}

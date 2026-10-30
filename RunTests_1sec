@@ -10,6 +10,7 @@ if($RunTestsEnabled==1 && $RunningTests1s==0)
   exechotkey("Test_Candle_Type");
   exechotkey("Test_ST_InterpretVol");
   exechotkey("Test_Pattern");
+  exechotkey("Test_Dip");
   exechotkey("Speak_Price_Action");
   exechotkey("CheckForMultipleLosses");
   $RunningTests1s=0;
