@@ -9,7 +9,7 @@ if($ETB == 1){
   $CHART1.GetCustButObj("btn_etb").text ="ETB";
   $CHART1.GetCustButObj("btn_etb").bkcolor=red;
 }
-if($HTB == 1 && SSR == 0){
+if($HTB == 1 && $SSR == 0){
   $CHART1.GetCustButObj("btn_etb").text ="Shortable: HTB";
   $CHART1.GetCustButObj("btn_etb").bkcolor=orange;
 }
