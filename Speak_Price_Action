@@ -1,7 +1,6 @@
 // Speak  Price Action 
 // If the setup is armed or the montage is in a position, announce price action at the end of the minute.
-// depends on: Test_Candle_Type
-// depends on: Test_ST_PriceContext
+// depends on: Test_Candle_Type, Test_ST_PriceContext, Test_Candle_Color
 
 // New Candle, reset announcement flags
 $CURRENT_BAR_TIME = $CHART1.GetBar(0).Time;

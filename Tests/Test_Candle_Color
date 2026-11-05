@@ -1,5 +1,5 @@
 //Determines color of current candle. 
-//TODO: Is this in use?
+//Used in SpeakPriceAction
 
 $THEBAR0 = $CHART1.getbar(0);
 $THEBAR1 = $CHART1.getbar(-1);
