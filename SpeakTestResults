@@ -37,14 +37,14 @@ if($VOL < 750000){
 }
 //Too close to meaningful resistance
 //temporary protection measure in this market environment. To be removed when market stabilizes.
-if($MONTAGE1.Hi-.20 <= $MPRICE){
+if($MONTAGE1.Hi-.10 <= $MPRICE){
   Speak("Price is too close to the highs."); $OKtoArm=0;
   return;
 }
-// Below VWAP: allow only when near VWAP, bullish, and buying participation is present
+// Below VWAP: allow when high rvol and emas are aligned
 if($ABOVEVWAP != 1)
 {
-    if($VWAP_DISTANCE > $VWAP * 0.05 || $CANDLE_BIAS != BULLISH || $ST_RVOL10 > 1.0)
+    if($CURLBLOCKED == 1 || $CURLCAUTION == 1)
     {
         Speak("Below veewap - no confirmation");
         $OKtoArm=0;
