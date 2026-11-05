@@ -16,9 +16,6 @@ $PRICE=$MONTAGE1.Last;
 $SESSIONLOW=$MONTAGE1.Lo;
 $SESSIONHIGH=$MONTAGE1.Hi;
 
-// 50% session retracement
-$RETRACE50=$SESSIONLOW+(($SESSIONHIGH-$SESSIONLOW)/2);
-
 // EMA / VWAP studies
 $EMA9=GetStudyVal("StudyEMA9");
 $EMA20=GetStudyVal("StudyEMA20");

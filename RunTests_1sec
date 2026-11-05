@@ -9,10 +9,11 @@ if($RunTestsEnabled==1 && $RunningTests1s==0)
   exechotkey("Test_Candle_Color");
   exechotkey("Test_Candle_Type");
   exechotkey("Test_ST_InterpretVol");
+  exechotkey("Test_Retracement");
   exechotkey("Test_Pattern");
   exechotkey("Test_Dip");
+  exechotkey("Test_Curl");
   exechotkey("Speak_Price_Action");
   exechotkey("CheckForMultipleLosses");
-  exechotkey("Test_Curl");
   $RunningTests1s=0;
 }
