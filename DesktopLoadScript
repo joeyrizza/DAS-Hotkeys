@@ -8,3 +8,7 @@ $LADDER1=GetWindowObj("LADDER1");
 
 //Window Object Shorthand
 $M=GetWindowObj("MONTAGE1");
+
+//Variables
+$SpeakCandleAction = 1;
+$SetupArmed=0;
