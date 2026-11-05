@@ -8,7 +8,7 @@ if($RunTestsEnabled==1)
 else
 {
     $RunTestsEnabled=1;
-
+    exechotkey("RunTests_Symb");
     GetWindowObj("CHART1").GetCustButObj("btn_pausetests").Text="Pause Tests";
     GetWindowObj("CHART1").GetCustButObj("btn_pausetests").bkcolor=color(211,211,211);
 }
