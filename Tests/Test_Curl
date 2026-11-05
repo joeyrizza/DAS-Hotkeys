@@ -1,0 +1,51 @@
+// CURL ELIGIBILITY TEST
+// Runs on: 1-second interval
+// Button: btn_curl
+
+$CURLBTN=$LADDER1.GetCustButObj("btn_curl");
+
+// Current values
+$CURLEMA9=GetStudyVal("Study9EMA");
+$CURLEMA20=GetStudyVal("Study20EMA");
+
+// Recent completed candles
+// Initialize status
+$CURLBLOCKED=0;
+$CURLCAUTION=0;
+
+// EMA alignment
+if($CURLEMA9 <= $CURLEMA20)
+{
+    $CURLBLOCKED=1;
+    $CURLRESULT="EMAS NOT ALIGNED";
+}
+
+// EMA Trend (Reuqires EMATrendState)
+if($EMA_TREND_STATE != 1 ){
+    $CURLBLOCKED=1;
+    $CURLRESULT="EMAS NOT IN UPTREND";
+}
+// RVOL check
+if($ST_RVOL10 < 1.0)
+{
+    $CURLCAUTION=1;
+    $CURLRESULT="RVOL < 1.0";
+}
+
+
+// Button display
+if($CURLBLOCKED == 1)
+{
+    $CURLBTN.text="CURL: " + $CURLRESULT;
+    $CURLBTN.bkcolor=red;
+}
+else if($CURLCAUTION == 1)
+{
+    $CURLBTN.text="CURL: " + $CURLRESULT;
+    $CURLBTN.bkcolor=yellow;
+}
+else
+{
+    $CURLBTN.text="CURL: OK";
+    $CURLBTN.bkcolor=green;
+}
