@@ -1,3 +1,6 @@
+// Check for multiple losses
+// Run every 1sec, and checks if the total realized loss has increased. If the loss counter reaches 2 or more, it locks all montages and prompts the user to take a break.
+
 if (GetAccountObj($MONTAGE1.Account).Realized == $TEMPTOTAL)
 {
     return;
@@ -5,6 +8,7 @@ if (GetAccountObj($MONTAGE1.Account).Realized == $TEMPTOTAL)
 else if (GetAccountObj($MONTAGE1.Account).Realized > $TEMPTOTAL)
 {
     $TEMPTOTAL=GetAccountObj($MONTAGE1.Account).Realized;
+    $Losses = 0;
 }
 else
 {
