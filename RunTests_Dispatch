@@ -1,6 +1,5 @@
 //Run Tests Dispatch. deterines execution frequency of tests. Runs as 1sec task.
 $MPRICE=getstudyval("StudyBar");
-$CURRENT_BAR_TIME = $CHART1.GetBar(0).Time;
 
 if($CHART1.Symbol==$selectedsymbol){
 	//run every second
@@ -20,6 +19,7 @@ if($CHART1.Symbol==$selectedsymbol){
 }
 
 //Run only on new 1-min candle
+$CURRENT_BAR_TIME = $CHART1.GetBar(0).Time;
 if ($LAST_BAR != $CURRENT_BAR_TIME)
 {
 	exechotkey("RunTests_1min");
