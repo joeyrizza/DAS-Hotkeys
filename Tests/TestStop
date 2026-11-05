@@ -43,7 +43,7 @@ if(shares <= 0){
 $TestPlannedRisk=$TestShareCount*$TestRiskPerShare;
 $TestPlannedRiskR=$TestPlannedRisk/$TestMaximumRiskPerTrade;
 
-$CHART1.GetCustButObj("btn_stop").text="Stop: " + $TestStopPrice;
+$CHART1.GetCustButObj("btn_stop").text="Stop: " + $TestStopPrice + " (" + $TechnicalStopDistance + ")";
 $CHART1.GetCustButObj("btn_riskpershare").text="Risk/Share: " + $TestRiskPerShare;
 $CHART1.GetCustButObj("btn_shares").text="Shares: " + $TestShareCount;
 $CHART1.GetCustButObj("btn_plannedrisk").text="Risk: " + Round($TestPlannedRiskR,2) + "R";
