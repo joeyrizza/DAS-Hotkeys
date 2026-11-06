@@ -36,21 +36,25 @@ $CAUTION=0;
 // Below VWAP
 if($PRICE < $VWAP){
     $BLOCKED=1;
+    $DIPREASON="Below VWAP";
 }
 
 // At or very near LOD
 if($PRICE <= ($SESSIONLOW+0.01)){
     $BLOCKED=1;
+    $DIPREASON="Near LOD";
 }
 
 // Below 50% of session's low-to-high move
 if($PRICE < $RETRACE50){
     $BLOCKED=1;
+    $DIPREASON="50% Retrace";
 }
 
 // Bearish EMA alignment
 if($EMA9 < $EMA20){
     $BLOCKED=1;
+    $DIPREASON="Bearish EMA";
 }
 
 // ============================================
@@ -60,6 +64,7 @@ if($EMA9 < $EMA20){
 // Below 9 EMA while EMA alignment remains bullish
 if($PRICE < $EMA9 && $EMA9 > $EMA20){
     $CAUTION=1;
+    $DIPREASON="Bullish EMA";
 }
 
 // Three consecutive lower highs and lower lows
@@ -70,6 +75,7 @@ if(
     $BAR2.LO < $BAR3.LO
 ){
     $CAUTION=1;
+    $DIPREASON="Lower Lows";
 }
 
 // ============================================
@@ -77,11 +83,11 @@ if(
 // ============================================
 
 if($BLOCKED == 1){
-    $DIPBTN.text="DIP: BLOCKED";
+    $DIPBTN.text="DIP: " + $DIPREASON;
     $DIPBTN.bkcolor=red;
 }
 else if($CAUTION == 1){
-    $DIPBTN.text="DIP: CAUTION";
+    $DIPBTN.text="DIP: " + $DIPREASON;
     $DIPBTN.bkcolor=yellow;
 }
 else{
