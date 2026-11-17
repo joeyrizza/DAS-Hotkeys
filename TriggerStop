@@ -1,0 +1,51 @@
+// This is a test for Marc B. that uses Alerts and Trigger as a stop loss for a long position.  
+// It will create an alert that will trigger a sell order when the price goes below the stop price.  
+// It will also draw a horizontal line on the chart at the stop price. 
+
+$CHART1= GetWindowObj("Chart1");
+$MONTAGE1=GetWindowObj("MONTAGE1");
+
+//buy hotkey stuff here
+$MONTAGE1.Share=25;
+$MONTAGE1.Price=Ask;
+$MONTAGE1.BUY=Send;
+
+//setup alert
+$MyStopPrice=$MONTAGE1.Bid - .15;
+$Alert=NewAlertObj();
+$Alert.Name="StopTrigger";
+$Alert.SYMB=$MONTAGE1.SYMB;
+$Alert.AddItem("Last Sale","<=" ,$MyStopPrice);
+$Alert.Script="execHotkey(\"Sell @ Bid\")";
+
+// alert settings
+$Alert.Speak=0;
+$Alert.PlaySound=0;
+$Alert.Autodelete=0;
+$Alert.Loop=0;
+$Alert.PopupWindow=0;
+$Alert.Autodelete=1;
+$Alert.save();
+
+//draw line
+$ct=$CHART1.getbar(0).Time;
+$L=$CHART1.GetTrendLine("S1");if (isobj($L)){$L.delete();}
+$TL=$CHART1.CreateTrendline("HorizLine");
+$TL.Name="S1";
+$TL.Price=$MyStopPrice;
+$TL.Color=Color(200,0,0);
+$TL.LineStyle=2;
+$TL.LineWidth=2;
+$TL.time=$ct;
+$TL.time1=$ct;
+$TL.LabelTextColor=Color(0,0,0);;
+$TL.LabelBgColor=Color(200,0,0);
+GlobalTrendLineToLocal($TL);
+
+// Delete alert
+$MyStop=GetAlertObj("StopTrigger");
+
+if (IsObj($MyStop))
+{
+    $MyStop.delete();
+}
