@@ -7,4 +7,5 @@ if($SpeakCurlAction == 1)
 {
   $SpeakCurlAction = 1;
   $LADDER1.GetCustButObj("btn_speakcurlaction").text="🔊";
+  Speak($CURLSPEECH);
 }

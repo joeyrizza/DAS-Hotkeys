@@ -8,30 +8,43 @@ $CURLBTN=$LADDER1.GetCustButObj("btn_curl");
 $CURLEMA9=GetStudyVal("Study9EMA");
 $CURLEMA20=GetStudyVal("Study20EMA");
 
-// Recent completed candles
 // Initialize status
 $CURLBLOCKED=0;
 $CURLCAUTION=0;
+$CURLRESULT="";
+$CURLSPEECH="";
 
 // EMA alignment
 if($CURLEMA9 <= $CURLEMA20)
 {
     $CURLBLOCKED=1;
     $CURLRESULT="EMAS NOT ALIGNED";
+    $CURLSPEECH="No curl, EMAs not aligned.";
 }
 
 // EMA Trend (Reuqires EMATrendState)
-if($EMA_TREND_STATE != 1 ){
+if($EMA_TREND_STATE != 1)
+{
     $CURLBLOCKED=1;
-    $CURLRESULT="EMAS NOT IN UPTREND";
+
+    if($CURLRESULT == "")
+    {
+        $CURLRESULT="EMAS NOT IN UPTREND";
+        $CURLSPEECH="No curl, EMAs not in uptrend.";
+    }
 }
+
 // RVOL check
 if($ST_RVOL10 < 1.0)
 {
     $CURLCAUTION=1;
-    $CURLRESULT="RVOL < 1.0";
-}
 
+    if($CURLBLOCKED == 0)
+    {
+        $CURLRESULT="RVOL < 1.0";
+        $CURLSPEECH="Curl Caution, Not enough volume.";
+    }
+}
 
 // Button display
 if($CURLBLOCKED == 1)
@@ -49,3 +62,11 @@ else
     $CURLBTN.text="CURL: OK";
     $CURLBTN.bkcolor=green;
 }
+
+//Speeching the result
+if($CURLSPEECH != $CURLPREVIOUSREASON && $SpeakCurlAction == 1)
+{
+    Speak($CURLSPEECH);
+}
+
+$CURLPREVIOUSREASON=$CURLSPEECH;
