@@ -19,7 +19,7 @@ if($CURLEMA9 <= $CURLEMA20)
 {
     $CURLBLOCKED=1;
     $CURLRESULT="EMAS NOT ALIGNED";
-    $CURLSPEECH="No curl, EMAs not aligned.";
+    $CURLSPEECH="No curl, E M A's not aligned.";
 }
 
 // EMA Trend (Reuqires EMATrendState)
@@ -30,7 +30,7 @@ if($EMA_TREND_STATE != 1)
     if($CURLRESULT == "")
     {
         $CURLRESULT="EMAS NOT IN UPTREND";
-        $CURLSPEECH="No curl, EMAs not in uptrend.";
+        $CURLSPEECH="No curl, E M A's not in uptrend.";
     }
 }
 
