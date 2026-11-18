@@ -37,24 +37,28 @@ $CAUTION=0;
 if($PRICE < $VWAP){
     $BLOCKED=1;
     $DIPREASON="Below VWAP";
+    $DIPSPEECH="No dip, below veewap.";
 }
 
 // At or very near LOD
 if($PRICE <= ($SESSIONLOW+0.01)){
     $BLOCKED=1;
     $DIPREASON="Near LOD";
+    $DIPSPEECH="No dip, price is near low of day.";
 }
 
 // Below 50% of session's low-to-high move
 if($PRICE < $RETRACE50){
     $BLOCKED=1;
     $DIPREASON="50% Retrace";
+    $DIPSPEECH="No dip, price is below 50% retracement.";
 }
 
 // Bearish EMA alignment
 if($EMA9 < $EMA20){
     $BLOCKED=1;
     $DIPREASON="Bearish EMA";
+    $DIPSPEECH="No dip, bearish EMA alignment.";
 }
 
 // ============================================
@@ -65,6 +69,7 @@ if($EMA9 < $EMA20){
 if($PRICE < $EMA9 && $EMA9 > $EMA20){
     $CAUTION=1;
     $DIPREASON="Bullish EMA";
+    $DIPSPEECH="Dip Trade Caution, bullish EMA alignment.";
 }
 
 // Three consecutive lower highs and lower lows
@@ -76,6 +81,7 @@ if(
 ){
     $CAUTION=1;
     $DIPREASON="Lower Lows";
+    $DIPSPEECH="Dip Trade Caution, lower highs and lows.";
 }
 
 // ============================================
@@ -93,4 +99,12 @@ else if($CAUTION == 1){
 else{
     $DIPBTN.text="DIP: OK";
     $DIPBTN.bkcolor=green;
+    $DIPREASON="Dip Trade OK";
+    $DIPSPEECH="Dip Trade OK.";
 }
+
+//Speeching the result
+if ($DIPSPEECH != $DIPPREVIOUSREASON && $SpeakDipAction == 1){
+    Speak($DIPSPEECH);
+}
+$DIPPREVIOUSREASON=$DIPSPEECH;

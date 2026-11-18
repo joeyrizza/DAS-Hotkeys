@@ -1,0 +1,11 @@
+if($SpeakDipAction == 1)
+{
+  $SpeakDipAction = 0;
+  $LADDER1.GetCustButObj("btn_speakdipaction").text="🔇";
+}
+ else
+{
+  $SpeakDipAction = 1;
+  $LADDER1.GetCustButObj("btn_speakdipaction").text="🔊";
+  Speak($DIPSPEECH);
+}
