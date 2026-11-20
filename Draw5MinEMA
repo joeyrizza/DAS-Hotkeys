@@ -1,0 +1,19 @@
+//Draws the 5 min EMA on the 1 min chart
+
+//5Min 9EMA
+$p=$CHART5.getstudyval("Study9EMA");
+if ($p != $LAST_5_9EMA_PRICE) {
+    $L=$CHART1.GetTrendLine("5Min9EMA");if (isobj($L)){$L.delete();}
+    $TL=$CHART1.CreateTrendline("HorizLine");
+    $TL.Name="5Min9EMA";
+    $TL.Price=$p;
+    $TL.Color=Color(230, 230, 230);
+    $TL.LineStyle=2;
+    $TL.LineWidth=2;
+    $TL.time=$CHART1.getbar(0).Time;
+    $TL.time1=$CHART1.getbar(0).Time;
+    $TL.LabelTextColor=Color(0,0,0);;
+    $TL.LabelBgColor=Color(211,211,211);
+    GlobalTrendLineToLocal($TL);
+    $LAST_5_9EMA_PRICE = $p;
+}
