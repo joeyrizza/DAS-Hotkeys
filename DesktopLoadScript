@@ -1,8 +1,9 @@
 // Desktop Load Script
 
 // Get Window Objects
-$CHART1= GetWindowObj("Chart1");
-$CHARTD= GetWindowObj("ChartDaily");
+$CHART1=GetWindowObj("Chart1");
+$CHART5=GetWindowObj("Chart5");
+$CHARTD=GetWindowObj("ChartDaily");
 $MONTAGE1=GetWindowObj("MONTAGE1");
 $LADDER1=GetWindowObj("LADDER1");
 
