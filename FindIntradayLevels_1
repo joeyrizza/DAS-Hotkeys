@@ -69,6 +69,8 @@ if($TopVolOpen>=$LowerPrice && $TopVolOpen<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
+    $TL.LineStyle=1;
+    $TL.LineWidth=1;
 }
 
 if($TopVolHigh>=$LowerPrice && $TopVolHigh<=$UpperPrice)
@@ -81,6 +83,8 @@ if($TopVolHigh>=$LowerPrice && $TopVolHigh<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
+    $TL.LineStyle=1;
+    $TL.LineWidth=1;
 }
 
 if($TopVolLow>=$LowerPrice && $TopVolLow<=$UpperPrice)
@@ -93,6 +97,8 @@ if($TopVolLow>=$LowerPrice && $TopVolLow<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
+    $TL.LineStyle=1;
+    $TL.LineWidth=1;
 }
 
 if($TopVolClose>=$LowerPrice && $TopVolClose<=$UpperPrice)
@@ -105,6 +111,8 @@ if($TopVolClose>=$LowerPrice && $TopVolClose<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
+    $TL.LineStyle=1;
+    $TL.LineWidth=1;
 }
 
 ConfigTrendLine Text SolidLine:FFFFFF:2;

@@ -92,6 +92,8 @@ if($TopVol1Open>=$LowerPrice && $TopVol1Open<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
+    $TL.LineStyle=1;
+    $TL.LineWidth=1;
 }
 
 if($TopVol1High>=$LowerPrice && $TopVol1High<=$UpperPrice)
@@ -104,6 +106,8 @@ if($TopVol1High>=$LowerPrice && $TopVol1High<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
+    $TL.LineStyle=1;
+    $TL.LineWidth=1;
 }
 
 if($TopVol1Low>=$LowerPrice && $TopVol1Low<=$UpperPrice)
@@ -116,6 +120,8 @@ if($TopVol1Low>=$LowerPrice && $TopVol1Low<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
+    $TL.LineStyle=1;
+    $TL.LineWidth=1;
 }
 
 if($TopVol1Close>=$LowerPrice && $TopVol1Close<=$UpperPrice)
@@ -128,6 +134,8 @@ if($TopVol1Close>=$LowerPrice && $TopVol1Close<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
+    $TL.LineStyle=1;
+    $TL.LineWidth=1;
 }
 
 // ============================================================
@@ -144,6 +152,8 @@ if($TopVol2Open>=$LowerPrice && $TopVol2Open<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
+    $TL.LineStyle=1;
+    $TL.LineWidth=1;
 }
 
 if($TopVol2High>=$LowerPrice && $TopVol2High<=$UpperPrice)
@@ -156,6 +166,8 @@ if($TopVol2High>=$LowerPrice && $TopVol2High<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
+    $TL.LineStyle=1;
+    $TL.LineWidth=1;
 }
 
 if($TopVol2Low>=$LowerPrice && $TopVol2Low<=$UpperPrice)
@@ -168,6 +180,8 @@ if($TopVol2Low>=$LowerPrice && $TopVol2Low<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
+    $TL.LineStyle=1;
+    $TL.LineWidth=1;
 }
 
 if($TopVol2Close>=$LowerPrice && $TopVol2Close<=$UpperPrice)
@@ -180,6 +194,8 @@ if($TopVol2Close>=$LowerPrice && $TopVol2Close<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
+    $TL.LineStyle=1;
+    $TL.LineWidth=1;
 }
 
 //msgbox("IDX="+$IDX+" | MaxBars="+$MAXBARS+" | Candle1 Time="+$T1+" | V1="+$V1+" | O1="+$TopVol1Open+" | H1="+$TopVol1High+" | L1="+$TopVol1Low+" | C1="+$TopVol1Close+" | Candle2 Time="+$T2+" | V2="+$V2+" | O2="+$TopVol2Open+" | H2="+$TopVol2High+" | L2="+$TopVol2Low+" | C2="+$TopVol2Close);
