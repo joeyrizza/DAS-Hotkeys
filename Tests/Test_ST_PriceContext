@@ -3,20 +3,24 @@
 // Answers the question: Where is the current price relative to the recent move?
 //Runs on: chartupdate
 
-$High1=$CHART1.GetBar(-1).High;
-$High2=$CHART1.GetBar(-2).High;
-$High3=$CHART1.GetBar(-3).High;
-$High4=$CHART1.GetBar(-4).High;
-$High5=$CHART1.GetBar(-5).High;
+$High1=$CHART1.GetBar(-1).Hi;
+$High2=$CHART1.GetBar(-2).Hi;
+$High3=$CHART1.GetBar(-3).Hi;
+$High4=$CHART1.GetBar(-4).Hi;
+$High5=$CHART1.GetBar(-5).Hi;
 
-$Low1=$CHART1.GetBar(-1).Low;
-$Low2=$CHART1.GetBar(-2).Low;
-$Low3=$CHART1.GetBar(-3).Low;
-$Low4=$CHART1.GetBar(-4).Low;
-$Low5=$CHART1.GetBar(-5).Low;
+$Low1=$CHART1.GetBar(-1).Lo;
+$Low2=$CHART1.GetBar(-2).Lo;
+$Low3=$CHART1.GetBar(-3).Lo;
+$Low4=$CHART1.GetBar(-4).Lo;
+$Low5=$CHART1.GetBar(-5).Lo;
 
 $RecentHigh=Max($High1,Max($High2,Max($High3,Max($High4,$High5))));
 $RecentLow=Min($Low1,Min($Low2,Min($Low3,Min($Low4,$Low5))));
 
 $Range=$RecentHigh-$RecentLow;
-$PricePosition=(($MPRICE-$RecentLow)/$Range)*100;
+// Flat range (halt, no trades): treat price as mid-range
+$PricePosition=50;
+if($Range > 0){
+    $PricePosition=(($MPRICE-$RecentLow)/$Range)*100;
+}
