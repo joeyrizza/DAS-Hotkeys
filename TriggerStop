@@ -43,9 +43,9 @@ $TL.LabelBgColor=Color(200,0,0);
 GlobalTrendLineToLocal($TL);
 
 // Delete alert
-$MyStop=GetAlertObj("StopTrigger");
+//$MyStop=GetAlertObj("StopTrigger");
 
-if (IsObj($MyStop))
-{
-    $MyStop.delete();
-}
+//if (IsObj($MyStop))
+//{
+//    $MyStop.delete();
+//}
