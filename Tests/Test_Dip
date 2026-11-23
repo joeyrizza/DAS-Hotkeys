@@ -17,8 +17,8 @@ $SESSIONLOW=$MONTAGE1.Lo;
 $SESSIONHIGH=$MONTAGE1.Hi;
 
 // EMA / VWAP studies
-$EMA9=GetStudyVal("StudyEMA9");
-$EMA20=GetStudyVal("StudyEMA20");
+$EMA9=GetStudyVal("Study9EMA");
+$EMA20=GetStudyVal("Study20EMA");
 $VWAP=GetStudyVal("StudyVWAP");
 
 // Previous completed candles
@@ -27,11 +27,40 @@ $BAR2=$CHART1.GetBar(-2);
 $BAR3=$CHART1.GetBar(-3);
 
 // ============================================
-// HARD INVALIDATORS
+// Checks run from lowest to highest priority.
+// The last condition that matches sets the reason,
+// so blockers (below) override cautions.
 // ============================================
 
 $BLOCKED=0;
 $CAUTION=0;
+
+// ============================================
+// CAUTION CONDITIONS
+// ============================================
+
+// Below 9 EMA while EMA alignment remains bullish
+if($PRICE < $EMA9 && $EMA9 > $EMA20){
+    $CAUTION=1;
+    $DIPREASON="Bullish EMA";
+    $DIPSPEECH="Dip Trade Caution, bullish EMA alignment.";
+}
+
+// Three consecutive lower highs and lower lows
+if(
+    $BAR1.HI < $BAR2.HI &&
+    $BAR2.HI < $BAR3.HI &&
+    $BAR1.LO < $BAR2.LO &&
+    $BAR2.LO < $BAR3.LO
+){
+    $CAUTION=1;
+    $DIPREASON="Lower Lows";
+    $DIPSPEECH="Dip Trade Caution, lower highs and lows.";
+}
+
+// ============================================
+// HARD INVALIDATORS
+// ============================================
 
 // Below VWAP
 if($PRICE < $VWAP){
@@ -62,29 +91,6 @@ if($EMA9 < $EMA20){
 }
 
 // ============================================
-// CAUTION CONDITIONS
-// ============================================
-
-// Below 9 EMA while EMA alignment remains bullish
-if($PRICE < $EMA9 && $EMA9 > $EMA20){
-    $CAUTION=1;
-    $DIPREASON="Bullish EMA";
-    $DIPSPEECH="Dip Trade Caution, bullish EMA alignment.";
-}
-
-// Three consecutive lower highs and lower lows
-if(
-    $BAR1.HI < $BAR2.HI &&
-    $BAR2.HI < $BAR3.HI &&
-    $BAR1.LO < $BAR2.LO &&
-    $BAR2.LO < $BAR3.LO
-){
-    $CAUTION=1;
-    $DIPREASON="Lower Lows";
-    $DIPSPEECH="Dip Trade Caution, lower highs and lows.";
-}
-
-// ============================================
 // BUTTON DISPLAY
 // ============================================
 
@@ -94,7 +100,7 @@ if($BLOCKED == 1){
 }
 else if($CAUTION == 1){
     $DIPBTN.text="DIP: " + $DIPREASON;
-    $DIPBTN.bkcolor=yellow;
+    $DIPBTN.bkcolor=orange;
 }
 else{
     $DIPBTN.text="DIP: OK";
