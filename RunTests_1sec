@@ -14,7 +14,6 @@ if($RunTestsEnabled==1 && $RunningTests1s==0)
   exechotkey("Test_Dip");
   exechotkey("Test_Curl");
   exechotkey("Speak_Price_Action");
-  exechotkey("CheckForMultipleLosses");
   exechotkey("Draw5MinEMA");
   $RunningTests1s=0;
 }

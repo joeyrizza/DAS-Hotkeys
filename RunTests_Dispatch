@@ -4,6 +4,7 @@ $MPRICE=getstudyval("StudyBar");
 if($CHART1.Symbol==$selectedsymbol){
 	//run every second
 	exechotkey("RunTests_1sec");
+    exechotkey("CheckForMultipleLosses");
 	if($SetupArmed==1){
 		$CHART1.GetCustButObj("btn_armed").text ="Setup Armed.";
 		$CHART1.GetCustButObj("btn_armed").bkcolor=red;
