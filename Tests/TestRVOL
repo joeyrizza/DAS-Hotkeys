@@ -19,6 +19,9 @@ if($rvolsymbol != $CHART1.Symbol){
   $DASRVOL=getquoteobj($CHART1.SYMBOL).RVOL;
   $rvolsymbol = $CHART1.SYMBOL;
 }
+// Reset every run so a symbol with no daily history (likely an IPO)
+// never shows the previous symbol's RVOL.
+$RVOL=0;
 if($AvgVolume2W > 0){
   $RVOL=getquoteobj($CHART1.SYMBOL).Volume/$AvgVolume2W;
 }
