@@ -43,7 +43,7 @@ $CAUTION=0;
 if($PRICE < $EMA9 && $EMA9 > $EMA20){
     $CAUTION=1;
     $DIPREASON="Bullish EMA";
-    $DIPSPEECH="Dip Trade Caution, bullish EMA alignment.";
+    $DIPSPEECH="Dip Trade Caution, bullish moving average alignment.";
 }
 
 // Three consecutive lower highs and lower lows
@@ -87,7 +87,7 @@ if($PRICE < $RETRACE50){
 if($EMA9 < $EMA20){
     $BLOCKED=1;
     $DIPREASON="Bearish EMA";
-    $DIPSPEECH="No dip, bearish EMA alignment.";
+    $DIPSPEECH="No dip, bearish moving average alignment.";
 }
 
 // ============================================
