@@ -24,7 +24,7 @@ if($AvgVolume2W > 0){
 }
 
 $RVOL=MAX($RVOL,$DASRVOL);
-$CHART1.GetCustButObj("btn_rvol").text ="RVOL: " + $RVOL + "x";
+$CHART1.GetCustButObj("btn_rvol").text ="RVOL: " + Round($RVOL,1) + "x";
 
 if($RVOL>5){
   $CHART1.GetCustButObj("btn_rvol").bkcolor=green;
