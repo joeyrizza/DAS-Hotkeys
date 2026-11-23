@@ -55,7 +55,7 @@ if($CURLBLOCKED == 1)
 else if($CURLCAUTION == 1)
 {
     $CURLBTN.text="CURL: " + $CURLRESULT;
-    $CURLBTN.bkcolor=yellow;
+    $CURLBTN.bkcolor=orange;
 }
 else
 {
