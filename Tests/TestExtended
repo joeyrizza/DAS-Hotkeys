@@ -94,7 +94,7 @@ if($AverageRange4 > .3 || $AverageRange10 > .50){
         exechotkey("Setup Disarmed");
     }
 } else {
-    if($AverageRange4 <= .3){
+    if($AverageRange4 >= .3){
         $CHART1.GetCustButObj("btn_range").bkcolor=orange;
     } else{
         $CHART1.GetCustButObj("btn_range").bkcolor=color(211,211,211);
