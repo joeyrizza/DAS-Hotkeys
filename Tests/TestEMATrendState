@@ -56,17 +56,31 @@ $EMA20_11 = Round(SubString($EMA20Info11, 5, StrLen($EMA20Info11)-1), 4);
 // CALCULATE EMA PERCENTAGE CHANGES
 // ============================================================
 
+// A missing EMA value (0) leaves its change at 0, which classifies as SIDEWAYS.
+$EMA9_CHANGE5 = 0;
+$EMA9_CHANGE10 = 0;
+$EMA20_CHANGE5 = 0;
+$EMA20_CHANGE10 = 0;
+
 // 9 EMA: change over approximately 5 bars
-$EMA9_CHANGE5 = (($EMA9_1 - $EMA9_6) / $EMA9_6) * 100;
+if ($EMA9_6 > 0) {
+    $EMA9_CHANGE5 = (($EMA9_1 - $EMA9_6) / $EMA9_6) * 100;
+}
 
 // 9 EMA: change over approximately 10 bars
-$EMA9_CHANGE10 = (($EMA9_1 - $EMA9_11) / $EMA9_11) * 100;
+if ($EMA9_11 > 0) {
+    $EMA9_CHANGE10 = (($EMA9_1 - $EMA9_11) / $EMA9_11) * 100;
+}
 
 // 20 EMA: change over approximately 5 bars
-$EMA20_CHANGE5 = (($EMA20_1 - $EMA20_6) / $EMA20_6) * 100;
+if ($EMA20_6 > 0) {
+    $EMA20_CHANGE5 = (($EMA20_1 - $EMA20_6) / $EMA20_6) * 100;
+}
 
 // 20 EMA: change over approximately 10 bars
-$EMA20_CHANGE10 = (($EMA20_1 - $EMA20_11) / $EMA20_11) * 100;
+if ($EMA20_11 > 0) {
+    $EMA20_CHANGE10 = (($EMA20_1 - $EMA20_11) / $EMA20_11) * 100;
+}
 
 
 // ============================================================

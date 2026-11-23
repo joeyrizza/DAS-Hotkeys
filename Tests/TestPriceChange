@@ -3,4 +3,7 @@
 // Runs on: chartupdate
 
 $PrevClose=$CHART1.GetBar(-1).Close;
-$PriceChange=(($MPRICE-$PrevClose)/$PrevClose)*100;
+$PriceChange=0;
+if($PrevClose > 0){
+    $PriceChange=(($MPRICE-$PrevClose)/$PrevClose)*100;
+}
