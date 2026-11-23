@@ -48,7 +48,7 @@ $AverageRange4=(
     $Range1+
     $Range2+
     $Range3
-)/10;
+)/4;
 
 $ExtensionAmount=$MPRICE-$EMA9;
 $ExtensionPercent=0;
