@@ -98,6 +98,7 @@ if ($OneCandleBullish == 1)
         if ($OneCandleVolume == 1)
         {
             $BULLISH_IMPULSE = 1;
+            $CANDLE_PATTERN = "Bullish Impulse";
             $IMPULSE_TYPE = "ONE-CANDLE";
         }
     }
