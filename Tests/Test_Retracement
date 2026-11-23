@@ -1,4 +1,9 @@
 //Tests the current trading price to see how far it has retraced from the daily high
 
+//Also sets SESSIONLOW / SESSIONHIGH, which Test_Dip uses. Must run before Test_Dip.
+
+$SESSIONLOW=$MONTAGE1.Lo;
+$SESSIONHIGH=$MONTAGE1.Hi;
+
 // RETRACE50 is the price at 50% session retracement
 $RETRACE50=$SESSIONLOW+(($SESSIONHIGH-$SESSIONLOW)/2);

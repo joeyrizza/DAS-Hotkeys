@@ -13,8 +13,7 @@ $DIPBTN=$LADDER1.GetCustButObj("btn_dip");
 // ============================================
 
 $PRICE=$MONTAGE1.Last;
-$SESSIONLOW=$MONTAGE1.Lo;
-$SESSIONHIGH=$MONTAGE1.Hi;
+// SESSIONLOW, SESSIONHIGH and RETRACE50 are set by Test_Retracement (runs first)
 
 // EMA / VWAP studies
 $EMA9=GetStudyVal("Study9EMA");
