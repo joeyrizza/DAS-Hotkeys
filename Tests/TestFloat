@@ -11,10 +11,12 @@ if($FLOAT < 1){
 $CHART1.GetCustButObj("btn_float").text ="Float: " + $FLOATDISP;
 
 //run tests
-if($FLOAT <= 20){
-  $PILLARS=$PILLARS+1;
+if($FLOAT <= 0){
+  // No float data
+  $CHART1.GetCustButObj("btn_float").text ="Float: N/A";
+  $CHART1.GetCustButObj("btn_float").bkcolor=orange;
 }
-if($FLOAT <= 0.3){
+else if($FLOAT <= 0.3){
   $CHART1.GetCustButObj("btn_float").bkcolor=green;
 }
 else if($FLOAT <= 1){
@@ -29,7 +31,7 @@ else if($FLOAT <= 5){
 else if($FLOAT <= 10){
   $CHART1.GetCustButObj("btn_float").bkcolor=color(120,245,140);
 }
-else if($FLOAT < 20){
+else if($FLOAT <= 20){
   $CHART1.GetCustButObj("btn_float").bkcolor=color(180,255,180);
 }
 else{
