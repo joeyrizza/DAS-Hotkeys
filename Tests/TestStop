@@ -12,7 +12,8 @@ $TestTradeRisk=$TestMaximumRiskPerTrade;
 $TestStopPrice=$MONTAGE1.price;
 $ct=$CHART1.getbar(0).Time;
 
-if(price <= 0){
+if($TestStopPrice <= 0){
+    $CHART1.GetCustButObj("btn_stop").text="Stop: N/A";
     $CHART1.GetCustButObj("btn_riskpershare").text="Risk/Share: N/A";
     $CHART1.GetCustButObj("btn_shares").text="Shares: N/A";
     $CHART1.GetCustButObj("btn_plannedrisk").text="Risk: Price not Set";
@@ -34,10 +35,13 @@ if($TestPositionValue > $TestMaxLongVal){
     $TestShareCount=$TestShareSizeAllowedByPositionValue;
 }
 
-if(shares <= 0){
+//Also catches a stop at or above the ask (negative share count)
+if($TestShareCount < 1){
+    $CHART1.GetCustButObj("btn_stop").text="Stop: " + $TestStopPrice + " (" + $TechnicalStopDistance + ")";
     $CHART1.GetCustButObj("btn_riskpershare").text="Risk/Share: N/A";
     $CHART1.GetCustButObj("btn_shares").text="Shares: N/A";
     $CHART1.GetCustButObj("btn_plannedrisk").text="Risk: No Shares";
+    return;
 }
 
 $TestPlannedRisk=$TestShareCount*$TestRiskPerShare;
