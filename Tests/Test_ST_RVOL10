@@ -1,10 +1,15 @@
 
 //Determines the short-term rvol based on the last 10 candles.
 //Answers the question: How much participation is occurring right now?
+//The forming bar's volume is projected to a full minute so the ratio
+//doesn't depend on how far into the minute it is.
 //Runs on: 1 sec
 
-//Update this every new 1 min candle
-if($STRVOL10TIME != $CURRENT_BAR_TIME){
+$ST_RVOL10=0;
+
+//Refresh the 10-bar average on a new 1 min candle or a symbol change.
+//Also retry while the average is 0 (bars may not have loaded yet after a switch).
+if($STRVOL10TIME != $CURRENT_BAR_TIME || $STRVOL10SYMB != $CHART1.Symbol || $Avg10MinVol <= 0){
     $Vol1=$CHART1.GetBar(-1).Volume;
     $Vol2=$CHART1.GetBar(-2).Volume;
     $Vol3=$CHART1.GetBar(-3).Volume;
@@ -18,11 +23,24 @@ if($STRVOL10TIME != $CURRENT_BAR_TIME){
 
     $Avg10MinVol=($Vol1+$Vol2+$Vol3+$Vol4+$Vol5+$Vol6+$Vol7+$Vol8+$Vol9+$Vol10)/10;
     $Avg10MinVolK=$Avg10MinVol/1000;
+
+    //Last finished bar vs. the average, used early in the new bar
+    $ST_RVOL10_LAST=0;
+    if($Avg10MinVol > 0){
+        $ST_RVOL10_LAST=$Vol1/$Avg10MinVol;
+    }
     $STRVOL10TIME = $CURRENT_BAR_TIME;
+    $STRVOL10SYMB = $CHART1.Symbol;
 }
 
+$STRVOL_SEC=GetSecond() % 60;
 $CurrentVol=$CHART1.GetBar(0).Volume;
 
 if($Avg10MinVol > 0){
-    $ST_RVOL10=$CurrentVol/$Avg10MinVol;
+    if($STRVOL_SEC < 15){
+        //Too little of the bar has traded to project: use the last finished bar
+        $ST_RVOL10=$ST_RVOL10_LAST;
+    } else {
+        $ST_RVOL10=($CurrentVol*60/($STRVOL_SEC+1))/$Avg10MinVol;
+    }
 }
