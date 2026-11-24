@@ -1,4 +1,4 @@
-//RVOL - Tests the average volume over a 14 day period.
+//RVOL - Tests today's volume against the average daily volume over 10 days.
 //Runs on: chartupdate
 
 if($rvolsymbol != $CHART1.Symbol){
@@ -16,9 +16,10 @@ if($rvolsymbol != $CHART1.Symbol){
       $vol1 + $vol2 + $vol3 + $vol4 + $vol5 +
       $vol6 + $vol7 + $vol8 + $vol9 + $vol10
   ) / 10;
-  $DASRVOL=getquoteobj($CHART1.SYMBOL).RVOL;
   $rvolsymbol = $CHART1.SYMBOL;
 }
+// DAS's RVOL changes through the day, so read it every run
+$DASRVOL=getquoteobj($CHART1.SYMBOL).RVOL;
 // Reset every run so a symbol with no daily history (likely an IPO)
 // never shows the previous symbol's RVOL.
 $RVOL=0;
