@@ -46,7 +46,7 @@ Not yet done. Raise them only if relevant, and don't implement without the user'
 - **WHLR unit tests fail:** BAR1 in `WHLR.json` is a red candle, and BAR3's high is below BAR4's in `WHLR.9.25.26.json`. The user wants to revisit whether the rules or the expected results are wrong.
 - **TriggerStop:** the `StopTrigger` alert is left behind after a manual exit. Delete any existing alert before creating a new one.
 - **Stuck test-group guards:** optionally reset the `$RunningTests*` guards when the PauseTests button unpauses, as a way to recover.
-- **Leftover share from rounding:** `$qty=Round(Pos*0.75)` in `SellPortion` (and `Pos*0.5` in `SellPortionAsk`) would avoid it. The user hasn't decided.
+- **Leftover share from rounding:** `$qty=Round($pos*0.75)` in `SellPortion` (and `$pos*0.5` in `SellPortionAsk`) would avoid it. The user hasn't decided.
 - **Range limits:** `$AverageRange4` thresholds (.30 block, .20 warning) became about 2.5× stricter after the `/10` → `/4` fix. The user is watching whether they need retuning, and may switch to percentage-of-price thresholds.
 
 Already decided, not to be raised again:
@@ -54,3 +54,7 @@ Already decided, not to be raised again:
 - Arming staying active across symbol changes while the tests are paused isn't a concern.
 - Intraday level scans that reach previous-day bars are acceptable.
 - R1/S1 lines should stay on the chart during a trade.
+- `TriggerStop` (a test made for another trader) and `StaticEntry` (an old buy hotkey, not assigned to a key) aren't used live. Don't review them as part of the strategy. `DynamicEntry` is the production entry.
+- `DynamicEntry` doesn't need a guard for a 0 or blank stop price: broker limits block buys under $1, and the user checks the stop field before buying. `Round()` sizing slightly above $3.75 is also fine.
+- Arming while the tests are paused (and so using another symbol's stale values) isn't a concern.
+- `CheckForMultipleLosses` counting a loss after a restart (`$TEMPTOTAL` starts at 0) is fine. The user can unlock the montage by hand.
