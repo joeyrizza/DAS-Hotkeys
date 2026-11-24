@@ -207,10 +207,10 @@ Buys 25 shares and creates a DAS alert named `StopTrigger` that runs the `Sell @
 
 | Script | What it does |
 |---|---|
-| `SellPortionAsk` | **In profit (bid > average cost):** sells 50% with a limit at the ask, and places a stop-limit at average cost for the rest. **Otherwise:** sells the whole position with a limit at bid − $0.10. |
-| `SellPortion` | Sells 75% with a limit at bid − $0.10 (fills immediately), and places a stop-limit at average cost for the rest. |
+| `SellPortionAsk` | **In profit (bid > average cost):** sells 50% with a limit at the ask, and places a breakeven stop-limit for the rest. **Otherwise:** sells the whole position with a limit at bid − $0.10. |
+| `SellPortion` | Sells 75% with a limit at bid − $0.10 (fills immediately), and places a breakeven stop-limit for the rest. |
 
-Both cancel all open orders for the symbol first. DAS rounds fractional share counts down, which sometimes leaves one share to sell by hand.
+Both read the position once at the start (so a fast fill on the partial can't shrink the stop's share count) and do nothing when flat. They then cancel all open orders for the symbol. The breakeven stop-limit triggers at average cost with its limit $0.05 lower, so a fast drop can't skip past it; it can fill up to $0.05/share below cost. DAS rounds fractional share counts down, which sometimes leaves one share to sell by hand.
 
 ---
 
@@ -256,13 +256,13 @@ All of these are in `Tests/`, except `Speak_Price_Action` and `Draw5MinEMA`, whi
 | `TestPrice` | chart update | — | `btn_price` (green $2–10, orange $1–2 / $10–20 / halted, red ≥ $20) |
 | `TestVWAP` | chart update | `$VWAP`, `$ABOVEVWAP` | `btn_vwap` |
 | `TestGap` | chart update | `$Gap`, `$GAPPER`, `$YCLOSE` | `btn_gap` (green ≥ 10%, red below, orange "N/A" with no previous close) |
-| `TestRVOL` | chart update | `$RVOL` = higher of (today's volume ÷ 10-day average daily volume) and DAS's RVOL | `btn_rvol` (green > 5) |
+| `TestRVOL` | chart update | `$RVOL` = higher of (today's volume ÷ 10-day average daily volume) and DAS's RVOL. The daily average is cached per symbol; DAS's RVOL is read every run. | `btn_rvol` (green > 5) |
 | `TestSpread` | chart update | `$Spread` | `btn_spread` (green < $0.05, orange to $0.10, red above) |
 | `TestPriceChange` | chart update | `$PriceChange`: % move since the previous 1-minute close | — |
-| `TestExtended` | 1s | `$AverageRange4`, `$AverageRange10`, `$EXTENDED`, distance from the 9 EMA | `btn_extended`, `btn_range`, `btn_risk` |
+| `TestExtended` | 1s | `$AverageRange4`, `$AverageRange10`, `$EXTENDED`, distance from the 9 EMA | `btn_extended`, `btn_range` (orange when the 4-candle average is above $0.20, red past the arming limits), `btn_risk` |
 | `TestVolume` | 1s | `$VOL` (today's volume) | `btn_vol` (green ≥ 1M, orange ≥ 750K) |
-| `TestStop` | 1s | Preview of the DynamicEntry calculation | `btn_stop`, `btn_riskpershare`, `btn_shares`, `btn_plannedrisk`; draws R1/S1 while armed |
-| `Test_ST_RVOL10` | 1s (average refreshed each new bar) | `$ST_RVOL10`: current bar volume ÷ average of the last 10 bars | — |
+| `TestStop` | 1s | Preview of the DynamicEntry calculation | `btn_stop`, `btn_riskpershare`, `btn_shares`, `btn_plannedrisk` ("N/A" with no stop price or under 1 share, e.g. a stop at or above the ask); draws R1/S1 while armed |
+| `Test_ST_RVOL10` | 1s (average refreshed each new bar and on symbol change) | `$ST_RVOL10`: the current bar's volume projected to a full minute (`volume × 60 ÷ (seconds into bar + 1)`) ÷ average of the last 10 bars. For the first 15 seconds of a bar it uses the last finished bar's ratio instead (`$ST_RVOL10_LAST`). 0 when there is no average. | — |
 | `Test_Candle_Color` | 1s | `$CANDLE_COLOR_0..4`, `$CANDLE_COLOR_0_VAL` | — |
 | `Test_Candle_Type` | 1s | `$CANDLE_TYPE`, `$CANDLE_BIAS`, `$SHORT_TERM_TREND`, `$CANDLE_CONFIRMATION`, `$SECONDS_IN_MINUTE` | `btn_candle_type`, `btn_candle_confirmation` (coloured only in the last 30 seconds of the bar) |
 | `Test_ST_PriceContext` | 1s | `$PricePosition`: 0–100 position within the last 5 bars' range (50 if the range is flat) | — |
@@ -277,8 +277,8 @@ All of these are in `Tests/`, except `Speak_Price_Action` and `Draw5MinEMA`, whi
 | `TestMACD` | 1 min, symbol change | `$MACD`, `$Signal` | `btn_macd` |
 | `TestEMAAlignment` | 1 min | `$MOVINGAVGSALIGNED`, `$ABOVE9EMA` | `btn_emas` (green when 9 > 20 > 200) |
 | `TestEMATrendState` | 1 min, symbol change | `$EMA_TREND_STATE`: 1 up, 2 sideways, 3 down | `btn_ematrend` |
-| `TestFloat` | symbol change | `$FLOAT` (millions) | `btn_float` |
-| `TestETB` | symbol change | `$ETB`, `$HTB`, `$SSR` | `btn_etb` |
+| `TestFloat` | symbol change | `$FLOAT` (millions) | `btn_float` (green shades ≤ 20M, red above, orange "N/A" with no float data). A float of 0 still passes the arming rule. |
+| `TestETB` | symbol change | `$ETB`, `$HTB`, `$SSR` | `btn_etb` (SSR green, HTB orange, ETB red, otherwise gray "Shortable: No") |
 
 ### Candle and pattern detection
 
@@ -314,7 +314,7 @@ The short-term trend (UPTREND, DOWNTREND or SIDEWAYS, from 3 bars of higher or l
 | Blocker | Below the 50% retracement of the day's range | 50% Retrace |
 | Blocker | 9 EMA below 20 EMA | Bearish EMA |
 
-**`Test_Curl`** is blocked (red) unless the 9 EMA is above the 20 EMA **and** `$EMA_TREND_STATE` is 1 (uptrend). It shows caution (orange) when `$ST_RVOL10 < 1.0`.
+**`Test_Curl`** is blocked (red) unless the 9 EMA is above the 20 EMA **and** `$EMA_TREND_STATE` is 1 (uptrend). It shows caution (orange) when `$ST_RVOL10 < 1.0`. Because `$ST_RVOL10` is the projected pace, this no longer turns on just because a new minute has started.
 
 Both speak their result only when it changes, and only if the ladder speaker toggle is on.
 
@@ -322,7 +322,7 @@ Both speak their result only when it changes, and only if the ladder speaker tog
 
 These run only while the setup is armed or you hold a position:
 
-- **Live events:** spoken at most once per bar when `$ST_RVOL10 ≥ 1.5`:
+- **Live events:** spoken at most once per bar when `$ST_RVOL10 ≥ 1.5` (projected pace, so a surge can be announced from second 15):
   - "Strong Buying": price up more than 0.25% this bar.
   - "High Volume Pullback": price down more than 0.25%, in the upper half of the recent range.
   - "Strong Selling": price down more than 0.25%, in the lower half of the recent range.
