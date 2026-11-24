@@ -40,11 +40,11 @@ $T1="";
 while($IDX<=$MAXBARS)
 {
     $BAR=$CHART1.GetBar(-$IDX);
-    $VOL=$BAR.Volume;
+    $BARVOL=$BAR.Volume;
 
-    if($VOL>$V1)
+    if($BARVOL>$V1)
     {
-        $V1=$VOL;
+        $V1=$BARVOL;
         $TopVolOpen=$BAR.Open;
         $TopVolHigh=$BAR.Hi;
         $TopVolLow=$BAR.Lo;

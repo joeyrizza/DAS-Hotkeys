@@ -47,9 +47,9 @@ $T2="";
 while($IDX<=$MAXBARS)
 {
     $BAR=$CHART1.GetBar(-$IDX);
-    $VOL=$BAR.Volume;
+    $BARVOL=$BAR.Volume;
 
-    if($VOL>$V1)
+    if($BARVOL>$V1)
     {
         $V2=$V1;
         $TopVol2Open=$TopVol1Open;
@@ -58,16 +58,16 @@ while($IDX<=$MAXBARS)
         $TopVol2Close=$TopVol1Close;
         $T2=$T1;
 
-        $V1=$VOL;
+        $V1=$BARVOL;
         $TopVol1Open=$BAR.Open;
         $TopVol1High=$BAR.Hi;
         $TopVol1Low=$BAR.Lo;
         $TopVol1Close=$BAR.Close;
         $T1=$BAR.Time;
     }
-    else if($VOL>$V2)
+    else if($BARVOL>$V2)
     {
-        $V2=$VOL;
+        $V2=$BARVOL;
         $TopVol2Open=$BAR.Open;
         $TopVol2High=$BAR.Hi;
         $TopVol2Low=$BAR.Lo;
