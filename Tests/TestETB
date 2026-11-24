@@ -5,6 +5,11 @@ $ETB=getquoteobj($CHART1.SYMBOL).ETB;
 $SSR=getquoteobj($CHART1.SYMBOL).SSR;
 $HTB=getquoteobj($CHART1.SYMBOL).HTB;
 
+// Reset every run so a symbol that is none of ETB/HTB/SSR
+// never shows the previous symbol's status.
+$CHART1.GetCustButObj("btn_etb").text ="Shortable: No";
+$CHART1.GetCustButObj("btn_etb").bkcolor=color(211,211,211);
+
 if($ETB == 1){
   $CHART1.GetCustButObj("btn_etb").text ="ETB";
   $CHART1.GetCustButObj("btn_etb").bkcolor=red;
