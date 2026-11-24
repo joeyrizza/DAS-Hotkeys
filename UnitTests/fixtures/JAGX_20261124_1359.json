@@ -1,0 +1,4153 @@
+{
+  "format": "das-export-fixture/1",
+  "name": "JAGX 20261124 13:59:00",
+  "symbol": "JAGX",
+  "capture": {
+    "exportVersion": 3,
+    "getSecond": 50346,
+    "barTime": "20261124 13:59:00",
+    "testsRunning": true
+  },
+  "montage": {
+    "Bid": 11.73,
+    "Ask": 11.85,
+    "Last": 11.8049,
+    "Hi": 14.7,
+    "Lo": 6.6042,
+    "Price": 0,
+    "Pos": 0,
+    "AvgCost": 0,
+    "Symb": "JAGX"
+  },
+  "quote": {
+    "Last": 11.8049,
+    "Volume": 10089109,
+    "yClose": 6.1175,
+    "RVOL": 17.41,
+    "float": 12520000,
+    "ETB": 0,
+    "HTB": 1,
+    "SSR": 0,
+    "Halted": 0,
+    "CompanyName": "Jaguar Health, Inc. - Common Stock",
+    "Sector": "Manufacturing"
+  },
+  "studies": {
+    "Chart1": {
+      "StudyBar": 11.8049,
+      "Study9EMA": 11.6889,
+      "Study20EMA": 11.4601,
+      "Study200EMA": 10.1899,
+      "StudyVWAP": 11.264
+    },
+    "Chart5": {
+      "Study9EMA": 11.2301
+    },
+    "ChartDaily": {
+      "StudyD200SMA": 2176.94,
+      "StudyD200EMA": 2588.6,
+      "StudyD9EMA": 10.1712,
+      "StudyD20EMA": 23.4815
+    },
+    "bare": {
+      "StudyBar": 11.8049,
+      "Study9EMA": 11.6889,
+      "Study20EMA": 11.4601,
+      "Study200EMA": 10.1899,
+      "StudyVWAP": 11.264
+    }
+  },
+  "charts": {
+    "Chart1": {
+      "historyEnded": false,
+      "bars": [
+        {
+          "Time": "20261124 13:59:00",
+          "Open": 11.82,
+          "Hi": 11.82,
+          "Lo": 11.72,
+          "Close": 11.8049,
+          "Volume": 1651,
+          "studies": {
+            "Study9EMA": " AVG:11.689\n",
+            "Study20EMA": " AVG:11.460\n",
+            "Study200EMA": " AVG:10.190\n",
+            "StudyVWAP": " VWAP:11.264\n",
+            "StudyMACD": "MACD:0.246621, Signal:0.218287\n"
+          }
+        },
+        {
+          "Time": "20261124 13:58:00",
+          "Open": 11.9771,
+          "Hi": 12.04,
+          "Lo": 11.71,
+          "Close": 11.9499,
+          "Volume": 31022,
+          "studies": {
+            "Study9EMA": " AVG:11.660\n",
+            "Study20EMA": " AVG:11.424\n",
+            "Study200EMA": " AVG:10.174\n",
+            "StudyVWAP": " VWAP:11.264\n",
+            "StudyMACD": "MACD:0.246950, Signal:0.211204\n"
+          }
+        },
+        {
+          "Time": "20261124 13:57:00",
+          "Open": 11.575,
+          "Hi": 12,
+          "Lo": 11.5,
+          "Close": 11.91,
+          "Volume": 53562,
+          "studies": {
+            "Study9EMA": " AVG:11.587\n",
+            "Study20EMA": " AVG:11.368\n",
+            "Study200EMA": " AVG:10.156\n",
+            "StudyVWAP": " VWAP:11.261\n",
+            "StudyMACD": "MACD:0.231049, Signal:0.202267\n"
+          }
+        },
+        {
+          "Time": "20261124 13:56:00",
+          "Open": 11.6,
+          "Hi": 11.75,
+          "Lo": 11.4,
+          "Close": 11.5488,
+          "Volume": 27938,
+          "studies": {
+            "Study9EMA": " AVG:11.507\n",
+            "Study20EMA": " AVG:11.311\n",
+            "Study200EMA": " AVG:10.138\n",
+            "StudyVWAP": " VWAP:11.257\n",
+            "StudyMACD": "MACD:0.215789, Signal:0.195071\n"
+          }
+        },
+        {
+          "Time": "20261124 13:55:00",
+          "Open": 11.8147,
+          "Hi": 11.8147,
+          "Lo": 11.4501,
+          "Close": 11.63,
+          "Volume": 16686,
+          "studies": {
+            "Study9EMA": " AVG:11.496\n",
+            "Study20EMA": " AVG:11.286\n",
+            "Study200EMA": " AVG:10.124\n",
+            "StudyVWAP": " VWAP:11.256\n",
+            "StudyMACD": "MACD:0.220470, Signal:0.189892\n"
+          }
+        },
+        {
+          "Time": "20261124 13:54:00",
+          "Open": 11.54,
+          "Hi": 11.83,
+          "Lo": 11.3917,
+          "Close": 11.7445,
+          "Volume": 24127,
+          "studies": {
+            "Study9EMA": " AVG:11.463\n",
+            "Study20EMA": " AVG:11.250\n",
+            "Study200EMA": " AVG:10.109\n",
+            "StudyVWAP": " VWAP:11.255\n",
+            "StudyMACD": "MACD:0.216182, Signal:0.182247\n"
+          }
+        },
+        {
+          "Time": "20261124 13:53:00",
+          "Open": 11.6,
+          "Hi": 11.61,
+          "Lo": 11.2701,
+          "Close": 11.457,
+          "Volume": 11843,
+          "studies": {
+            "Study9EMA": " AVG:11.392\n",
+            "Study20EMA": " AVG:11.198\n",
+            "Study200EMA": " AVG:10.092\n",
+            "StudyVWAP": " VWAP:11.254\n",
+            "StudyMACD": "MACD:0.202833, Signal:0.173764\n"
+          }
+        },
+        {
+          "Time": "20261124 13:52:00",
+          "Open": 11.4377,
+          "Hi": 11.5,
+          "Lo": 11.04,
+          "Close": 11.5,
+          "Volume": 31493,
+          "studies": {
+            "Study9EMA": " AVG:11.376\n",
+            "Study20EMA": " AVG:11.171\n",
+            "Study200EMA": " AVG:10.079\n",
+            "StudyVWAP": " VWAP:11.254\n",
+            "StudyMACD": "MACD:0.206175, Signal:0.166496\n"
+          }
+        },
+        {
+          "Time": "20261124 13:51:00",
+          "Open": 11.532,
+          "Hi": 11.83,
+          "Lo": 11.3,
+          "Close": 11.48,
+          "Volume": 28060,
+          "studies": {
+            "Study9EMA": " AVG:11.345\n",
+            "Study20EMA": " AVG:11.136\n",
+            "Study200EMA": " AVG:10.064\n",
+            "StudyVWAP": " VWAP:11.253\n",
+            "StudyMACD": "MACD:0.213910, Signal:0.156577\n"
+          }
+        },
+        {
+          "Time": "20261124 13:50:00",
+          "Open": 11.4,
+          "Hi": 11.76,
+          "Lo": 11.27,
+          "Close": 11.57,
+          "Volume": 50253,
+          "studies": {
+            "Study9EMA": " AVG:11.312\n",
+            "Study20EMA": " AVG:11.100\n",
+            "Study200EMA": " AVG:10.050\n",
+            "StudyVWAP": " VWAP:11.252\n",
+            "StudyMACD": "MACD:0.206672, Signal:0.142243\n"
+          }
+        },
+        {
+          "Time": "20261124 13:49:00",
+          "Open": 11.54,
+          "Hi": 11.77,
+          "Lo": 11.16,
+          "Close": 11.36,
+          "Volume": 38361,
+          "studies": {
+            "Study9EMA": " AVG:11.247\n",
+            "Study20EMA": " AVG:11.051\n",
+            "Study200EMA": " AVG:10.035\n",
+            "StudyVWAP": " VWAP:11.250\n",
+            "StudyMACD": "MACD:0.192390, Signal:0.126136\n"
+          }
+        },
+        {
+          "Time": "20261124 13:48:00",
+          "Open": 11.6,
+          "Hi": 12.22,
+          "Lo": 11.35,
+          "Close": 11.66,
+          "Volume": 92232,
+          "studies": {
+            "Study9EMA": " AVG:11.219\n",
+            "Study20EMA": " AVG:11.018\n",
+            "Study200EMA": " AVG:10.022\n",
+            "StudyVWAP": " VWAP:11.249\n",
+            "StudyMACD": "MACD:0.184600, Signal:0.109573\n"
+          }
+        },
+        {
+          "Time": "20261124 13:47:00",
+          "Open": 11.1,
+          "Hi": 11.65,
+          "Lo": 11.1,
+          "Close": 11.6,
+          "Volume": 49979,
+          "studies": {
+            "Study9EMA": " AVG:11.108\n",
+            "Study20EMA": " AVG:10.951\n",
+            "Study200EMA": " AVG:10.005\n",
+            "StudyVWAP": " VWAP:11.242\n",
+            "StudyMACD": "MACD:0.140407, Signal:0.090816\n"
+          }
+        },
+        {
+          "Time": "20261124 13:46:00",
+          "Open": 10.9323,
+          "Hi": 11.57,
+          "Lo": 10.92,
+          "Close": 11.2,
+          "Volume": 41771,
+          "studies": {
+            "Study9EMA": " AVG:10.986\n",
+            "Study20EMA": " AVG:10.882\n",
+            "Study200EMA": " AVG:9.989\n",
+            "StudyVWAP": " VWAP:11.241\n",
+            "StudyMACD": "MACD:0.105887, Signal:0.078419\n"
+          }
+        },
+        {
+          "Time": "20261124 13:45:00",
+          "Open": 10.93,
+          "Hi": 10.94,
+          "Lo": 10.889,
+          "Close": 10.8905,
+          "Volume": 2247,
+          "studies": {
+            "Study9EMA": " AVG:10.932\n",
+            "Study20EMA": " AVG:10.849\n",
+            "Study200EMA": " AVG:9.977\n",
+            "StudyVWAP": " VWAP:11.241\n",
+            "StudyMACD": "MACD:0.087268, Signal:0.071551\n"
+          }
+        },
+        {
+          "Time": "20261124 13:44:00",
+          "Open": 10.92,
+          "Hi": 11.05,
+          "Lo": 10.92,
+          "Close": 10.95,
+          "Volume": 3666,
+          "studies": {
+            "Study9EMA": " AVG:10.942\n",
+            "Study20EMA": " AVG:10.845\n",
+            "Study200EMA": " AVG:9.968\n",
+            "StudyVWAP": " VWAP:11.241\n",
+            "StudyMACD": "MACD:0.094817, Signal:0.067622\n"
+          }
+        },
+        {
+          "Time": "20261124 13:43:00",
+          "Open": 11.0501,
+          "Hi": 11.085,
+          "Lo": 10.9,
+          "Close": 10.955,
+          "Volume": 5528,
+          "studies": {
+            "Study9EMA": " AVG:10.940\n",
+            "Study20EMA": " AVG:10.834\n",
+            "Study200EMA": " AVG:9.958\n",
+            "StudyVWAP": " VWAP:11.241\n",
+            "StudyMACD": "MACD:0.096453, Signal:0.060824\n"
+          }
+        },
+        {
+          "Time": "20261124 13:42:00",
+          "Open": 10.8468,
+          "Hi": 11.09,
+          "Lo": 10.8,
+          "Close": 11.0343,
+          "Volume": 7934,
+          "studies": {
+            "Study9EMA": " AVG:10.937\n",
+            "Study20EMA": " AVG:10.821\n",
+            "Study200EMA": " AVG:9.948\n",
+            "StudyVWAP": " VWAP:11.241\n",
+            "StudyMACD": "MACD:0.096503, Signal:0.051916\n"
+          }
+        },
+        {
+          "Time": "20261124 13:41:00",
+          "Open": 11.09,
+          "Hi": 11.09,
+          "Lo": 10.71,
+          "Close": 10.8585,
+          "Volume": 21598,
+          "studies": {
+            "Study9EMA": " AVG:10.912\n",
+            "Study20EMA": " AVG:10.798\n",
+            "Study200EMA": " AVG:9.937\n",
+            "StudyVWAP": " VWAP:11.242\n",
+            "StudyMACD": "MACD:0.093544, Signal:0.040769\n"
+          }
+        },
+        {
+          "Time": "20261124 13:40:00",
+          "Open": 11.136,
+          "Hi": 11.26,
+          "Lo": 11.05,
+          "Close": 11.149,
+          "Volume": 8429,
+          "studies": {
+            "Study9EMA": " AVG:10.926\n",
+            "Study20EMA": " AVG:10.792\n",
+            "Study200EMA": " AVG:9.928\n",
+            "StudyVWAP": " VWAP:11.243\n",
+            "StudyMACD": "MACD:0.099648, Signal:0.027576\n"
+          }
+        },
+        {
+          "Time": "20261124 13:39:00",
+          "Open": 11.1437,
+          "Hi": 11.2,
+          "Lo": 11,
+          "Close": 11.14,
+          "Volume": 4899,
+          "studies": {
+            "Study9EMA": " AVG:10.870\n",
+            "Study20EMA": " AVG:10.754\n",
+            "Study200EMA": " AVG:9.915\n",
+            "StudyVWAP": " VWAP:11.243\n",
+            "StudyMACD": "MACD:0.078218, Signal:0.009558\n"
+          }
+        },
+        {
+          "Time": "20261124 13:38:00",
+          "Open": 11.14,
+          "Hi": 11.28,
+          "Lo": 10.94,
+          "Close": 11.08,
+          "Volume": 18637,
+          "studies": {
+            "Study9EMA": " AVG:10.803\n",
+            "Study20EMA": " AVG:10.714\n",
+            "Study200EMA": " AVG:9.903\n",
+            "StudyVWAP": " VWAP:11.243\n",
+            "StudyMACD": "MACD:0.052985, Signal:-0.007607\n"
+          }
+        },
+        {
+          "Time": "20261124 13:37:00",
+          "Open": 10.6934,
+          "Hi": 11.1399,
+          "Lo": 10.6201,
+          "Close": 11.075,
+          "Volume": 18712,
+          "studies": {
+            "Study9EMA": " AVG:10.733\n",
+            "Study20EMA": " AVG:10.675\n",
+            "Study200EMA": " AVG:9.891\n",
+            "StudyVWAP": " VWAP:11.244\n",
+            "StudyMACD": "MACD:0.022555, Signal:-0.022756\n"
+          }
+        },
+        {
+          "Time": "20261124 13:36:00",
+          "Open": 10.64,
+          "Hi": 10.83,
+          "Lo": 10.607,
+          "Close": 10.6789,
+          "Volume": 2629,
+          "studies": {
+            "Study9EMA": " AVG:10.648\n",
+            "Study20EMA": " AVG:10.633\n",
+            "Study200EMA": " AVG:9.879\n",
+            "StudyVWAP": " VWAP:11.244\n",
+            "StudyMACD": "MACD:-0.004650, Signal:-0.034083\n"
+          }
+        },
+        {
+          "Time": "20261124 13:35:00",
+          "Open": 10.685,
+          "Hi": 10.8,
+          "Lo": 10.685,
+          "Close": 10.8,
+          "Volume": 3736,
+          "studies": {
+            "Study9EMA": " AVG:10.640\n",
+            "Study20EMA": " AVG:10.628\n",
+            "Study200EMA": " AVG:9.871\n",
+            "StudyVWAP": " VWAP:11.245\n",
+            "StudyMACD": "MACD:-0.010919, Signal:-0.041441\n"
+          }
+        },
+        {
+          "Time": "20261124 13:34:00",
+          "Open": 10.63,
+          "Hi": 10.83,
+          "Lo": 10.63,
+          "Close": 10.755,
+          "Volume": 4412,
+          "studies": {
+            "Study9EMA": " AVG:10.600\n",
+            "Study20EMA": " AVG:10.610\n",
+            "Study200EMA": " AVG:9.862\n",
+            "StudyVWAP": " VWAP:11.245\n",
+            "StudyMACD": "MACD:-0.026149, Signal:-0.049072\n"
+          }
+        },
+        {
+          "Time": "20261124 13:33:00",
+          "Open": 10.5975,
+          "Hi": 10.6494,
+          "Lo": 10.55,
+          "Close": 10.55,
+          "Volume": 1325,
+          "studies": {
+            "Study9EMA": " AVG:10.562\n",
+            "Study20EMA": " AVG:10.595\n",
+            "Study200EMA": " AVG:9.853\n",
+            "StudyVWAP": " VWAP:11.245\n",
+            "StudyMACD": "MACD:-0.042280, Signal:-0.054803\n"
+          }
+        },
+        {
+          "Time": "20261124 13:32:00",
+          "Open": 10.655,
+          "Hi": 10.6659,
+          "Lo": 10.52,
+          "Close": 10.52,
+          "Volume": 3685,
+          "studies": {
+            "Study9EMA": " AVG:10.564\n",
+            "Study20EMA": " AVG:10.600\n",
+            "Study200EMA": " AVG:9.846\n",
+            "StudyVWAP": " VWAP:11.245\n",
+            "StudyMACD": "MACD:-0.045184, Signal:-0.057934\n"
+          }
+        },
+        {
+          "Time": "20261124 13:31:00",
+          "Open": 10.53,
+          "Hi": 10.8,
+          "Lo": 10.51,
+          "Close": 10.5936,
+          "Volume": 11376,
+          "studies": {
+            "Study9EMA": " AVG:10.576\n",
+            "Study20EMA": " AVG:10.608\n",
+            "Study200EMA": " AVG:9.839\n",
+            "StudyVWAP": " VWAP:11.246\n",
+            "StudyMACD": "MACD:-0.046362, Signal:-0.061121\n"
+          }
+        },
+        {
+          "Time": "20261124 13:30:00",
+          "Open": 10.4525,
+          "Hi": 10.6065,
+          "Lo": 10.4525,
+          "Close": 10.5165,
+          "Volume": 851,
+          "studies": {
+            "Study9EMA": " AVG:10.571\n",
+            "Study20EMA": " AVG:10.610\n",
+            "Study200EMA": " AVG:9.832\n",
+            "StudyVWAP": " VWAP:11.247\n",
+            "StudyMACD": "MACD:-0.054098, Signal:-0.064811\n"
+          }
+        },
+        {
+          "Time": "20261124 13:29:00",
+          "Open": 10.65,
+          "Hi": 10.7,
+          "Lo": 10.45,
+          "Close": 10.5,
+          "Volume": 9463,
+          "studies": {
+            "Study9EMA": " AVG:10.585\n",
+            "Study20EMA": " AVG:10.619\n",
+            "Study200EMA": " AVG:9.825\n",
+            "StudyVWAP": " VWAP:11.247\n",
+            "StudyMACD": "MACD:-0.052871, Signal:-0.067489\n"
+          }
+        },
+        {
+          "Time": "20261124 13:28:00",
+          "Open": 10.6251,
+          "Hi": 10.6499,
+          "Lo": 10.57,
+          "Close": 10.6101,
+          "Volume": 4879,
+          "studies": {
+            "Study9EMA": " AVG:10.606\n",
+            "Study20EMA": " AVG:10.632\n",
+            "Study200EMA": " AVG:9.818\n",
+            "StudyVWAP": " VWAP:11.248\n",
+            "StudyMACD": "MACD:-0.052011, Signal:-0.071143\n"
+          }
+        },
+        {
+          "Time": "20261124 13:27:00",
+          "Open": 10.62,
+          "Hi": 10.6499,
+          "Lo": 10.51,
+          "Close": 10.629,
+          "Volume": 3182,
+          "studies": {
+            "Study9EMA": " AVG:10.605\n",
+            "Study20EMA": " AVG:10.634\n",
+            "Study200EMA": " AVG:9.810\n",
+            "StudyVWAP": " VWAP:11.248\n",
+            "StudyMACD": "MACD:-0.057542, Signal:-0.075926\n"
+          }
+        },
+        {
+          "Time": "20261124 13:26:00",
+          "Open": 10.5975,
+          "Hi": 10.7,
+          "Lo": 10.45,
+          "Close": 10.65,
+          "Volume": 14987,
+          "studies": {
+            "Study9EMA": " AVG:10.599\n",
+            "Study20EMA": " AVG:10.635\n",
+            "Study200EMA": " AVG:9.802\n",
+            "StudyVWAP": " VWAP:11.249\n",
+            "StudyMACD": "MACD:-0.063200, Signal:-0.080522\n"
+          }
+        },
+        {
+          "Time": "20261124 13:25:00",
+          "Open": 10.6,
+          "Hi": 10.6901,
+          "Lo": 10.6,
+          "Close": 10.63,
+          "Volume": 708,
+          "studies": {
+            "Study9EMA": " AVG:10.586\n",
+            "Study20EMA": " AVG:10.633\n",
+            "Study200EMA": " AVG:9.793\n",
+            "StudyVWAP": " VWAP:11.250\n",
+            "StudyMACD": "MACD:-0.070318, Signal:-0.084853\n"
+          }
+        },
+        {
+          "Time": "20261124 13:24:00",
+          "Open": 10.36,
+          "Hi": 10.7,
+          "Lo": 10.36,
+          "Close": 10.63,
+          "Volume": 9000,
+          "studies": {
+            "Study9EMA": " AVG:10.575\n",
+            "Study20EMA": " AVG:10.634\n",
+            "Study200EMA": " AVG:9.785\n",
+            "StudyVWAP": " VWAP:11.250\n",
+            "StudyMACD": "MACD:-0.080930, Signal:-0.088487\n"
+          }
+        },
+        {
+          "Time": "20261124 13:23:00",
+          "Open": 10.562,
+          "Hi": 10.562,
+          "Lo": 10.36,
+          "Close": 10.36,
+          "Volume": 7035,
+          "studies": {
+            "Study9EMA": " AVG:10.561\n",
+            "Study20EMA": " AVG:10.634\n",
+            "Study200EMA": " AVG:9.776\n",
+            "StudyVWAP": " VWAP:11.251\n",
+            "StudyMACD": "MACD:-0.087439, Signal:-0.090376\n"
+          }
+        },
+        {
+          "Time": "20261124 13:22:00",
+          "Open": 10.68,
+          "Hi": 10.68,
+          "Lo": 10.4001,
+          "Close": 10.56,
+          "Volume": 2721,
+          "studies": {
+            "Study9EMA": " AVG:10.611\n",
+            "Study20EMA": " AVG:10.663\n",
+            "Study200EMA": " AVG:9.771\n",
+            "StudyVWAP": " VWAP:11.252\n",
+            "StudyMACD": "MACD:-0.077218, Signal:-0.091110\n"
+          }
+        },
+        {
+          "Time": "20261124 13:21:00",
+          "Open": 10.71,
+          "Hi": 10.75,
+          "Lo": 10.4,
+          "Close": 10.6036,
+          "Volume": 10211,
+          "studies": {
+            "Study9EMA": " AVG:10.624\n",
+            "Study20EMA": " AVG:10.674\n",
+            "Study200EMA": " AVG:9.763\n",
+            "StudyVWAP": " VWAP:11.252\n",
+            "StudyMACD": "MACD:-0.077255, Signal:-0.094583\n"
+          }
+        },
+        {
+          "Time": "20261124 13:20:00",
+          "Open": 10.7,
+          "Hi": 10.735,
+          "Lo": 10.7,
+          "Close": 10.725,
+          "Volume": 7302,
+          "studies": {
+            "Study9EMA": " AVG:10.629\n",
+            "Study20EMA": " AVG:10.681\n",
+            "Study200EMA": " AVG:9.754\n",
+            "StudyVWAP": " VWAP:11.253\n",
+            "StudyMACD": "MACD:-0.080177, Signal:-0.098915\n"
+          }
+        },
+        {
+          "Time": "20261124 13:19:00",
+          "Open": 10.7,
+          "Hi": 10.95,
+          "Lo": 10.62,
+          "Close": 10.7866,
+          "Volume": 27657,
+          "studies": {
+            "Study9EMA": " AVG:10.605\n",
+            "Study20EMA": " AVG:10.677\n",
+            "Study200EMA": " AVG:9.744\n",
+            "StudyVWAP": " VWAP:11.254\n",
+            "StudyMACD": "MACD:-0.096175, Signal:-0.103600\n"
+          }
+        },
+        {
+          "Time": "20261124 13:18:00",
+          "Open": 10.62,
+          "Hi": 10.83,
+          "Lo": 10.54,
+          "Close": 10.7,
+          "Volume": 24280,
+          "studies": {
+            "Study9EMA": " AVG:10.560\n",
+            "Study20EMA": " AVG:10.665\n",
+            "Study200EMA": " AVG:9.734\n",
+            "StudyVWAP": " VWAP:11.256\n",
+            "StudyMACD": "MACD:-0.121769, Signal:-0.105456\n"
+          }
+        },
+        {
+          "Time": "20261124 13:17:00",
+          "Open": 10.43,
+          "Hi": 10.62,
+          "Lo": 10.27,
+          "Close": 10.575,
+          "Volume": 18784,
+          "studies": {
+            "Study9EMA": " AVG:10.524\n",
+            "Study20EMA": " AVG:10.661\n",
+            "Study200EMA": " AVG:9.724\n",
+            "StudyVWAP": " VWAP:11.258\n",
+            "StudyMACD": "MACD:-0.143164, Signal:-0.101378\n"
+          }
+        },
+        {
+          "Time": "20261124 13:16:00",
+          "Open": 10.28,
+          "Hi": 10.455,
+          "Lo": 10.25,
+          "Close": 10.455,
+          "Volume": 1661,
+          "studies": {
+            "Study9EMA": " AVG:10.512\n",
+            "Study20EMA": " AVG:10.670\n",
+            "Study200EMA": " AVG:9.716\n",
+            "StudyVWAP": " VWAP:11.260\n",
+            "StudyMACD": "MACD:-0.149809, Signal:-0.090931\n"
+          }
+        },
+        {
+          "Time": "20261124 13:15:00",
+          "Open": 10.2679,
+          "Hi": 10.3567,
+          "Lo": 10.15,
+          "Close": 10.32,
+          "Volume": 9195,
+          "studies": {
+            "Study9EMA": " AVG:10.526\n",
+            "Study20EMA": " AVG:10.693\n",
+            "Study200EMA": " AVG:9.708\n",
+            "StudyVWAP": " VWAP:11.260\n",
+            "StudyMACD": "MACD:-0.145292, Signal:-0.076212\n"
+          }
+        },
+        {
+          "Time": "20261124 13:14:00",
+          "Open": 10.555,
+          "Hi": 10.555,
+          "Lo": 10.26,
+          "Close": 10.285,
+          "Volume": 7214,
+          "studies": {
+            "Study9EMA": " AVG:10.577\n",
+            "Study20EMA": " AVG:10.732\n",
+            "Study200EMA": " AVG:9.702\n",
+            "StudyVWAP": " VWAP:11.262\n",
+            "StudyMACD": "MACD:-0.125494, Signal:-0.058941\n"
+          }
+        },
+        {
+          "Time": "20261124 13:13:00",
+          "Open": 10.51,
+          "Hi": 10.61,
+          "Lo": 10.51,
+          "Close": 10.595,
+          "Volume": 2491,
+          "studies": {
+            "Study9EMA": " AVG:10.651\n",
+            "Study20EMA": " AVG:10.779\n",
+            "Study200EMA": " AVG:9.696\n",
+            "StudyVWAP": " VWAP:11.263\n",
+            "StudyMACD": "MACD:-0.104464, Signal:-0.042303\n"
+          }
+        },
+        {
+          "Time": "20261124 13:12:00",
+          "Open": 10.4217,
+          "Hi": 10.588,
+          "Lo": 10.4217,
+          "Close": 10.48,
+          "Volume": 7049,
+          "studies": {
+            "Study9EMA": " AVG:10.664\n",
+            "Study20EMA": " AVG:10.799\n",
+            "Study200EMA": " AVG:9.687\n",
+            "StudyVWAP": " VWAP:11.263\n",
+            "StudyMACD": "MACD:-0.099649, Signal:-0.026763\n"
+          }
+        },
+        {
+          "Time": "20261124 13:11:00",
+          "Open": 10.55,
+          "Hi": 10.55,
+          "Lo": 10.18,
+          "Close": 10.34,
+          "Volume": 18146,
+          "studies": {
+            "Study9EMA": " AVG:10.711\n",
+            "Study20EMA": " AVG:10.832\n",
+            "Study200EMA": " AVG:9.679\n",
+            "StudyVWAP": " VWAP:11.264\n",
+            "StudyMACD": "MACD:-0.083391, Signal:-0.008542\n"
+          }
+        },
+        {
+          "Time": "20261124 13:10:00",
+          "Open": 10.6577,
+          "Hi": 10.6874,
+          "Lo": 10.55,
+          "Close": 10.6,
+          "Volume": 7730,
+          "studies": {
+            "Study9EMA": " AVG:10.803\n",
+            "Study20EMA": " AVG:10.884\n",
+            "Study200EMA": " AVG:9.673\n",
+            "StudyVWAP": " VWAP:11.266\n",
+            "StudyMACD": "MACD:-0.047180, Signal:0.010170\n"
+          }
+        },
+        {
+          "Time": "20261124 13:09:00",
+          "Open": 10.63,
+          "Hi": 10.79,
+          "Lo": 10.55,
+          "Close": 10.625,
+          "Volume": 9978,
+          "studies": {
+            "Study9EMA": " AVG:10.854\n",
+            "Study20EMA": " AVG:10.914\n",
+            "Study200EMA": " AVG:9.663\n",
+            "StudyVWAP": " VWAP:11.267\n",
+            "StudyMACD": "MACD:-0.026427, Signal:0.024508\n"
+          }
+        },
+        {
+          "Time": "20261124 13:08:00",
+          "Open": 10.69,
+          "Hi": 10.7,
+          "Lo": 10.54,
+          "Close": 10.605,
+          "Volume": 6970,
+          "studies": {
+            "Study9EMA": " AVG:10.911\n",
+            "Study20EMA": " AVG:10.945\n",
+            "Study200EMA": " AVG:9.654\n",
+            "StudyVWAP": " VWAP:11.268\n",
+            "StudyMACD": "MACD:-0.003440, Signal:0.037242\n"
+          }
+        },
+        {
+          "Time": "20261124 13:07:00",
+          "Open": 10.98,
+          "Hi": 11.02,
+          "Lo": 10.5,
+          "Close": 10.7,
+          "Volume": 48688,
+          "studies": {
+            "Study9EMA": " AVG:10.988\n",
+            "Study20EMA": " AVG:10.980\n",
+            "Study200EMA": " AVG:9.644\n",
+            "StudyVWAP": " VWAP:11.268\n",
+            "StudyMACD": "MACD:0.029515, Signal:0.047412\n"
+          }
+        },
+        {
+          "Time": "20261124 13:06:00",
+          "Open": 11.11,
+          "Hi": 11.13,
+          "Lo": 10.96,
+          "Close": 11.04,
+          "Volume": 6554,
+          "studies": {
+            "Study9EMA": " AVG:11.060\n",
+            "Study20EMA": " AVG:11.010\n",
+            "Study200EMA": " AVG:9.633\n",
+            "StudyVWAP": " VWAP:11.272\n",
+            "StudyMACD": "MACD:0.059184, Signal:0.051886\n"
+          }
+        },
+        {
+          "Time": "20261124 13:05:00",
+          "Open": 11.2,
+          "Hi": 11.2,
+          "Lo": 10.9901,
+          "Close": 11.11,
+          "Volume": 20887,
+          "studies": {
+            "Study9EMA": " AVG:11.065\n",
+            "Study20EMA": " AVG:11.007\n",
+            "Study200EMA": " AVG:9.619\n",
+            "StudyVWAP": " VWAP:11.273\n",
+            "StudyMACD": "MACD:0.064373, Signal:0.050062\n"
+          }
+        },
+        {
+          "Time": "20261124 13:04:00",
+          "Open": 11.27,
+          "Hi": 11.3314,
+          "Lo": 11.0857,
+          "Close": 11.1654,
+          "Volume": 21195,
+          "studies": {
+            "Study9EMA": " AVG:11.053\n",
+            "Study20EMA": " AVG:10.996\n",
+            "Study200EMA": " AVG:9.604\n",
+            "StudyVWAP": " VWAP:11.273\n",
+            "StudyMACD": "MACD:0.063948, Signal:0.046484\n"
+          }
+        },
+        {
+          "Time": "20261124 13:03:00",
+          "Open": 11.072,
+          "Hi": 11.25,
+          "Lo": 10.95,
+          "Close": 11.09,
+          "Volume": 12759,
+          "studies": {
+            "Study9EMA": " AVG:11.025\n",
+            "Study20EMA": " AVG:10.978\n",
+            "Study200EMA": " AVG:9.589\n",
+            "StudyVWAP": " VWAP:11.274\n",
+            "StudyMACD": "MACD:0.053878, Signal:0.042118\n"
+          }
+        },
+        {
+          "Time": "20261124 13:02:00",
+          "Open": 11.11,
+          "Hi": 11.1506,
+          "Lo": 10.85,
+          "Close": 11.01,
+          "Volume": 24987,
+          "studies": {
+            "Study9EMA": " AVG:11.009\n",
+            "Study20EMA": " AVG:10.966\n",
+            "Study200EMA": " AVG:9.573\n",
+            "StudyVWAP": " VWAP:11.274\n",
+            "StudyMACD": "MACD:0.049605, Signal:0.039178\n"
+          }
+        },
+        {
+          "Time": "20261124 13:01:00",
+          "Open": 11.11,
+          "Hi": 11.36,
+          "Lo": 11.0101,
+          "Close": 11.185,
+          "Volume": 22330,
+          "studies": {
+            "Study9EMA": " AVG:11.009\n",
+            "Study20EMA": " AVG:10.962\n",
+            "Study200EMA": " AVG:9.559\n",
+            "StudyVWAP": " VWAP:11.275\n",
+            "StudyMACD": "MACD:0.052578, Signal:0.036572\n"
+          }
+        },
+        {
+          "Time": "20261124 13:00:00",
+          "Open": 10.935,
+          "Hi": 11.0816,
+          "Lo": 10.8991,
+          "Close": 11,
+          "Volume": 12746,
+          "studies": {
+            "Study9EMA": " AVG:10.965\n",
+            "Study20EMA": " AVG:10.938\n",
+            "Study200EMA": " AVG:9.543\n",
+            "StudyVWAP": " VWAP:11.275\n",
+            "StudyMACD": "MACD:0.037294, Signal:0.032570\n"
+          }
+        },
+        {
+          "Time": "20261124 12:59:00",
+          "Open": 11.08,
+          "Hi": 11.1797,
+          "Lo": 10.85,
+          "Close": 10.9107,
+          "Volume": 16804,
+          "studies": {
+            "Study9EMA": " AVG:10.956\n",
+            "Study20EMA": " AVG:10.932\n",
+            "Study200EMA": " AVG:9.528\n",
+            "StudyVWAP": " VWAP:11.276\n",
+            "StudyMACD": "MACD:0.036573, Signal:0.031389\n"
+          }
+        },
+        {
+          "Time": "20261124 12:58:00",
+          "Open": 11.04,
+          "Hi": 11.4999,
+          "Lo": 11.03,
+          "Close": 11.12,
+          "Volume": 48981,
+          "studies": {
+            "Study9EMA": " AVG:10.968\n",
+            "Study20EMA": " AVG:10.934\n",
+            "Study200EMA": " AVG:9.514\n",
+            "StudyVWAP": " VWAP:11.277\n",
+            "StudyMACD": "MACD:0.038421, Signal:0.030093\n"
+          }
+        },
+        {
+          "Time": "20261124 12:57:00",
+          "Open": 11.01,
+          "Hi": 11.2,
+          "Lo": 10.72,
+          "Close": 11.19,
+          "Volume": 25823,
+          "studies": {
+            "Study9EMA": " AVG:10.929\n",
+            "Study20EMA": " AVG:10.914\n",
+            "Study200EMA": " AVG:9.498\n",
+            "StudyVWAP": " VWAP:11.277\n",
+            "StudyMACD": "MACD:0.016832, Signal:0.028011\n"
+          }
+        },
+        {
+          "Time": "20261124 12:56:00",
+          "Open": 11.0547,
+          "Hi": 11.2499,
+          "Lo": 10.93,
+          "Close": 11.0344,
+          "Volume": 43715,
+          "studies": {
+            "Study9EMA": " AVG:10.864\n",
+            "Study20EMA": " AVG:10.885\n",
+            "Study200EMA": " AVG:9.481\n",
+            "StudyVWAP": " VWAP:11.278\n",
+            "StudyMACD": "MACD:0.000993, Signal:0.030806\n"
+          }
+        },
+        {
+          "Time": "20261124 12:55:00",
+          "Open": 10.52,
+          "Hi": 11.06,
+          "Lo": 10.52,
+          "Close": 11.06,
+          "Volume": 15365,
+          "studies": {
+            "Study9EMA": " AVG:10.822\n",
+            "Study20EMA": " AVG:10.869\n",
+            "Study200EMA": " AVG:9.465\n",
+            "StudyVWAP": " VWAP:11.280\n",
+            "StudyMACD": "MACD:-0.017932, Signal:0.038259\n"
+          }
+        },
+        {
+          "Time": "20261124 12:54:00",
+          "Open": 10.62,
+          "Hi": 10.76,
+          "Lo": 10.5,
+          "Close": 10.55,
+          "Volume": 9768,
+          "studies": {
+            "Study9EMA": " AVG:10.762\n",
+            "Study20EMA": " AVG:10.849\n",
+            "Study200EMA": " AVG:9.449\n",
+            "StudyVWAP": " VWAP:11.280\n",
+            "StudyMACD": "MACD:-0.027859, Signal:0.052307\n"
+          }
+        },
+        {
+          "Time": "20261124 12:53:00",
+          "Open": 10.81,
+          "Hi": 10.81,
+          "Lo": 10.55,
+          "Close": 10.55,
+          "Volume": 4324,
+          "studies": {
+            "Study9EMA": " AVG:10.815\n",
+            "Study20EMA": " AVG:10.881\n",
+            "Study200EMA": " AVG:9.438\n",
+            "StudyVWAP": " VWAP:11.282\n",
+            "StudyMACD": "MACD:-0.006016, Signal:0.072349\n"
+          }
+        },
+        {
+          "Time": "20261124 12:52:00",
+          "Open": 10.71,
+          "Hi": 10.9,
+          "Lo": 10.66,
+          "Close": 10.8,
+          "Volume": 6239,
+          "studies": {
+            "Study9EMA": " AVG:10.881\n",
+            "Study20EMA": " AVG:10.916\n",
+            "Study200EMA": " AVG:9.427\n",
+            "StudyVWAP": " VWAP:11.282\n",
+            "StudyMACD": "MACD:0.019406, Signal:0.091940\n"
+          }
+        },
+        {
+          "Time": "20261124 12:51:00",
+          "Open": 10.96,
+          "Hi": 11.0496,
+          "Lo": 10.6123,
+          "Close": 10.775,
+          "Volume": 24764,
+          "studies": {
+            "Study9EMA": " AVG:10.902\n",
+            "Study20EMA": " AVG:10.928\n",
+            "Study200EMA": " AVG:9.413\n",
+            "StudyVWAP": " VWAP:11.283\n",
+            "StudyMACD": "MACD:0.033754, Signal:0.110073\n"
+          }
+        },
+        {
+          "Time": "20261124 12:50:00",
+          "Open": 10.79,
+          "Hi": 11.07,
+          "Lo": 10.6,
+          "Close": 10.8899,
+          "Volume": 15677,
+          "studies": {
+            "Study9EMA": " AVG:10.934\n",
+            "Study20EMA": " AVG:10.944\n",
+            "Study200EMA": " AVG:9.400\n",
+            "StudyVWAP": " VWAP:11.284\n",
+            "StudyMACD": "MACD:0.050254, Signal:0.129153\n"
+          }
+        },
+        {
+          "Time": "20261124 12:49:00",
+          "Open": 10.4869,
+          "Hi": 10.7691,
+          "Lo": 10.45,
+          "Close": 10.76,
+          "Volume": 22257,
+          "studies": {
+            "Study9EMA": " AVG:10.944\n",
+            "Study20EMA": " AVG:10.950\n",
+            "Study200EMA": " AVG:9.385\n",
+            "StudyVWAP": " VWAP:11.285\n",
+            "StudyMACD": "MACD:0.064529, Signal:0.148878\n"
+          }
+        },
+        {
+          "Time": "20261124 12:48:00",
+          "Open": 10.79,
+          "Hi": 10.88,
+          "Lo": 10.45,
+          "Close": 10.45,
+          "Volume": 12024,
+          "studies": {
+            "Study9EMA": " AVG:10.991\n",
+            "Study20EMA": " AVG:10.969\n",
+            "Study200EMA": " AVG:9.371\n",
+            "StudyVWAP": " VWAP:11.288\n",
+            "StudyMACD": "MACD:0.099900, Signal:0.169965\n"
+          }
+        },
+        {
+          "Time": "20261124 12:47:00",
+          "Open": 10.9,
+          "Hi": 10.94,
+          "Lo": 10.7,
+          "Close": 10.76,
+          "Volume": 26320,
+          "studies": {
+            "Study9EMA": " AVG:11.126\n",
+            "Study20EMA": " AVG:11.024\n",
+            "Study200EMA": " AVG:9.360\n",
+            "StudyVWAP": " VWAP:11.289\n",
+            "StudyMACD": "MACD:0.156552, Signal:0.187481\n"
+          }
+        },
+        {
+          "Time": "20261124 12:46:00",
+          "Open": 10.95,
+          "Hi": 11.11,
+          "Lo": 10.88,
+          "Close": 10.94,
+          "Volume": 13545,
+          "studies": {
+            "Study9EMA": " AVG:11.217\n",
+            "Study20EMA": " AVG:11.052\n",
+            "Study200EMA": " AVG:9.346\n",
+            "StudyVWAP": " VWAP:11.291\n",
+            "StudyMACD": "MACD:0.202911, Signal:0.195213\n"
+          }
+        },
+        {
+          "Time": "20261124 12:45:00",
+          "Open": 11.46,
+          "Hi": 11.46,
+          "Lo": 10.88,
+          "Close": 10.955,
+          "Volume": 43022,
+          "studies": {
+            "Study9EMA": " AVG:11.286\n",
+            "Study20EMA": " AVG:11.064\n",
+            "Study200EMA": " AVG:9.330\n",
+            "StudyVWAP": " VWAP:11.292\n",
+            "StudyMACD": "MACD:0.241057, Signal:0.193289\n"
+          }
+        },
+        {
+          "Time": "20261124 12:44:00",
+          "Open": 11.5855,
+          "Hi": 11.72,
+          "Lo": 11.3,
+          "Close": 11.45,
+          "Volume": 32734,
+          "studies": {
+            "Study9EMA": " AVG:11.369\n",
+            "Study20EMA": " AVG:11.075\n",
+            "Study200EMA": " AVG:9.314\n",
+            "StudyVWAP": " VWAP:11.293\n",
+            "StudyMACD": "MACD:0.276567, Signal:0.181347\n"
+          }
+        },
+        {
+          "Time": "20261124 12:43:00",
+          "Open": 11.78,
+          "Hi": 11.85,
+          "Lo": 11.42,
+          "Close": 11.535,
+          "Volume": 37831,
+          "studies": {
+            "Study9EMA": " AVG:11.349\n",
+            "Study20EMA": " AVG:11.036\n",
+            "Study200EMA": " AVG:9.292\n",
+            "StudyVWAP": " VWAP:11.292\n",
+            "StudyMACD": "MACD:0.275359, Signal:0.157542\n"
+          }
+        },
+        {
+          "Time": "20261124 12:42:00",
+          "Open": 11.44,
+          "Hi": 11.8259,
+          "Lo": 11.25,
+          "Close": 11.8259,
+          "Volume": 49446,
+          "studies": {
+            "Study9EMA": " AVG:11.302\n",
+            "Study20EMA": " AVG:10.983\n",
+            "Study200EMA": " AVG:9.270\n",
+            "StudyVWAP": " VWAP:11.290\n",
+            "StudyMACD": "MACD:0.259120, Signal:0.128088\n"
+          }
+        },
+        {
+          "Time": "20261124 12:41:00",
+          "Open": 11.8799,
+          "Hi": 11.96,
+          "Lo": 11.33,
+          "Close": 11.45,
+          "Volume": 79669,
+          "studies": {
+            "Study9EMA": " AVG:11.172\n",
+            "Study20EMA": " AVG:10.894\n",
+            "Study200EMA": " AVG:9.244\n",
+            "StudyVWAP": " VWAP:11.287\n",
+            "StudyMACD": "MACD:0.224756, Signal:0.095330\n"
+          }
+        },
+        {
+          "Time": "20261124 12:40:00",
+          "Open": 11.19,
+          "Hi": 11.9594,
+          "Lo": 11.04,
+          "Close": 11.825,
+          "Volume": 86187,
+          "studies": {
+            "Study9EMA": " AVG:11.102\n",
+            "Study20EMA": " AVG:10.836\n",
+            "Study200EMA": " AVG:9.222\n",
+            "StudyVWAP": " VWAP:11.283\n",
+            "StudyMACD": "MACD:0.191313, Signal:0.062973\n"
+          }
+        },
+        {
+          "Time": "20261124 12:39:00",
+          "Open": 11.3034,
+          "Hi": 11.47,
+          "Lo": 11.03,
+          "Close": 11.19,
+          "Volume": 46904,
+          "studies": {
+            "Study9EMA": " AVG:10.921\n",
+            "Study20EMA": " AVG:10.732\n",
+            "Study200EMA": " AVG:9.196\n",
+            "StudyVWAP": " VWAP:11.279\n",
+            "StudyMACD": "MACD:0.134151, Signal:0.030888\n"
+          }
+        },
+        {
+          "Time": "20261124 12:38:00",
+          "Open": 10.99,
+          "Hi": 11.47,
+          "Lo": 10.81,
+          "Close": 11.33,
+          "Volume": 58476,
+          "studies": {
+            "Study9EMA": " AVG:10.854\n",
+            "Study20EMA": " AVG:10.684\n",
+            "Study200EMA": " AVG:9.176\n",
+            "StudyVWAP": " VWAP:11.279\n",
+            "StudyMACD": "MACD:0.104280, Signal:0.005073\n"
+          }
+        },
+        {
+          "Time": "20261124 12:37:00",
+          "Open": 10.81,
+          "Hi": 11.17,
+          "Lo": 10.77,
+          "Close": 11.05,
+          "Volume": 44899,
+          "studies": {
+            "Study9EMA": " AVG:10.735\n",
+            "Study20EMA": " AVG:10.616\n",
+            "Study200EMA": " AVG:9.154\n",
+            "StudyVWAP": " VWAP:11.280\n",
+            "StudyMACD": "MACD:0.063109, Signal:-0.019729\n"
+          }
+        },
+        {
+          "Time": "20261124 12:36:00",
+          "Open": 10.6,
+          "Hi": 10.91,
+          "Lo": 10.6,
+          "Close": 10.81,
+          "Volume": 17057,
+          "studies": {
+            "Study9EMA": " AVG:10.656\n",
+            "Study20EMA": " AVG:10.570\n",
+            "Study200EMA": " AVG:9.135\n",
+            "StudyVWAP": " VWAP:11.282\n",
+            "StudyMACD": "MACD:0.032551, Signal:-0.040439\n"
+          }
+        },
+        {
+          "Time": "20261124 12:35:00",
+          "Open": 10.64,
+          "Hi": 10.66,
+          "Lo": 10.44,
+          "Close": 10.565,
+          "Volume": 8632,
+          "studies": {
+            "Study9EMA": " AVG:10.618\n",
+            "Study20EMA": " AVG:10.545\n",
+            "Study200EMA": " AVG:9.118\n",
+            "StudyVWAP": " VWAP:11.284\n",
+            "StudyMACD": "MACD:0.016238, Signal:-0.058686\n"
+          }
+        },
+        {
+          "Time": "20261124 12:34:00",
+          "Open": 10.8868,
+          "Hi": 10.8868,
+          "Lo": 10.5,
+          "Close": 10.62,
+          "Volume": 20736,
+          "studies": {
+            "Study9EMA": " AVG:10.631\n",
+            "Study20EMA": " AVG:10.542\n",
+            "Study200EMA": " AVG:9.103\n",
+            "StudyVWAP": " VWAP:11.285\n",
+            "StudyMACD": "MACD:0.018089, Signal:-0.077417\n"
+          }
+        },
+        {
+          "Time": "20261124 12:33:00",
+          "Open": 10.81,
+          "Hi": 11,
+          "Lo": 10.68,
+          "Close": 10.9496,
+          "Volume": 22153,
+          "studies": {
+            "Study9EMA": " AVG:10.634\n",
+            "Study20EMA": " AVG:10.534\n",
+            "Study200EMA": " AVG:9.088\n",
+            "StudyVWAP": " VWAP:11.287\n",
+            "StudyMACD": "MACD:0.010089, Signal:-0.101294\n"
+          }
+        },
+        {
+          "Time": "20261124 12:32:00",
+          "Open": 10.86,
+          "Hi": 11.22,
+          "Lo": 10.66,
+          "Close": 10.845,
+          "Volume": 47361,
+          "studies": {
+            "Study9EMA": " AVG:10.555\n",
+            "Study20EMA": " AVG:10.491\n",
+            "Study200EMA": " AVG:9.069\n",
+            "StudyVWAP": " VWAP:11.289\n",
+            "StudyMACD": "MACD:-0.024512, Signal:-0.129139\n"
+          }
+        },
+        {
+          "Time": "20261124 12:31:00",
+          "Open": 10.625,
+          "Hi": 10.86,
+          "Lo": 10.42,
+          "Close": 10.86,
+          "Volume": 48146,
+          "studies": {
+            "Study9EMA": " AVG:10.482\n",
+            "Study20EMA": " AVG:10.453\n",
+            "Study200EMA": " AVG:9.052\n",
+            "StudyVWAP": " VWAP:11.292\n",
+            "StudyMACD": "MACD:-0.068085, Signal:-0.155296\n"
+          }
+        },
+        {
+          "Time": "20261124 12:30:00",
+          "Open": 10.2,
+          "Hi": 10.74,
+          "Lo": 10.16,
+          "Close": 10.7224,
+          "Volume": 19070,
+          "studies": {
+            "Study9EMA": " AVG:10.388\n",
+            "Study20EMA": " AVG:10.410\n",
+            "Study200EMA": " AVG:9.033\n",
+            "StudyVWAP": " VWAP:11.297\n",
+            "StudyMACD": "MACD:-0.108200, Signal:-0.177099\n"
+          }
+        },
+        {
+          "Time": "20261124 12:29:00",
+          "Open": 10.32,
+          "Hi": 10.4,
+          "Lo": 10.2,
+          "Close": 10.245,
+          "Volume": 6483,
+          "studies": {
+            "Study9EMA": " AVG:10.304\n",
+            "Study20EMA": " AVG:10.378\n",
+            "Study200EMA": " AVG:9.016\n",
+            "StudyVWAP": " VWAP:11.300\n",
+            "StudyMACD": "MACD:-0.141150, Signal:-0.194324\n"
+          }
+        },
+        {
+          "Time": "20261124 12:28:00",
+          "Open": 10.43,
+          "Hi": 10.446,
+          "Lo": 10.25,
+          "Close": 10.31,
+          "Volume": 9582,
+          "studies": {
+            "Study9EMA": " AVG:10.319\n",
+            "Study20EMA": " AVG:10.392\n",
+            "Study200EMA": " AVG:9.004\n",
+            "StudyVWAP": " VWAP:11.301\n",
+            "StudyMACD": "MACD:-0.149212, Signal:-0.207618\n"
+          }
+        },
+        {
+          "Time": "20261124 12:27:00",
+          "Open": 10.1,
+          "Hi": 10.45,
+          "Lo": 10.1,
+          "Close": 10.45,
+          "Volume": 11854,
+          "studies": {
+            "Study9EMA": " AVG:10.322\n",
+            "Study20EMA": " AVG:10.400\n",
+            "Study200EMA": " AVG:8.991\n",
+            "StudyVWAP": " VWAP:11.303\n",
+            "StudyMACD": "MACD:-0.163085, Signal:-0.222219\n"
+          }
+        },
+        {
+          "Time": "20261124 12:26:00",
+          "Open": 10.221,
+          "Hi": 10.2999,
+          "Lo": 10.0004,
+          "Close": 10.155,
+          "Volume": 15262,
+          "studies": {
+            "Study9EMA": " AVG:10.290\n",
+            "Study20EMA": " AVG:10.395\n",
+            "Study200EMA": " AVG:8.976\n",
+            "StudyVWAP": " VWAP:11.305\n",
+            "StudyMACD": "MACD:-0.181831, Signal:-0.237003\n"
+          }
+        },
+        {
+          "Time": "20261124 12:25:00",
+          "Open": 10.3,
+          "Hi": 10.36,
+          "Lo": 10.21,
+          "Close": 10.3082,
+          "Volume": 11623,
+          "studies": {
+            "Study9EMA": " AVG:10.323\n",
+            "Study20EMA": " AVG:10.420\n",
+            "Study200EMA": " AVG:8.964\n",
+            "StudyVWAP": " VWAP:11.308\n",
+            "StudyMACD": "MACD:-0.181739, Signal:-0.250796\n"
+          }
+        },
+        {
+          "Time": "20261124 12:24:00",
+          "Open": 10.5,
+          "Hi": 10.58,
+          "Lo": 10.22,
+          "Close": 10.35,
+          "Volume": 23711,
+          "studies": {
+            "Study9EMA": " AVG:10.327\n",
+            "Study20EMA": " AVG:10.432\n",
+            "Study200EMA": " AVG:8.951\n",
+            "StudyVWAP": " VWAP:11.310\n",
+            "StudyMACD": "MACD:-0.193641, Signal:-0.268060\n"
+          }
+        },
+        {
+          "Time": "20261124 12:23:00",
+          "Open": 10.79,
+          "Hi": 10.79,
+          "Lo": 10.23,
+          "Close": 10.54,
+          "Volume": 49163,
+          "studies": {
+            "Study9EMA": " AVG:10.321\n",
+            "Study20EMA": " AVG:10.441\n",
+            "Study200EMA": " AVG:8.937\n",
+            "StudyVWAP": " VWAP:11.314\n",
+            "StudyMACD": "MACD:-0.214000, Signal:-0.286665\n"
+          }
+        },
+        {
+          "Time": "20261124 12:22:00",
+          "Open": 10.36,
+          "Hi": 10.92,
+          "Lo": 10.2869,
+          "Close": 10.7,
+          "Volume": 57994,
+          "studies": {
+            "Study9EMA": " AVG:10.267\n",
+            "Study20EMA": " AVG:10.430\n",
+            "Study200EMA": " AVG:8.921\n",
+            "StudyVWAP": " VWAP:11.322\n",
+            "StudyMACD": "MACD:-0.252144, Signal:-0.304831\n"
+          }
+        },
+        {
+          "Time": "20261124 12:21:00",
+          "Open": 9.84,
+          "Hi": 10.4999,
+          "Lo": 9.8206,
+          "Close": 10.38,
+          "Volume": 59197,
+          "studies": {
+            "Study9EMA": " AVG:10.158\n",
+            "Study20EMA": " AVG:10.402\n",
+            "Study200EMA": " AVG:8.903\n",
+            "StudyVWAP": " VWAP:11.329\n",
+            "StudyMACD": "MACD:-0.310066, Signal:-0.318002\n"
+          }
+        },
+        {
+          "Time": "20261124 12:20:00",
+          "Open": 10,
+          "Hi": 10.065,
+          "Lo": 9.81,
+          "Close": 9.865,
+          "Volume": 9800,
+          "studies": {
+            "Study9EMA": " AVG:10.103\n",
+            "Study20EMA": " AVG:10.404\n",
+            "Study200EMA": " AVG:8.888\n",
+            "StudyVWAP": " VWAP:11.342\n",
+            "StudyMACD": "MACD:-0.340632, Signal:-0.319986\n"
+          }
+        },
+        {
+          "Time": "20261124 12:19:00",
+          "Open": 10.135,
+          "Hi": 10.295,
+          "Lo": 10.0303,
+          "Close": 10.09,
+          "Volume": 14418,
+          "studies": {
+            "Study9EMA": " AVG:10.162\n",
+            "Study20EMA": " AVG:10.461\n",
+            "Study200EMA": " AVG:8.878\n",
+            "StudyVWAP": " VWAP:11.345\n",
+            "StudyMACD": "MACD:-0.337131, Signal:-0.314825\n"
+          }
+        },
+        {
+          "Time": "20261124 12:18:00",
+          "Open": 9.995,
+          "Hi": 10.2,
+          "Lo": 9.9,
+          "Close": 10.14,
+          "Volume": 9620,
+          "studies": {
+            "Study9EMA": " AVG:10.180\n",
+            "Study20EMA": " AVG:10.500\n",
+            "Study200EMA": " AVG:8.866\n",
+            "StudyVWAP": " VWAP:11.348\n",
+            "StudyMACD": "MACD:-0.350677, Signal:-0.309249\n"
+          }
+        },
+        {
+          "Time": "20261124 12:17:00",
+          "Open": 9.91,
+          "Hi": 10.05,
+          "Lo": 9.8601,
+          "Close": 9.94,
+          "Volume": 11446,
+          "studies": {
+            "Study9EMA": " AVG:10.190\n",
+            "Study20EMA": " AVG:10.538\n",
+            "Study200EMA": " AVG:8.853\n",
+            "StudyVWAP": " VWAP:11.350\n",
+            "StudyMACD": "MACD:-0.359675, Signal:-0.298891\n"
+          }
+        },
+        {
+          "Time": "20261124 12:16:00",
+          "Open": 10.1365,
+          "Hi": 10.2007,
+          "Lo": 9.86,
+          "Close": 9.9113,
+          "Volume": 16296,
+          "studies": {
+            "Study9EMA": " AVG:10.253\n",
+            "Study20EMA": " AVG:10.600\n",
+            "Study200EMA": " AVG:8.842\n",
+            "StudyVWAP": " VWAP:11.354\n",
+            "StudyMACD": "MACD:-0.350914, Signal:-0.283695\n"
+          }
+        },
+        {
+          "Time": "20261124 12:15:00",
+          "Open": 10.48,
+          "Hi": 10.5,
+          "Lo": 10.1,
+          "Close": 10.1,
+          "Volume": 25943,
+          "studies": {
+            "Study9EMA": " AVG:10.338\n",
+            "Study20EMA": " AVG:10.673\n",
+            "Study200EMA": " AVG:8.832\n",
+            "StudyVWAP": " VWAP:11.358\n",
+            "StudyMACD": "MACD:-0.336999, Signal:-0.266891\n"
+          }
+        },
+        {
+          "Time": "20261124 12:14:00",
+          "Open": 10.3736,
+          "Hi": 10.4999,
+          "Lo": 10.2,
+          "Close": 10.395,
+          "Volume": 18472,
+          "studies": {
+            "Study9EMA": " AVG:10.398\n",
+            "Study20EMA": " AVG:10.733\n",
+            "Study200EMA": " AVG:8.819\n",
+            "StudyVWAP": " VWAP:11.364\n",
+            "StudyMACD": "MACD:-0.337670, Signal:-0.249364\n"
+          }
+        },
+        {
+          "Time": "20261124 12:13:00",
+          "Open": 10.15,
+          "Hi": 10.43,
+          "Lo": 10.0041,
+          "Close": 10.3573,
+          "Volume": 41082,
+          "studies": {
+            "Study9EMA": " AVG:10.398\n",
+            "Study20EMA": " AVG:10.769\n",
+            "Study200EMA": " AVG:8.803\n",
+            "StudyVWAP": " VWAP:11.367\n",
+            "StudyMACD": "MACD:-0.351177, Signal:-0.227287\n"
+          }
+        },
+        {
+          "Time": "20261124 12:12:00",
+          "Open": 10.125,
+          "Hi": 10.26,
+          "Lo": 9.96,
+          "Close": 10.1401,
+          "Volume": 35761,
+          "studies": {
+            "Study9EMA": " AVG:10.408\n",
+            "Study20EMA": " AVG:10.812\n",
+            "Study200EMA": " AVG:8.787\n",
+            "StudyVWAP": " VWAP:11.376\n",
+            "StudyMACD": "MACD:-0.354624, Signal:-0.196315\n"
+          }
+        },
+        {
+          "Time": "20261124 12:11:00",
+          "Open": 9.84,
+          "Hi": 10.1,
+          "Lo": 9.74,
+          "Close": 10.0366,
+          "Volume": 43454,
+          "studies": {
+            "Study9EMA": " AVG:10.476\n",
+            "Study20EMA": " AVG:10.883\n",
+            "Study200EMA": " AVG:8.774\n",
+            "StudyVWAP": " VWAP:11.385\n",
+            "StudyMACD": "MACD:-0.337358, Signal:-0.156738\n"
+          }
+        },
+        {
+          "Time": "20261124 12:10:00",
+          "Open": 9.94,
+          "Hi": 10.15,
+          "Lo": 9.77,
+          "Close": 9.82,
+          "Volume": 34803,
+          "studies": {
+            "Study9EMA": " AVG:10.585\n",
+            "Study20EMA": " AVG:10.972\n",
+            "Study200EMA": " AVG:8.761\n",
+            "StudyVWAP": " VWAP:11.398\n",
+            "StudyMACD": "MACD:-0.295471, Signal:-0.111583\n"
+          }
+        },
+        {
+          "Time": "20261124 12:09:00",
+          "Open": 10.56,
+          "Hi": 10.67,
+          "Lo": 9.73,
+          "Close": 9.9499,
+          "Volume": 74892,
+          "studies": {
+            "Study9EMA": " AVG:10.777\n",
+            "Study20EMA": " AVG:11.093\n",
+            "Study200EMA": " AVG:8.750\n",
+            "StudyVWAP": " VWAP:11.408\n",
+            "StudyMACD": "MACD:-0.228719, Signal:-0.065611\n"
+          }
+        },
+        {
+          "Time": "20261124 12:08:00",
+          "Open": 10.4744,
+          "Hi": 10.8199,
+          "Lo": 10.44,
+          "Close": 10.625,
+          "Volume": 28156,
+          "studies": {
+            "Study9EMA": " AVG:10.983\n",
+            "Study20EMA": " AVG:11.214\n",
+            "Study200EMA": " AVG:8.738\n",
+            "StudyVWAP": " VWAP:11.428\n",
+            "StudyMACD": "MACD:-0.159025, Signal:-0.024834\n"
+          }
+        },
+        {
+          "Time": "20261124 12:07:00",
+          "Open": 10.43,
+          "Hi": 10.66,
+          "Lo": 10.25,
+          "Close": 10.5264,
+          "Volume": 40105,
+          "studies": {
+            "Study9EMA": " AVG:11.073\n",
+            "Study20EMA": " AVG:11.276\n",
+            "Study200EMA": " AVG:8.719\n",
+            "StudyVWAP": " VWAP:11.433\n",
+            "StudyMACD": "MACD:-0.124014, Signal:0.008714\n"
+          }
+        },
+        {
+          "Time": "20261124 12:06:00",
+          "Open": 11.0467,
+          "Hi": 11.05,
+          "Lo": 10.27,
+          "Close": 10.44,
+          "Volume": 97211,
+          "studies": {
+            "Study9EMA": " AVG:11.210\n",
+            "Study20EMA": " AVG:11.355\n",
+            "Study200EMA": " AVG:8.701\n",
+            "StudyVWAP": " VWAP:11.441\n",
+            "StudyMACD": "MACD:-0.063596, Signal:0.041896\n"
+          }
+        },
+        {
+          "Time": "20261124 12:05:00",
+          "Open": 11.233,
+          "Hi": 11.32,
+          "Lo": 10.9,
+          "Close": 11.0301,
+          "Volume": 49623,
+          "studies": {
+            "Study9EMA": " AVG:11.402\n",
+            "Study20EMA": " AVG:11.451\n",
+            "Study200EMA": " AVG:8.684\n",
+            "StudyVWAP": " VWAP:11.459\n",
+            "StudyMACD": "MACD:0.008405, Signal:0.068269\n"
+          }
+        },
+        {
+          "Time": "20261124 12:04:00",
+          "Open": 11.37,
+          "Hi": 11.52,
+          "Lo": 11.1,
+          "Close": 11.2272,
+          "Volume": 28722,
+          "studies": {
+            "Study9EMA": " AVG:11.495\n",
+            "Study20EMA": " AVG:11.495\n",
+            "Study200EMA": " AVG:8.660\n",
+            "StudyVWAP": " VWAP:11.463\n",
+            "StudyMACD": "MACD:0.047233, Signal:0.083235\n"
+          }
+        },
+        {
+          "Time": "20261124 12:03:00",
+          "Open": 11.57,
+          "Hi": 11.67,
+          "Lo": 11.26,
+          "Close": 11.4499,
+          "Volume": 40579,
+          "studies": {
+            "Study9EMA": " AVG:11.562\n",
+            "Study20EMA": " AVG:11.523\n",
+            "Study200EMA": " AVG:8.634\n",
+            "StudyVWAP": " VWAP:11.464\n",
+            "StudyMACD": "MACD:0.075888, Signal:0.092236\n"
+          }
+        },
+        {
+          "Time": "20261124 12:02:00",
+          "Open": 11.76,
+          "Hi": 12.1,
+          "Lo": 11.5,
+          "Close": 11.57,
+          "Volume": 42342,
+          "studies": {
+            "Study9EMA": " AVG:11.590\n",
+            "Study20EMA": " AVG:11.531\n",
+            "Study200EMA": " AVG:8.606\n",
+            "StudyVWAP": " VWAP:11.464\n",
+            "StudyMACD": "MACD:0.092130, Signal:0.096323\n"
+          }
+        },
+        {
+          "Time": "20261124 12:01:00",
+          "Open": 11.5,
+          "Hi": 11.91,
+          "Lo": 11.25,
+          "Close": 11.91,
+          "Volume": 54094,
+          "studies": {
+            "Study9EMA": " AVG:11.595\n",
+            "Study20EMA": " AVG:11.527\n",
+            "Study200EMA": " AVG:8.576\n",
+            "StudyVWAP": " VWAP:11.462\n",
+            "StudyMACD": "MACD:0.088352, Signal:0.097371\n"
+          }
+        },
+        {
+          "Time": "20261124 12:00:00",
+          "Open": 11.46,
+          "Hi": 11.68,
+          "Lo": 11.46,
+          "Close": 11.545,
+          "Volume": 22900,
+          "studies": {
+            "Study9EMA": " AVG:11.516\n",
+            "Study20EMA": " AVG:11.487\n",
+            "Study200EMA": " AVG:8.543\n",
+            "StudyVWAP": " VWAP:11.459\n",
+            "StudyMACD": "MACD:0.076135, Signal:0.099626\n"
+          }
+        },
+        {
+          "Time": "20261124 11:59:00",
+          "Open": 11.94,
+          "Hi": 12.0965,
+          "Lo": 11.05,
+          "Close": 11.453,
+          "Volume": 65490,
+          "studies": {
+            "Study9EMA": " AVG:11.509\n",
+            "Study20EMA": " AVG:11.480\n",
+            "Study200EMA": " AVG:8.513\n",
+            "StudyVWAP": " VWAP:11.458\n",
+            "StudyMACD": "MACD:0.078526, Signal:0.105498\n"
+          }
+        },
+        {
+          "Time": "20261124 11:58:00",
+          "Open": 11.5,
+          "Hi": 12.15,
+          "Lo": 11.38,
+          "Close": 11.9211,
+          "Volume": 71313,
+          "studies": {
+            "Study9EMA": " AVG:11.522\n",
+            "Study20EMA": " AVG:11.483\n",
+            "Study200EMA": " AVG:8.483\n",
+            "StudyVWAP": " VWAP:11.457\n",
+            "StudyMACD": "MACD:0.084953, Signal:0.112241\n"
+          }
+        },
+        {
+          "Time": "20261124 11:57:00",
+          "Open": 11.48,
+          "Hi": 11.66,
+          "Lo": 11.3,
+          "Close": 11.405,
+          "Volume": 18026,
+          "studies": {
+            "Study9EMA": " AVG:11.423\n",
+            "Study20EMA": " AVG:11.437\n",
+            "Study200EMA": " AVG:8.449\n",
+            "StudyVWAP": " VWAP:11.451\n",
+            "StudyMACD": "MACD:0.058329, Signal:0.119063\n"
+          }
+        },
+        {
+          "Time": "20261124 11:56:00",
+          "Open": 11.2,
+          "Hi": 11.7,
+          "Lo": 11.1233,
+          "Close": 11.48,
+          "Volume": 44174,
+          "studies": {
+            "Study9EMA": " AVG:11.427\n",
+            "Study20EMA": " AVG:11.441\n",
+            "Study200EMA": " AVG:8.419\n",
+            "StudyVWAP": " VWAP:11.451\n",
+            "StudyMACD": "MACD:0.064282, Signal:0.134247\n"
+          }
+        },
+        {
+          "Time": "20261124 11:55:00",
+          "Open": 11.8187,
+          "Hi": 11.97,
+          "Lo": 10.92,
+          "Close": 11.2237,
+          "Volume": 75079,
+          "studies": {
+            "Study9EMA": " AVG:11.414\n",
+            "Study20EMA": " AVG:11.436\n",
+            "Study200EMA": " AVG:8.388\n",
+            "StudyVWAP": " VWAP:11.452\n",
+            "StudyMACD": "MACD:0.070606, Signal:0.151738\n"
+          }
+        },
+        {
+          "Time": "20261124 11:54:00",
+          "Open": 11.402,
+          "Hi": 12.2999,
+          "Lo": 11.19,
+          "Close": 11.87,
+          "Volume": 92431,
+          "studies": {
+            "Study9EMA": " AVG:11.462\n",
+            "Study20EMA": " AVG:11.459\n",
+            "Study200EMA": " AVG:8.360\n",
+            "StudyVWAP": " VWAP:11.453\n",
+            "StudyMACD": "MACD:0.089002, Signal:0.172021\n"
+          }
+        },
+        {
+          "Time": "20261124 11:53:00",
+          "Open": 11,
+          "Hi": 11.6634,
+          "Lo": 10.9101,
+          "Close": 11.35,
+          "Volume": 45578,
+          "studies": {
+            "Study9EMA": " AVG:11.359\n",
+            "Study20EMA": " AVG:11.416\n",
+            "Study200EMA": " AVG:8.324\n",
+            "StudyVWAP": " VWAP:11.445\n",
+            "StudyMACD": "MACD:0.063013, Signal:0.192776\n"
+          }
+        },
+        {
+          "Time": "20261124 11:52:00",
+          "Open": 10.85,
+          "Hi": 11.28,
+          "Lo": 10.782,
+          "Close": 11.075,
+          "Volume": 30709,
+          "studies": {
+            "Study9EMA": " AVG:11.362\n",
+            "Study20EMA": " AVG:11.422\n",
+            "Study200EMA": " AVG:8.294\n",
+            "StudyVWAP": " VWAP:11.447\n",
+            "StudyMACD": "MACD:0.078726, Signal:0.225216\n"
+          }
+        },
+        {
+          "Time": "20261124 11:51:00",
+          "Open": 11.26,
+          "Hi": 11.3,
+          "Lo": 10.73,
+          "Close": 10.865,
+          "Volume": 47880,
+          "studies": {
+            "Study9EMA": " AVG:11.433\n",
+            "Study20EMA": " AVG:11.459\n",
+            "Study200EMA": " AVG:8.266\n",
+            "StudyVWAP": " VWAP:11.450\n",
+            "StudyMACD": "MACD:0.124655, Signal:0.261839\n"
+          }
+        },
+        {
+          "Time": "20261124 11:50:00",
+          "Open": 11.56,
+          "Hi": 11.6008,
+          "Lo": 10.82,
+          "Close": 11.1987,
+          "Volume": 53916,
+          "studies": {
+            "Study9EMA": " AVG:11.576\n",
+            "Study20EMA": " AVG:11.521\n",
+            "Study200EMA": " AVG:8.240\n",
+            "StudyVWAP": " VWAP:11.456\n",
+            "StudyMACD": "MACD:0.192970, Signal:0.296135\n"
+          }
+        },
+        {
+          "Time": "20261124 11:49:00",
+          "Open": 11.72,
+          "Hi": 11.93,
+          "Lo": 11.46,
+          "Close": 11.6,
+          "Volume": 47745,
+          "studies": {
+            "Study9EMA": " AVG:11.670\n",
+            "Study20EMA": " AVG:11.555\n",
+            "Study200EMA": " AVG:8.210\n",
+            "StudyVWAP": " VWAP:11.459\n",
+            "StudyMACD": "MACD:0.250422, Signal:0.321926\n"
+          }
+        },
+        {
+          "Time": "20261124 11:48:00",
+          "Open": 11.86,
+          "Hi": 12.48,
+          "Lo": 11.5,
+          "Close": 11.7948,
+          "Volume": 78848,
+          "studies": {
+            "Study9EMA": " AVG:11.687\n",
+            "Study20EMA": " AVG:11.551\n",
+            "Study200EMA": " AVG:8.176\n",
+            "StudyVWAP": " VWAP:11.457\n",
+            "StudyMACD": "MACD:0.275009, Signal:0.339802\n"
+          }
+        },
+        {
+          "Time": "20261124 11:47:00",
+          "Open": 12.215,
+          "Hi": 12.8,
+          "Lo": 11.765,
+          "Close": 11.91,
+          "Volume": 144240,
+          "studies": {
+            "Study9EMA": " AVG:11.660\n",
+            "Study20EMA": " AVG:11.525\n",
+            "Study200EMA": " AVG:8.140\n",
+            "StudyVWAP": " VWAP:11.447\n",
+            "StudyMACD": "MACD:0.277455, Signal:0.356001\n"
+          }
+        },
+        {
+          "Time": "20261124 11:46:00",
+          "Open": 11.61,
+          "Hi": 12.4,
+          "Lo": 11.3101,
+          "Close": 12.24,
+          "Volume": 89077,
+          "studies": {
+            "Study9EMA": " AVG:11.598\n",
+            "Study20EMA": " AVG:11.485\n",
+            "Study200EMA": " AVG:8.102\n",
+            "StudyVWAP": " VWAP:11.419\n",
+            "StudyMACD": "MACD:0.255786, Signal:0.375637\n"
+          }
+        },
+        {
+          "Time": "20261124 11:45:00",
+          "Open": 11.3725,
+          "Hi": 12,
+          "Lo": 11.35,
+          "Close": 11.67,
+          "Volume": 67929,
+          "studies": {
+            "Study9EMA": " AVG:11.437\n",
+            "Study20EMA": " AVG:11.405\n",
+            "Study200EMA": " AVG:8.060\n",
+            "StudyVWAP": " VWAP:11.404\n",
+            "StudyMACD": "MACD:0.229369, Signal:0.405600\n"
+          }
+        },
+        {
+          "Time": "20261124 11:44:00",
+          "Open": 11.13,
+          "Hi": 11.829,
+          "Lo": 10.94,
+          "Close": 11.4,
+          "Volume": 53831,
+          "studies": {
+            "Study9EMA": " AVG:11.379\n",
+            "Study20EMA": " AVG:11.377\n",
+            "Study200EMA": " AVG:8.024\n",
+            "StudyVWAP": " VWAP:11.399\n",
+            "StudyMACD": "MACD:0.230499, Signal:0.449658\n"
+          }
+        },
+        {
+          "Time": "20261124 11:43:00",
+          "Open": 11.06,
+          "Hi": 11.44,
+          "Lo": 11.01,
+          "Close": 11.13,
+          "Volume": 20810,
+          "studies": {
+            "Study9EMA": " AVG:11.374\n",
+            "Study20EMA": " AVG:11.375\n",
+            "Study200EMA": " AVG:7.990\n",
+            "StudyVWAP": " VWAP:11.399\n",
+            "StudyMACD": "MACD:0.257123, Signal:0.504448\n"
+          }
+        },
+        {
+          "Time": "20261124 11:42:00",
+          "Open": 11.305,
+          "Hi": 12.42,
+          "Lo": 10.98,
+          "Close": 11.225,
+          "Volume": 133362,
+          "studies": {
+            "Study9EMA": " AVG:11.435\n",
+            "Study20EMA": " AVG:11.401\n",
+            "Study200EMA": " AVG:7.958\n",
+            "StudyVWAP": " VWAP:11.400\n",
+            "StudyMACD": "MACD:0.309231, Signal:0.566279\n"
+          }
+        },
+        {
+          "Time": "20261124 11:41:00",
+          "Open": 11.5,
+          "Hi": 11.5,
+          "Lo": 10.85,
+          "Close": 11.31,
+          "Volume": 51148,
+          "studies": {
+            "Study9EMA": " AVG:11.487\n",
+            "Study20EMA": " AVG:11.419\n",
+            "Study200EMA": " AVG:7.926\n",
+            "StudyVWAP": " VWAP:11.395\n",
+            "StudyMACD": "MACD:0.342224, Signal:0.630541\n"
+          }
+        },
+        {
+          "Time": "20261124 11:40:00",
+          "Open": 11.1,
+          "Hi": 11.6399,
+          "Lo": 10.8,
+          "Close": 11.48,
+          "Volume": 81391,
+          "studies": {
+            "Study9EMA": " AVG:11.532\n",
+            "Study20EMA": " AVG:11.431\n",
+            "Study200EMA": " AVG:7.892\n",
+            "StudyVWAP": " VWAP:11.397\n",
+            "StudyMACD": "MACD:0.401757, Signal:0.702620\n"
+          }
+        },
+        {
+          "Time": "20261124 11:39:00",
+          "Open": 10.55,
+          "Hi": 11.33,
+          "Lo": 10.5,
+          "Close": 11.105,
+          "Volume": 92375,
+          "studies": {
+            "Study9EMA": " AVG:11.545\n",
+            "Study20EMA": " AVG:11.425\n",
+            "Study200EMA": " AVG:7.856\n",
+            "StudyVWAP": " VWAP:11.400\n",
+            "StudyMACD": "MACD:0.460955, Signal:0.777836\n"
+          }
+        },
+        {
+          "Time": "20261124 11:38:00",
+          "Open": 11.82,
+          "Hi": 11.96,
+          "Lo": 10.55,
+          "Close": 10.55,
+          "Volume": 92146,
+          "studies": {
+            "Study9EMA": " AVG:11.655\n",
+            "Study20EMA": " AVG:11.459\n",
+            "Study200EMA": " AVG:7.823\n",
+            "StudyVWAP": " VWAP:11.413\n",
+            "StudyMACD": "MACD:0.564425, Signal:0.857056\n"
+          }
+        },
+        {
+          "Time": "20261124 11:37:00",
+          "Open": 11.72,
+          "Hi": 12.63,
+          "Lo": 11.6,
+          "Close": 12.08,
+          "Volume": 132476,
+          "studies": {
+            "Study9EMA": " AVG:11.931\n",
+            "Study20EMA": " AVG:11.555\n",
+            "Study200EMA": " AVG:7.795\n",
+            "StudyVWAP": " VWAP:11.425\n",
+            "StudyMACD": "MACD:0.699226, Signal:0.930214\n"
+          }
+        },
+        {
+          "Time": "20261124 11:36:00",
+          "Open": 11.1,
+          "Hi": 12.066,
+          "Lo": 10.5603,
+          "Close": 11.6599,
+          "Volume": 115068,
+          "studies": {
+            "Study9EMA": " AVG:11.894\n",
+            "Study20EMA": " AVG:11.499\n",
+            "Study200EMA": " AVG:7.752\n",
+            "StudyVWAP": " VWAP:11.393\n",
+            "StudyMACD": "MACD:0.739438, Signal:0.987961\n"
+          }
+        },
+        {
+          "Time": "20261124 11:35:00",
+          "Open": 11,
+          "Hi": 11.68,
+          "Lo": 10.94,
+          "Close": 10.95,
+          "Volume": 42944,
+          "studies": {
+            "Study9EMA": " AVG:11.952\n",
+            "Study20EMA": " AVG:11.483\n",
+            "Study200EMA": " AVG:7.713\n",
+            "StudyVWAP": " VWAP:11.391\n",
+            "StudyMACD": "MACD:0.842216, Signal:1.050091\n"
+          }
+        },
+        {
+          "Time": "20261124 11:30:00",
+          "Open": 12.38,
+          "Hi": 12.9,
+          "Lo": 10.94,
+          "Close": 10.94,
+          "Volume": 149815,
+          "studies": {
+            "Study9EMA": " AVG:12.202\n",
+            "Study20EMA": " AVG:11.539\n",
+            "Study200EMA": " AVG:7.681\n",
+            "StudyVWAP": " VWAP:11.395\n",
+            "StudyMACD": "MACD:0.997448, Signal:1.102060\n"
+          }
+        },
+        {
+          "Time": "20261124 11:29:00",
+          "Open": 11.81,
+          "Hi": 12.64,
+          "Lo": 11.55,
+          "Close": 12.4,
+          "Volume": 127324,
+          "studies": {
+            "Study9EMA": " AVG:12.518\n",
+            "Study20EMA": " AVG:11.602\n",
+            "Study200EMA": " AVG:7.648\n",
+            "StudyVWAP": " VWAP:11.383\n",
+            "StudyMACD": "MACD:1.150527, Signal:1.128213\n"
+          }
+        },
+        {
+          "Time": "20261124 11:24:00",
+          "Open": 13.43,
+          "Hi": 13.83,
+          "Lo": 12.24,
+          "Close": 12.24,
+          "Volume": 73952,
+          "studies": {
+            "Study9EMA": " AVG:12.547\n",
+            "Study20EMA": " AVG:11.518\n",
+            "Study200EMA": " AVG:7.600\n",
+            "StudyVWAP": " VWAP:11.339\n",
+            "StudyMACD": "MACD:1.245940, Signal:1.122635\n"
+          }
+        },
+        {
+          "Time": "20261124 11:23:00",
+          "Open": 14.215,
+          "Hi": 14.7,
+          "Lo": 12.73,
+          "Close": 13.34,
+          "Volume": 207620,
+          "studies": {
+            "Study9EMA": " AVG:12.624\n",
+            "Study20EMA": " AVG:11.441\n",
+            "Study200EMA": " AVG:7.553\n",
+            "StudyVWAP": " VWAP:11.293\n",
+            "StudyMACD": "MACD:1.309889, Signal:1.091809\n"
+          }
+        },
+        {
+          "Time": "20261124 11:22:00",
+          "Open": 13.6,
+          "Hi": 14.6,
+          "Lo": 13.2021,
+          "Close": 13.56,
+          "Volume": 68744,
+          "studies": {
+            "Study9EMA": " AVG:12.445\n",
+            "Study20EMA": " AVG:11.242\n",
+            "Study200EMA": " AVG:7.495\n",
+            "StudyVWAP": " VWAP:11.063\n",
+            "StudyMACD": "MACD:1.281841, Signal:1.037289\n"
+          }
+        },
+        {
+          "Time": "20261124 11:17:00",
+          "Open": 13.06,
+          "Hi": 13.5,
+          "Lo": 12.71,
+          "Close": 13.5,
+          "Volume": 117336,
+          "studies": {
+            "Study9EMA": " AVG:12.167\n",
+            "Study20EMA": " AVG:10.998\n",
+            "Study200EMA": " AVG:7.434\n",
+            "StudyVWAP": " VWAP:10.970\n",
+            "StudyMACD": "MACD:1.206725, Signal:0.976151\n"
+          }
+        },
+        {
+          "Time": "20261124 11:16:00",
+          "Open": 12.75,
+          "Hi": 13.3,
+          "Lo": 12.61,
+          "Close": 13.3,
+          "Volume": 164505,
+          "studies": {
+            "Study9EMA": " AVG:11.834\n",
+            "Study20EMA": " AVG:10.734\n",
+            "Study200EMA": " AVG:7.373\n",
+            "StudyVWAP": " VWAP:10.830\n",
+            "StudyMACD": "MACD:1.136878, Signal:0.918507\n"
+          }
+        },
+        {
+          "Time": "20261124 11:15:00",
+          "Open": 11.83,
+          "Hi": 12.8,
+          "Lo": 11.77,
+          "Close": 12.685,
+          "Volume": 176085,
+          "studies": {
+            "Study9EMA": " AVG:11.467\n",
+            "Study20EMA": " AVG:10.464\n",
+            "Study200EMA": " AVG:7.314\n",
+            "StudyVWAP": " VWAP:10.616\n",
+            "StudyMACD": "MACD:1.049010, Signal:0.863914\n"
+          }
+        },
+        {
+          "Time": "20261124 11:14:00",
+          "Open": 12.24,
+          "Hi": 12.35,
+          "Lo": 11.4326,
+          "Close": 11.845,
+          "Volume": 109726,
+          "studies": {
+            "Study9EMA": " AVG:11.162\n",
+            "Study20EMA": " AVG:10.230\n",
+            "Study200EMA": " AVG:7.260\n",
+            "StudyVWAP": " VWAP:10.412\n",
+            "StudyMACD": "MACD:0.987017, Signal:0.817641\n"
+          }
+        },
+        {
+          "Time": "20261124 11:13:00",
+          "Open": 11.27,
+          "Hi": 12.24,
+          "Lo": 11.2,
+          "Close": 12.081,
+          "Volume": 145495,
+          "studies": {
+            "Study9EMA": " AVG:10.992\n",
+            "Study20EMA": " AVG:10.060\n",
+            "Study200EMA": " AVG:7.214\n",
+            "StudyVWAP": " VWAP:10.301\n",
+            "StudyMACD": "MACD:0.956342, Signal:0.775296\n"
+          }
+        },
+        {
+          "Time": "20261124 11:12:00",
+          "Open": 11.46,
+          "Hi": 11.52,
+          "Lo": 10.7,
+          "Close": 11.2,
+          "Volume": 98376,
+          "studies": {
+            "Study9EMA": " AVG:10.719\n",
+            "Study20EMA": " AVG:9.848\n",
+            "Study200EMA": " AVG:7.165\n",
+            "StudyVWAP": " VWAP:10.128\n",
+            "StudyMACD": "MACD:0.899986, Signal:0.730035\n"
+          }
+        },
+        {
+          "Time": "20261124 11:11:00",
+          "Open": 11.6401,
+          "Hi": 11.88,
+          "Lo": 11,
+          "Close": 11.5596,
+          "Volume": 132577,
+          "studies": {
+            "Study9EMA": " AVG:10.599\n",
+            "Study20EMA": " AVG:9.705\n",
+            "Study200EMA": " AVG:7.124\n",
+            "StudyVWAP": " VWAP:10.045\n",
+            "StudyMACD": "MACD:0.890869, Signal:0.687547\n"
+          }
+        },
+        {
+          "Time": "20261124 11:10:00",
+          "Open": 10.8873,
+          "Hi": 11.82,
+          "Lo": 10.2988,
+          "Close": 11.82,
+          "Volume": 188812,
+          "studies": {
+            "Study9EMA": " AVG:10.359\n",
+            "Study20EMA": " AVG:9.510\n",
+            "Study200EMA": " AVG:7.080\n",
+            "StudyVWAP": " VWAP:9.867\n",
+            "StudyMACD": "MACD:0.831168, Signal:0.636716\n"
+          }
+        },
+        {
+          "Time": "20261124 11:09:00",
+          "Open": 11,
+          "Hi": 11,
+          "Lo": 10.88,
+          "Close": 10.93,
+          "Volume": 20498,
+          "studies": {
+            "Study9EMA": " AVG:9.994\n",
+            "Study20EMA": " AVG:9.267\n",
+            "Study200EMA": " AVG:7.032\n",
+            "StudyVWAP": " VWAP:9.556\n",
+            "StudyMACD": "MACD:0.748997, Signal:0.588103\n"
+          }
+        },
+        {
+          "Time": "20261124 11:04:00",
+          "Open": 9.76,
+          "Hi": 10.87,
+          "Lo": 9.75,
+          "Close": 10.87,
+          "Volume": 87657,
+          "studies": {
+            "Study9EMA": " AVG:9.760\n",
+            "Study20EMA": " AVG:9.092\n",
+            "Study200EMA": " AVG:6.993\n",
+            "StudyVWAP": " VWAP:9.523\n",
+            "StudyMACD": "MACD:0.684611, Signal:0.547880\n"
+          }
+        },
+        {
+          "Time": "20261124 11:03:00",
+          "Open": 10.2988,
+          "Hi": 10.74,
+          "Lo": 9.44,
+          "Close": 9.6988,
+          "Volume": 124810,
+          "studies": {
+            "Study9EMA": " AVG:9.482\n",
+            "Study20EMA": " AVG:8.905\n",
+            "Study200EMA": " AVG:6.954\n",
+            "StudyVWAP": " VWAP:9.412\n",
+            "StudyMACD": "MACD:0.627599, Signal:0.513697\n"
+          }
+        },
+        {
+          "Time": "20261124 11:02:00",
+          "Open": 9.61,
+          "Hi": 10.57,
+          "Lo": 9.595,
+          "Close": 10.29,
+          "Volume": 99345,
+          "studies": {
+            "Study9EMA": " AVG:9.428\n",
+            "Study20EMA": " AVG:8.821\n",
+            "Study200EMA": " AVG:6.926\n",
+            "StudyVWAP": " VWAP:9.306\n",
+            "StudyMACD": "MACD:0.616528, Signal:0.485222\n"
+          }
+        },
+        {
+          "Time": "20261124 11:01:00",
+          "Open": 9.3466,
+          "Hi": 9.61,
+          "Lo": 9,
+          "Close": 9.5573,
+          "Volume": 31028,
+          "studies": {
+            "Study9EMA": " AVG:9.213\n",
+            "Study20EMA": " AVG:8.666\n",
+            "Study200EMA": " AVG:6.893\n",
+            "StudyVWAP": " VWAP:9.152\n",
+            "StudyMACD": "MACD:0.563713, Signal:0.452395\n"
+          }
+        },
+        {
+          "Time": "20261124 11:00:00",
+          "Open": 9.55,
+          "Hi": 9.7,
+          "Lo": 8.8,
+          "Close": 9.33,
+          "Volume": 57171,
+          "studies": {
+            "Study9EMA": " AVG:9.127\n",
+            "Study20EMA": " AVG:8.573\n",
+            "Study200EMA": " AVG:6.866\n",
+            "StudyVWAP": " VWAP:9.137\n",
+            "StudyMACD": "MACD:0.564986, Signal:0.424565\n"
+          }
+        },
+        {
+          "Time": "20261124 10:59:00",
+          "Open": 9.725,
+          "Hi": 9.95,
+          "Lo": 9.55,
+          "Close": 9.55,
+          "Volume": 58818,
+          "studies": {
+            "Study9EMA": " AVG:9.076\n",
+            "Study20EMA": " AVG:8.493\n",
+            "Study200EMA": " AVG:6.841\n",
+            "StudyVWAP": " VWAP:9.120\n",
+            "StudyMACD": "MACD:0.572765, Signal:0.389460\n"
+          }
+        },
+        {
+          "Time": "20261124 10:58:00",
+          "Open": 9.66,
+          "Hi": 9.87,
+          "Lo": 9.42,
+          "Close": 9.72,
+          "Volume": 63464,
+          "studies": {
+            "Study9EMA": " AVG:8.957\n",
+            "Study20EMA": " AVG:8.382\n",
+            "Study200EMA": " AVG:6.814\n",
+            "StudyVWAP": " VWAP:9.037\n",
+            "StudyMACD": "MACD:0.537707, Signal:0.343634\n"
+          }
+        },
+        {
+          "Time": "20261124 10:57:00",
+          "Open": 9.455,
+          "Hi": 9.98,
+          "Lo": 9.18,
+          "Close": 9.77,
+          "Volume": 100769,
+          "studies": {
+            "Study9EMA": " AVG:8.767\n",
+            "Study20EMA": " AVG:8.241\n",
+            "Study200EMA": " AVG:6.785\n",
+            "StudyVWAP": " VWAP:8.917\n",
+            "StudyMACD": "MACD:0.481831, Signal:0.295116\n"
+          }
+        },
+        {
+          "Time": "20261124 10:56:00",
+          "Open": 9.4,
+          "Hi": 9.7865,
+          "Lo": 8.8,
+          "Close": 9.3,
+          "Volume": 73000,
+          "studies": {
+            "Study9EMA": " AVG:8.516\n",
+            "Study20EMA": " AVG:8.080\n",
+            "Study200EMA": " AVG:6.755\n",
+            "StudyVWAP": " VWAP:8.604\n",
+            "StudyMACD": "MACD:0.404267, Signal:0.248437\n"
+          }
+        },
+        {
+          "Time": "20261124 10:55:00",
+          "Open": 9.05,
+          "Hi": 9.9281,
+          "Lo": 8.74,
+          "Close": 9.39,
+          "Volume": 70065,
+          "studies": {
+            "Study9EMA": " AVG:8.320\n",
+            "Study20EMA": " AVG:7.951\n",
+            "Study200EMA": " AVG:6.729\n",
+            "StudyVWAP": " VWAP:8.291\n",
+            "StudyMACD": "MACD:0.337913, Signal:0.209479\n"
+          }
+        },
+        {
+          "Time": "20261124 10:50:00",
+          "Open": 8.63,
+          "Hi": 8.63,
+          "Lo": 8.63,
+          "Close": 8.63,
+          "Volume": 1822,
+          "studies": {
+            "Study9EMA": " AVG:8.053\n",
+            "Study20EMA": " AVG:7.800\n",
+            "Study200EMA": " AVG:6.702\n",
+            "StudyVWAP": " VWAP:7.474\n",
+            "StudyMACD": "MACD:0.241647, Signal:0.177371\n"
+          }
+        },
+        {
+          "Time": "20261124 10:49:00",
+          "Open": 7.7152,
+          "Hi": 8.63,
+          "Lo": 7.7152,
+          "Close": 8.63,
+          "Volume": 8651,
+          "studies": {
+            "Study9EMA": " AVG:7.908\n",
+            "Study20EMA": " AVG:7.713\n",
+            "Study200EMA": " AVG:6.683\n",
+            "StudyVWAP": " VWAP:7.450\n",
+            "StudyMACD": "MACD:0.189795, Signal:0.161302\n"
+          }
+        },
+        {
+          "Time": "20261124 10:48:00",
+          "Open": 7.725,
+          "Hi": 7.725,
+          "Lo": 7.725,
+          "Close": 7.725,
+          "Volume": 120,
+          "studies": {
+            "Study9EMA": " AVG:7.728\n",
+            "Study20EMA": " AVG:7.616\n",
+            "Study200EMA": " AVG:6.663\n",
+            "StudyVWAP": " VWAP:7.356\n",
+            "StudyMACD": "MACD:0.144139, Signal:0.154178\n"
+          }
+        },
+        {
+          "Time": "20261124 10:47:00",
+          "Open": 7.8,
+          "Hi": 7.8,
+          "Lo": 7.6,
+          "Close": 7.725,
+          "Volume": 1063,
+          "studies": {
+            "Study9EMA": " AVG:7.728\n",
+            "Study20EMA": " AVG:7.605\n",
+            "Study200EMA": " AVG:6.653\n",
+            "StudyVWAP": " VWAP:7.356\n",
+            "StudyMACD": "MACD:0.152628, Signal:0.156688\n"
+          }
+        },
+        {
+          "Time": "20261124 10:46:00",
+          "Open": 7.8214,
+          "Hi": 7.8214,
+          "Lo": 7.8214,
+          "Close": 7.8214,
+          "Volume": 100,
+          "studies": {
+            "Study9EMA": " AVG:7.729\n",
+            "Study20EMA": " AVG:7.592\n",
+            "Study200EMA": " AVG:6.642\n",
+            "StudyVWAP": " VWAP:7.351\n",
+            "StudyMACD": "MACD:0.162515, Signal:0.157703\n"
+          }
+        },
+        {
+          "Time": "20261124 10:45:00",
+          "Open": 7.665,
+          "Hi": 7.85,
+          "Lo": 7.665,
+          "Close": 7.8407,
+          "Volume": 2310,
+          "studies": {
+            "Study9EMA": " AVG:7.706\n",
+            "Study20EMA": " AVG:7.568\n",
+            "Study200EMA": " AVG:6.630\n",
+            "StudyVWAP": " VWAP:7.351\n",
+            "StudyMACD": "MACD:0.161683, Signal:0.156500\n"
+          }
+        },
+        {
+          "Time": "20261124 10:44:00",
+          "Open": 7.745,
+          "Hi": 7.745,
+          "Lo": 7.58,
+          "Close": 7.665,
+          "Volume": 1181,
+          "studies": {
+            "Study9EMA": " AVG:7.673\n",
+            "Study20EMA": " AVG:7.539\n",
+            "Study200EMA": " AVG:6.618\n",
+            "StudyVWAP": " VWAP:7.338\n",
+            "StudyMACD": "MACD:0.160540, Signal:0.155205\n"
+          }
+        },
+        {
+          "Time": "20261124 10:43:00",
+          "Open": 7.742,
+          "Hi": 7.75,
+          "Lo": 7.742,
+          "Close": 7.75,
+          "Volume": 200,
+          "studies": {
+            "Study9EMA": " AVG:7.674\n",
+            "Study20EMA": " AVG:7.526\n",
+            "Study200EMA": " AVG:6.607\n",
+            "StudyVWAP": " VWAP:7.332\n",
+            "StudyMACD": "MACD:0.170527, Signal:0.153871\n"
+          }
+        },
+        {
+          "Time": "20261124 10:42:00",
+          "Open": 7.79,
+          "Hi": 7.79,
+          "Lo": 7.655,
+          "Close": 7.74,
+          "Volume": 440,
+          "studies": {
+            "Study9EMA": " AVG:7.656\n",
+            "Study20EMA": " AVG:7.502\n",
+            "Study200EMA": " AVG:6.596\n",
+            "StudyVWAP": " VWAP:7.331\n",
+            "StudyMACD": "MACD:0.172216, Signal:0.149707\n"
+          }
+        },
+        {
+          "Time": "20261124 10:40:00",
+          "Open": 7.7604,
+          "Hi": 7.8,
+          "Lo": 7.7604,
+          "Close": 7.8,
+          "Volume": 551,
+          "studies": {
+            "Study9EMA": " AVG:7.635\n",
+            "Study20EMA": " AVG:7.477\n",
+            "Study200EMA": " AVG:6.584\n",
+            "StudyVWAP": " VWAP:7.329\n",
+            "StudyMACD": "MACD:0.173571, Signal:0.144079\n"
+          }
+        },
+        {
+          "Time": "20261124 10:39:00",
+          "Open": 7.8,
+          "Hi": 7.84,
+          "Lo": 7.5596,
+          "Close": 7.5848,
+          "Volume": 2314,
+          "studies": {
+            "Study9EMA": " AVG:7.593\n",
+            "Study20EMA": " AVG:7.443\n",
+            "Study200EMA": " AVG:6.572\n",
+            "StudyVWAP": " VWAP:7.326\n",
+            "StudyMACD": "MACD:0.166785, Signal:0.136706\n"
+          }
+        },
+        {
+          "Time": "20261124 10:38:00",
+          "Open": 7.635,
+          "Hi": 7.8,
+          "Lo": 7.635,
+          "Close": 7.8,
+          "Volume": 1100,
+          "studies": {
+            "Study9EMA": " AVG:7.595\n",
+            "Study20EMA": " AVG:7.428\n",
+            "Study200EMA": " AVG:6.562\n",
+            "StudyVWAP": " VWAP:7.315\n",
+            "StudyMACD": "MACD:0.170746, Signal:0.129187\n"
+          }
+        },
+        {
+          "Time": "20261124 10:37:00",
+          "Open": 7.806,
+          "Hi": 7.808,
+          "Lo": 7.61,
+          "Close": 7.631,
+          "Volume": 4147,
+          "studies": {
+            "Study9EMA": " AVG:7.544\n",
+            "Study20EMA": " AVG:7.389\n",
+            "Study200EMA": " AVG:6.549\n",
+            "StudyVWAP": " VWAP:7.308\n",
+            "StudyMACD": "MACD:0.161461, Signal:0.118797\n"
+          }
+        },
+        {
+          "Time": "20261124 10:36:00",
+          "Open": 7.85,
+          "Hi": 7.85,
+          "Lo": 7.77,
+          "Close": 7.77,
+          "Volume": 466,
+          "studies": {
+            "Study9EMA": " AVG:7.522\n",
+            "Study20EMA": " AVG:7.364\n",
+            "Study200EMA": " AVG:6.539\n",
+            "StudyVWAP": " VWAP:7.285\n",
+            "StudyMACD": "MACD:0.156298, Signal:0.108131\n"
+          }
+        },
+        {
+          "Time": "20261124 10:35:00",
+          "Open": 7.8,
+          "Hi": 7.85,
+          "Lo": 7.675,
+          "Close": 7.75,
+          "Volume": 9224,
+          "studies": {
+            "Study9EMA": " AVG:7.460\n",
+            "Study20EMA": " AVG:7.321\n",
+            "Study200EMA": " AVG:6.526\n",
+            "StudyVWAP": " VWAP:7.282\n",
+            "StudyMACD": "MACD:0.135217, Signal:0.096089\n"
+          }
+        },
+        {
+          "Time": "20261124 10:34:00",
+          "Open": 7.475,
+          "Hi": 7.8,
+          "Lo": 7.475,
+          "Close": 7.79,
+          "Volume": 6874,
+          "studies": {
+            "Study9EMA": " AVG:7.388\n",
+            "Study20EMA": " AVG:7.276\n",
+            "Study200EMA": " AVG:6.514\n",
+            "StudyVWAP": " VWAP:7.205\n",
+            "StudyMACD": "MACD:0.109779, Signal:0.086307\n"
+          }
+        },
+        {
+          "Time": "20261124 10:33:00",
+          "Open": 7.475,
+          "Hi": 7.4918,
+          "Lo": 7.475,
+          "Close": 7.4918,
+          "Volume": 634,
+          "studies": {
+            "Study9EMA": " AVG:7.287\n",
+            "Study20EMA": " AVG:7.222\n",
+            "Study200EMA": " AVG:6.501\n",
+            "StudyVWAP": " VWAP:7.139\n",
+            "StudyMACD": "MACD:0.080041, Signal:0.080439\n"
+          }
+        },
+        {
+          "Time": "20261124 10:32:00",
+          "Open": 7.4,
+          "Hi": 7.45,
+          "Lo": 7.4,
+          "Close": 7.4499,
+          "Volume": 805,
+          "studies": {
+            "Study9EMA": " AVG:7.236\n",
+            "Study20EMA": " AVG:7.193\n",
+            "Study200EMA": " AVG:6.491\n",
+            "StudyVWAP": " VWAP:7.135\n",
+            "StudyMACD": "MACD:0.063947, Signal:0.080539\n"
+          }
+        },
+        {
+          "Time": "20261124 10:29:00",
+          "Open": 7.08,
+          "Hi": 7.08,
+          "Lo": 7.08,
+          "Close": 7.08,
+          "Volume": 100,
+          "studies": {
+            "Study9EMA": " AVG:7.183\n",
+            "Study20EMA": " AVG:7.166\n",
+            "Study200EMA": " AVG:6.481\n",
+            "StudyVWAP": " VWAP:7.130\n",
+            "StudyMACD": "MACD:0.047581, Signal:0.084687\n"
+          }
+        },
+        {
+          "Time": "20261124 10:25:00",
+          "Open": 7.03,
+          "Hi": 7.03,
+          "Lo": 7.03,
+          "Close": 7.03,
+          "Volume": 200,
+          "studies": {
+            "Study9EMA": " AVG:7.209\n",
+            "Study20EMA": " AVG:7.175\n",
+            "Study200EMA": " AVG:6.475\n",
+            "StudyVWAP": " VWAP:7.130\n",
+            "StudyMACD": "MACD:0.062395, Signal:0.093964\n"
+          }
+        },
+        {
+          "Time": "20261124 10:23:00",
+          "Open": 7.0811,
+          "Hi": 7.0811,
+          "Lo": 7.0811,
+          "Close": 7.0811,
+          "Volume": 500,
+          "studies": {
+            "Study9EMA": " AVG:7.253\n",
+            "Study20EMA": " AVG:7.191\n",
+            "Study200EMA": " AVG:6.470\n",
+            "StudyVWAP": " VWAP:7.131\n",
+            "StudyMACD": "MACD:0.085487, Signal:0.101856\n"
+          }
+        },
+        {
+          "Time": "20261124 10:20:00",
+          "Open": 7.15,
+          "Hi": 7.15,
+          "Lo": 7.15,
+          "Close": 7.15,
+          "Volume": 100,
+          "studies": {
+            "Study9EMA": " AVG:7.296\n",
+            "Study20EMA": " AVG:7.202\n",
+            "Study200EMA": " AVG:6.464\n",
+            "StudyVWAP": " VWAP:7.131\n",
+            "StudyMACD": "MACD:0.108514, Signal:0.105948\n"
+          }
+        },
+        {
+          "Time": "20261124 10:15:00",
+          "Open": 7.33,
+          "Hi": 7.39,
+          "Lo": 7.33,
+          "Close": 7.39,
+          "Volume": 262,
+          "studies": {
+            "Study9EMA": " AVG:7.333\n",
+            "Study20EMA": " AVG:7.208\n",
+            "Study200EMA": " AVG:6.457\n",
+            "StudyVWAP": " VWAP:7.131\n",
+            "StudyMACD": "MACD:0.129311, Signal:0.105306\n"
+          }
+        },
+        {
+          "Time": "20261124 10:14:00",
+          "Open": 7.35,
+          "Hi": 7.4,
+          "Lo": 7.35,
+          "Close": 7.4,
+          "Volume": 1373,
+          "studies": {
+            "Study9EMA": " AVG:7.319\n",
+            "Study20EMA": " AVG:7.188\n",
+            "Study200EMA": " AVG:6.447\n",
+            "StudyVWAP": " VWAP:7.130\n",
+            "StudyMACD": "MACD:0.131065, Signal:0.099305\n"
+          }
+        },
+        {
+          "Time": "20261124 10:13:00",
+          "Open": 7.4,
+          "Hi": 7.4,
+          "Lo": 7.4,
+          "Close": 7.4,
+          "Volume": 100,
+          "studies": {
+            "Study9EMA": " AVG:7.299\n",
+            "Study20EMA": " AVG:7.166\n",
+            "Study200EMA": " AVG:6.438\n",
+            "StudyVWAP": " VWAP:7.122\n",
+            "StudyMACD": "MACD:0.130125, Signal:0.091366\n"
+          }
+        },
+        {
+          "Time": "20261124 10:12:00",
+          "Open": 7.45,
+          "Hi": 7.45,
+          "Lo": 7.4,
+          "Close": 7.4,
+          "Volume": 1500,
+          "studies": {
+            "Study9EMA": " AVG:7.273\n",
+            "Study20EMA": " AVG:7.142\n",
+            "Study200EMA": " AVG:6.428\n",
+            "StudyVWAP": " VWAP:7.122\n",
+            "StudyMACD": "MACD:0.125760, Signal:0.081676\n"
+          }
+        },
+        {
+          "Time": "20261124 10:11:00",
+          "Open": 7.43,
+          "Hi": 7.45,
+          "Lo": 7.43,
+          "Close": 7.45,
+          "Volume": 700,
+          "studies": {
+            "Study9EMA": " AVG:7.241\n",
+            "Study20EMA": " AVG:7.114\n",
+            "Study200EMA": " AVG:6.418\n",
+            "StudyVWAP": " VWAP:7.112\n",
+            "StudyMACD": "MACD:0.117087, Signal:0.070655\n"
+          }
+        },
+        {
+          "Time": "20261124 10:10:00",
+          "Open": 7.4,
+          "Hi": 7.4,
+          "Lo": 7.4,
+          "Close": 7.4,
+          "Volume": 646,
+          "studies": {
+            "Study9EMA": " AVG:7.189\n",
+            "Study20EMA": " AVG:7.079\n",
+            "Study200EMA": " AVG:6.408\n",
+            "StudyVWAP": " VWAP:7.107\n",
+            "StudyMACD": "MACD:0.101005, Signal:0.059046\n"
+          }
+        },
+        {
+          "Time": "20261124 10:09:00",
+          "Open": 7.48,
+          "Hi": 7.48,
+          "Lo": 7.3654,
+          "Close": 7.3654,
+          "Volume": 723,
+          "studies": {
+            "Study9EMA": " AVG:7.137\n",
+            "Study20EMA": " AVG:7.045\n",
+            "Study200EMA": " AVG:6.398\n",
+            "StudyVWAP": " VWAP:7.102\n",
+            "StudyMACD": "MACD:0.083590, Signal:0.048557\n"
+          }
+        },
+        {
+          "Time": "20261124 10:08:00",
+          "Open": 7.205,
+          "Hi": 7.3,
+          "Lo": 7.205,
+          "Close": 7.3,
+          "Volume": 2895,
+          "studies": {
+            "Study9EMA": " AVG:7.079\n",
+            "Study20EMA": " AVG:7.012\n",
+            "Study200EMA": " AVG:6.388\n",
+            "StudyVWAP": " VWAP:7.097\n",
+            "StudyMACD": "MACD:0.060753, Signal:0.039798\n"
+          }
+        },
+        {
+          "Time": "20261124 10:07:00",
+          "Open": 7.205,
+          "Hi": 7.205,
+          "Lo": 7.205,
+          "Close": 7.205,
+          "Volume": 500,
+          "studies": {
+            "Study9EMA": " AVG:7.024\n",
+            "Study20EMA": " AVG:6.981\n",
+            "Study200EMA": " AVG:6.379\n",
+            "StudyVWAP": " VWAP:7.085\n",
+            "StudyMACD": "MACD:0.042715, Signal:0.034560\n"
+          }
+        },
+        {
+          "Time": "20261124 10:05:00",
+          "Open": 7.1,
+          "Hi": 7.1,
+          "Lo": 7.1,
+          "Close": 7.1,
+          "Volume": 878,
+          "studies": {
+            "Study9EMA": " AVG:6.979\n",
+            "Study20EMA": " AVG:6.958\n",
+            "Study200EMA": " AVG:6.371\n",
+            "StudyVWAP": " VWAP:7.083\n",
+            "StudyMACD": "MACD:0.026326, Signal:0.032521\n"
+          }
+        },
+        {
+          "Time": "20261124 10:04:00",
+          "Open": 6.975,
+          "Hi": 6.975,
+          "Lo": 6.975,
+          "Close": 6.975,
+          "Volume": 2063,
+          "studies": {
+            "Study9EMA": " AVG:6.949\n",
+            "Study20EMA": " AVG:6.943\n",
+            "Study200EMA": " AVG:6.364\n",
+            "StudyVWAP": " VWAP:7.083\n",
+            "StudyMACD": "MACD:0.015715, Signal:0.034070\n"
+          }
+        },
+        {
+          "Time": "20261124 10:03:00",
+          "Open": 6.88,
+          "Hi": 6.88,
+          "Lo": 6.86,
+          "Close": 6.86,
+          "Volume": 661,
+          "studies": {
+            "Study9EMA": " AVG:6.942\n",
+            "Study20EMA": " AVG:6.939\n",
+            "Study200EMA": " AVG:6.357\n",
+            "StudyVWAP": " VWAP:7.089\n",
+            "StudyMACD": "MACD:0.014670, Signal:0.038658\n"
+          }
+        },
+        {
+          "Time": "20261124 10:02:00",
+          "Open": 6.85,
+          "Hi": 6.975,
+          "Lo": 6.85,
+          "Close": 6.975,
+          "Volume": 1100,
+          "studies": {
+            "Study9EMA": " AVG:6.963\n",
+            "Study20EMA": " AVG:6.948\n",
+            "Study200EMA": " AVG:6.352\n",
+            "StudyVWAP": " VWAP:7.093\n",
+            "StudyMACD": "MACD:0.024323, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:59:00",
+          "Open": 6.975,
+          "Hi": 6.975,
+          "Lo": 6.975,
+          "Close": 6.975,
+          "Volume": 360,
+          "studies": {
+            "Study9EMA": " AVG:6.960\n",
+            "Study20EMA": " AVG:6.945\n",
+            "Study200EMA": " AVG:6.346\n",
+            "StudyVWAP": " VWAP:7.098\n",
+            "StudyMACD": "MACD:0.028271, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:58:00",
+          "Open": 6.975,
+          "Hi": 6.975,
+          "Lo": 6.975,
+          "Close": 6.975,
+          "Volume": 1000,
+          "studies": {
+            "Study9EMA": " AVG:6.956\n",
+            "Study20EMA": " AVG:6.942\n",
+            "Study200EMA": " AVG:6.340\n",
+            "StudyVWAP": " VWAP:7.099\n",
+            "StudyMACD": "MACD:0.029718, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:57:00",
+          "Open": 6.9,
+          "Hi": 6.9348,
+          "Lo": 6.88,
+          "Close": 6.9348,
+          "Volume": 830,
+          "studies": {
+            "Study9EMA": " AVG:6.951\n",
+            "Study20EMA": " AVG:6.938\n",
+            "Study200EMA": " AVG:6.333\n",
+            "StudyVWAP": " VWAP:7.103\n",
+            "StudyMACD": "MACD:0.031132, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:56:00",
+          "Open": 6.9,
+          "Hi": 6.9,
+          "Lo": 6.9,
+          "Close": 6.9,
+          "Volume": 200,
+          "studies": {
+            "Study9EMA": " AVG:6.955\n",
+            "Study20EMA": " AVG:6.938\n",
+            "Study200EMA": " AVG:6.327\n",
+            "StudyVWAP": " VWAP:7.108\n",
+            "StudyMACD": "MACD:0.037973, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:54:00",
+          "Open": 6.975,
+          "Hi": 7.01,
+          "Lo": 6.94,
+          "Close": 6.94,
+          "Volume": 1196,
+          "studies": {
+            "Study9EMA": " AVG:6.969\n",
+            "Study20EMA": " AVG:6.943\n",
+            "Study200EMA": " AVG:6.322\n",
+            "StudyVWAP": " VWAP:7.109\n",
+            "StudyMACD": "MACD:0.048299, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:52:00",
+          "Open": 6.8,
+          "Hi": 6.8,
+          "Lo": 6.8,
+          "Close": 6.8,
+          "Volume": 151,
+          "studies": {
+            "Study9EMA": " AVG:6.976\n",
+            "Study20EMA": " AVG:6.943\n",
+            "Study200EMA": " AVG:6.315\n",
+            "StudyVWAP": " VWAP:7.115\n",
+            "StudyMACD": "MACD:0.054923, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:51:00",
+          "Open": 7.01,
+          "Hi": 7.01,
+          "Lo": 6.62,
+          "Close": 6.8234,
+          "Volume": 2158,
+          "studies": {
+            "Study9EMA": " AVG:7.020\n",
+            "Study20EMA": " AVG:6.958\n",
+            "Study200EMA": " AVG:6.311\n",
+            "StudyVWAP": " VWAP:7.116\n",
+            "StudyMACD": "MACD:0.078615, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:50:00",
+          "Open": 6.94,
+          "Hi": 6.94,
+          "Lo": 6.8,
+          "Close": 6.8001,
+          "Volume": 814,
+          "studies": {
+            "Study9EMA": " AVG:7.069\n",
+            "Study20EMA": " AVG:6.972\n",
+            "Study200EMA": " AVG:6.305\n",
+            "StudyVWAP": " VWAP:7.138\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:49:00",
+          "Open": 7.0268,
+          "Hi": 7.03,
+          "Lo": 7.0268,
+          "Close": 7.03,
+          "Volume": 345,
+          "studies": {
+            "Study9EMA": " AVG:7.137\n",
+            "Study20EMA": " AVG:6.990\n",
+            "Study200EMA": " AVG:6.300\n",
+            "StudyVWAP": " VWAP:7.147\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:48:00",
+          "Open": 7.35,
+          "Hi": 7.35,
+          "Lo": 7.0101,
+          "Close": 7.0101,
+          "Volume": 1758,
+          "studies": {
+            "Study9EMA": " AVG:7.163\n",
+            "Study20EMA": " AVG:6.986\n",
+            "Study200EMA": " AVG:6.293\n",
+            "StudyVWAP": " VWAP:7.148\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:47:00",
+          "Open": 7.21,
+          "Hi": 7.39,
+          "Lo": 7.05,
+          "Close": 7.35,
+          "Volume": 3957,
+          "studies": {
+            "Study9EMA": " AVG:7.202\n",
+            "Study20EMA": " AVG:6.983\n",
+            "Study200EMA": " AVG:6.286\n",
+            "StudyVWAP": " VWAP:7.150\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:46:00",
+          "Open": 7.5472,
+          "Hi": 7.5549,
+          "Lo": 7.4715,
+          "Close": 7.4715,
+          "Volume": 557,
+          "studies": {
+            "Study9EMA": " AVG:7.165\n",
+            "Study20EMA": " AVG:6.945\n",
+            "Study200EMA": " AVG:6.275\n",
+            "StudyVWAP": " VWAP:7.130\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:45:00",
+          "Open": 7.19,
+          "Hi": 7.495,
+          "Lo": 7.19,
+          "Close": 7.495,
+          "Volume": 1569,
+          "studies": {
+            "Study9EMA": " AVG:7.088\n",
+            "Study20EMA": " AVG:6.889\n",
+            "Study200EMA": " AVG:6.263\n",
+            "StudyVWAP": " VWAP:7.120\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:44:00",
+          "Open": 7.1,
+          "Hi": 7.19,
+          "Lo": 7.1,
+          "Close": 7.1,
+          "Volume": 1502,
+          "studies": {
+            "Study9EMA": " AVG:6.986\n",
+            "Study20EMA": " AVG:6.826\n",
+            "Study200EMA": " AVG:6.251\n",
+            "StudyVWAP": " VWAP:7.099\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:43:00",
+          "Open": 7.05,
+          "Hi": 7.1,
+          "Lo": 7.05,
+          "Close": 7.1,
+          "Volume": 629,
+          "studies": {
+            "Study9EMA": " AVG:6.958\n",
+            "Study20EMA": " AVG:6.797\n",
+            "Study200EMA": " AVG:6.242\n",
+            "StudyVWAP": " VWAP:7.096\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:42:00",
+          "Open": 6.9525,
+          "Hi": 6.9525,
+          "Lo": 6.9525,
+          "Close": 6.9525,
+          "Volume": 200,
+          "studies": {
+            "Study9EMA": " AVG:6.922\n",
+            "Study20EMA": " AVG:6.765\n",
+            "Study200EMA": " AVG:6.234\n",
+            "StudyVWAP": " VWAP:7.097\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:41:00",
+          "Open": 7.04,
+          "Hi": 7.04,
+          "Lo": 7.04,
+          "Close": 7.04,
+          "Volume": 113,
+          "studies": {
+            "Study9EMA": " AVG:6.915\n",
+            "Study20EMA": " AVG:6.745\n",
+            "Study200EMA": " AVG:6.226\n",
+            "StudyVWAP": " VWAP:7.098\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:40:00",
+          "Open": 6.8344,
+          "Hi": 6.8344,
+          "Lo": 6.8344,
+          "Close": 6.8344,
+          "Volume": 100,
+          "studies": {
+            "Study9EMA": " AVG:6.884\n",
+            "Study20EMA": " AVG:6.714\n",
+            "Study200EMA": " AVG:6.218\n",
+            "StudyVWAP": " VWAP:7.099\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:39:00",
+          "Open": 6.9581,
+          "Hi": 6.9581,
+          "Lo": 6.84,
+          "Close": 6.84,
+          "Volume": 1085,
+          "studies": {
+            "Study9EMA": " AVG:6.896\n",
+            "Study20EMA": " AVG:6.701\n",
+            "Study200EMA": " AVG:6.212\n",
+            "StudyVWAP": " VWAP:7.100\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:38:00",
+          "Open": 6.9534,
+          "Hi": 6.9534,
+          "Lo": 6.8,
+          "Close": 6.82,
+          "Volume": 1425,
+          "studies": {
+            "Study9EMA": " AVG:6.910\n",
+            "Study20EMA": " AVG:6.687\n",
+            "Study200EMA": " AVG:6.206\n",
+            "StudyVWAP": " VWAP:7.115\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:37:00",
+          "Open": 6.91,
+          "Hi": 7.035,
+          "Lo": 6.91,
+          "Close": 7.035,
+          "Volume": 2237,
+          "studies": {
+            "Study9EMA": " AVG:6.932\n",
+            "Study20EMA": " AVG:6.673\n",
+            "Study200EMA": " AVG:6.200\n",
+            "StudyVWAP": " VWAP:7.139\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:36:00",
+          "Open": 7.0925,
+          "Hi": 7.0925,
+          "Lo": 7.025,
+          "Close": 7.025,
+          "Volume": 200,
+          "studies": {
+            "Study9EMA": " AVG:6.906\n",
+            "Study20EMA": " AVG:6.634\n",
+            "Study200EMA": " AVG:6.191\n",
+            "StudyVWAP": " VWAP:7.165\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:35:00",
+          "Open": 7.05,
+          "Hi": 7.41,
+          "Lo": 6.8576,
+          "Close": 7.035,
+          "Volume": 2940,
+          "studies": {
+            "Study9EMA": " AVG:6.877\n",
+            "Study20EMA": " AVG:6.593\n",
+            "Study200EMA": " AVG:6.183\n",
+            "StudyVWAP": " VWAP:7.167\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:34:00",
+          "Open": 7.85,
+          "Hi": 7.85,
+          "Lo": 7.095,
+          "Close": 7.095,
+          "Volume": 5156,
+          "studies": {
+            "Study9EMA": " AVG:6.837\n",
+            "Study20EMA": " AVG:6.547\n",
+            "Study200EMA": " AVG:6.174\n",
+            "StudyVWAP": " VWAP:7.188\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:33:00",
+          "Open": 7.5154,
+          "Hi": 7.83,
+          "Lo": 7.31,
+          "Close": 7.52,
+          "Volume": 1668,
+          "studies": {
+            "Study9EMA": " AVG:6.773\n",
+            "Study20EMA": " AVG:6.489\n",
+            "Study200EMA": " AVG:6.165\n",
+            "StudyVWAP": " VWAP:6.999\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:32:00",
+          "Open": 6.83,
+          "Hi": 7.3325,
+          "Lo": 6.83,
+          "Close": 7.29,
+          "Volume": 700,
+          "studies": {
+            "Study9EMA": " AVG:6.586\n",
+            "Study20EMA": " AVG:6.381\n",
+            "Study200EMA": " AVG:6.151\n",
+            "StudyVWAP": " VWAP:6.652\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:30:00",
+          "Open": 6.6042,
+          "Hi": 6.67,
+          "Lo": 6.6042,
+          "Close": 6.67,
+          "Volume": 211,
+          "studies": {
+            "Study9EMA": " AVG:6.410\n",
+            "Study20EMA": " AVG:6.285\n",
+            "Study200EMA": " AVG:6.140\n",
+            "StudyVWAP": " VWAP:6.474\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:24:00",
+          "Open": 6.5,
+          "Hi": 6.5,
+          "Lo": 6.5,
+          "Close": 6.5,
+          "Volume": 388,
+          "studies": {
+            "Study9EMA": " AVG:6.345\n",
+            "Study20EMA": " AVG:6.244\n",
+            "Study200EMA": " AVG:6.135\n",
+            "StudyVWAP": " VWAP:6.454\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:21:00",
+          "Open": 6.55,
+          "Hi": 6.55,
+          "Lo": 6.55,
+          "Close": 6.55,
+          "Volume": 100,
+          "studies": {
+            "Study9EMA": " AVG:6.306\n",
+            "Study20EMA": " AVG:6.217\n",
+            "Study200EMA": " AVG:6.131\n",
+            "StudyVWAP": " VWAP:6.440\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:19:00",
+          "Open": 6.519,
+          "Hi": 6.55,
+          "Lo": 6.38,
+          "Close": 6.54,
+          "Volume": 1000,
+          "studies": {
+            "Study9EMA": " AVG:6.246\n",
+            "Study20EMA": " AVG:6.182\n",
+            "Study200EMA": " AVG:6.127\n",
+            "StudyVWAP": " VWAP:6.432\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:18:00",
+          "Open": 6.38,
+          "Hi": 6.38,
+          "Lo": 6.38,
+          "Close": 6.38,
+          "Volume": 100,
+          "studies": {
+            "Study9EMA": " AVG:6.172\n",
+            "Study20EMA": " AVG:6.145\n",
+            "Study200EMA": " AVG:6.123\n",
+            "StudyVWAP": " VWAP:6.216\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        },
+        {
+          "Time": "20261124 09:06:00",
+          "Open": 6.12,
+          "Hi": 6.12,
+          "Lo": 6.12,
+          "Close": 6.12,
+          "Volume": 170,
+          "studies": {
+            "Study9EMA": " AVG:6.120\n",
+            "Study20EMA": " AVG:6.120\n",
+            "Study200EMA": " AVG:6.120\n",
+            "StudyVWAP": " VWAP:6.120\n",
+            "StudyMACD": "MACD:0.000000, Signal:0.000000\n"
+          }
+        }
+      ]
+    },
+    "Chart5": {
+      "historyEnded": false,
+      "bars": [
+        {
+          "Time": "20261124 13:55:00",
+          "Open": 11.8147,
+          "Hi": 12.04,
+          "Lo": 11.4,
+          "Close": 11.8049,
+          "Volume": 130859,
+          "studies": {
+            "Study9EMA": " AVG:11.230\n"
+          }
+        },
+        {
+          "Time": "20261124 13:50:00",
+          "Open": 11.4,
+          "Hi": 11.83,
+          "Lo": 11.04,
+          "Close": 11.7445,
+          "Volume": 145776,
+          "studies": {
+            "Study9EMA": " AVG:11.086\n"
+          }
+        },
+        {
+          "Time": "20261124 13:45:00",
+          "Open": 10.93,
+          "Hi": 12.22,
+          "Lo": 10.889,
+          "Close": 11.36,
+          "Volume": 224590,
+          "studies": {
+            "Study9EMA": " AVG:10.922\n"
+          }
+        },
+        {
+          "Time": "20261124 13:40:00",
+          "Open": 11.136,
+          "Hi": 11.26,
+          "Lo": 10.71,
+          "Close": 10.95,
+          "Volume": 47155,
+          "studies": {
+            "Study9EMA": " AVG:10.812\n"
+          }
+        },
+        {
+          "Time": "20261124 13:35:00",
+          "Open": 10.685,
+          "Hi": 11.28,
+          "Lo": 10.607,
+          "Close": 11.14,
+          "Volume": 48613,
+          "studies": {
+            "Study9EMA": " AVG:10.778\n"
+          }
+        },
+        {
+          "Time": "20261124 13:30:00",
+          "Open": 10.4525,
+          "Hi": 10.83,
+          "Lo": 10.4525,
+          "Close": 10.755,
+          "Volume": 21649,
+          "studies": {
+            "Study9EMA": " AVG:10.688\n"
+          }
+        },
+        {
+          "Time": "20261124 13:25:00",
+          "Open": 10.6,
+          "Hi": 10.7,
+          "Lo": 10.45,
+          "Close": 10.5,
+          "Volume": 33219,
+          "studies": {
+            "Study9EMA": " AVG:10.671\n"
+          }
+        },
+        {
+          "Time": "20261124 13:20:00",
+          "Open": 10.7,
+          "Hi": 10.75,
+          "Lo": 10.36,
+          "Close": 10.63,
+          "Volume": 36269,
+          "studies": {
+            "Study9EMA": " AVG:10.713\n"
+          }
+        },
+        {
+          "Time": "20261124 13:15:00",
+          "Open": 10.2679,
+          "Hi": 10.95,
+          "Lo": 10.15,
+          "Close": 10.7866,
+          "Volume": 81577,
+          "studies": {
+            "Study9EMA": " AVG:10.734\n"
+          }
+        },
+        {
+          "Time": "20261124 13:10:00",
+          "Open": 10.6577,
+          "Hi": 10.6874,
+          "Lo": 10.18,
+          "Close": 10.285,
+          "Volume": 42630,
+          "studies": {
+            "Study9EMA": " AVG:10.721\n"
+          }
+        },
+        {
+          "Time": "20261124 13:05:00",
+          "Open": 11.2,
+          "Hi": 11.2,
+          "Lo": 10.5,
+          "Close": 10.625,
+          "Volume": 93077,
+          "studies": {
+            "Study9EMA": " AVG:10.830\n"
+          }
+        },
+        {
+          "Time": "20261124 13:00:00",
+          "Open": 10.935,
+          "Hi": 11.36,
+          "Lo": 10.85,
+          "Close": 11.1654,
+          "Volume": 94017,
+          "studies": {
+            "Study9EMA": " AVG:10.881\n"
+          }
+        },
+        {
+          "Time": "20261124 12:55:00",
+          "Open": 10.52,
+          "Hi": 11.4999,
+          "Lo": 10.52,
+          "Close": 10.9107,
+          "Volume": 150688,
+          "studies": {
+            "Study9EMA": " AVG:10.810\n"
+          }
+        }
+      ]
+    },
+    "ChartDaily": {
+      "historyEnded": false,
+      "bars": [
+        {
+          "Time": "20261124 13:59:00",
+          "Open": 6.6042,
+          "Hi": 14.7,
+          "Lo": 6.6042,
+          "Close": 11.8049,
+          "Volume": 10088965,
+          "studies": {
+            "StudyD200SMA": " AVG:2176.939\n",
+            "StudyD200EMA": " AVG:2588.601\n",
+            "StudyD9EMA": " AVG:10.171\n",
+            "StudyD20EMA": " AVG:23.482\n"
+          }
+        },
+        {
+          "Time": "20261123 00:00:00",
+          "Open": 6.9,
+          "Hi": 7.235,
+          "Lo": 5.7225,
+          "Close": 6.1175,
+          "Volume": 39302,
+          "studies": {
+            "StudyD200SMA": " AVG:2220.258\n",
+            "StudyD200EMA": " AVG:2614.498\n",
+            "StudyD9EMA": " AVG:9.763\n",
+            "StudyD20EMA": " AVG:24.711\n"
+          }
+        },
+        {
+          "Time": "20261120 00:00:00",
+          "Open": 7.7975,
+          "Hi": 8.195,
+          "Lo": 5.5,
+          "Close": 5.675,
+          "Volume": 40687,
+          "studies": {
+            "StudyD200SMA": " AVG:2264.196\n",
+            "StudyD200EMA": " AVG:2640.713\n",
+            "StudyD9EMA": " AVG:10.674\n",
+            "StudyD20EMA": " AVG:26.668\n"
+          }
+        },
+        {
+          "Time": "20261119 00:00:00",
+          "Open": 8.75,
+          "Hi": 9.435,
+          "Lo": 7.6525,
+          "Close": 8.175,
+          "Volume": 19030,
+          "studies": {
+            "StudyD200SMA": " AVG:2303.038\n",
+            "StudyD200EMA": " AVG:2667.196\n",
+            "StudyD9EMA": " AVG:11.924\n",
+            "StudyD20EMA": " AVG:28.878\n"
+          }
+        },
+        {
+          "Time": "20261118 00:00:00",
+          "Open": 9.3175,
+          "Hi": 9.875,
+          "Lo": 8.5175,
+          "Close": 8.83,
+          "Volume": 13046,
+          "studies": {
+            "StudyD200SMA": " AVG:2341.059\n",
+            "StudyD200EMA": " AVG:2693.920\n",
+            "StudyD9EMA": " AVG:12.861\n",
+            "StudyD20EMA": " AVG:31.057\n"
+          }
+        },
+        {
+          "Time": "20261117 00:00:00",
+          "Open": 9.5625,
+          "Hi": 9.745,
+          "Lo": 8.3013,
+          "Close": 9.4975,
+          "Volume": 21696,
+          "studies": {
+            "StudyD200SMA": " AVG:2380.718\n",
+            "StudyD200EMA": " AVG:2720.906\n",
+            "StudyD9EMA": " AVG:13.869\n",
+            "StudyD20EMA": " AVG:33.396\n"
+          }
+        },
+        {
+          "Time": "20261116 00:00:00",
+          "Open": 10,
+          "Hi": 10.335,
+          "Lo": 9.375,
+          "Close": 9.66,
+          "Volume": 19044,
+          "studies": {
+            "StudyD200SMA": " AVG:2422.677\n",
+            "StudyD200EMA": " AVG:2748.156\n",
+            "StudyD9EMA": " AVG:14.962\n",
+            "StudyD20EMA": " AVG:35.912\n"
+          }
+        },
+        {
+          "Time": "20261113 00:00:00",
+          "Open": 10.0375,
+          "Hi": 10.5,
+          "Lo": 9.29,
+          "Close": 10.47,
+          "Volume": 19122,
+          "studies": {
+            "StudyD200SMA": " AVG:2466.900\n",
+            "StudyD200EMA": " AVG:2775.678\n",
+            "StudyD9EMA": " AVG:16.287\n",
+            "StudyD20EMA": " AVG:38.675\n"
+          }
+        },
+        {
+          "Time": "20261112 00:00:00",
+          "Open": 11.6475,
+          "Hi": 11.7625,
+          "Lo": 9.5,
+          "Close": 9.9975,
+          "Volume": 37852,
+          "studies": {
+            "StudyD200SMA": " AVG:2512.201\n",
+            "StudyD200EMA": " AVG:2803.469\n",
+            "StudyD9EMA": " AVG:17.741\n",
+            "StudyD20EMA": " AVG:41.644\n"
+          }
+        },
+        {
+          "Time": "20261111 00:00:00",
+          "Open": 11.65,
+          "Hi": 12.3375,
+          "Lo": 10.8325,
+          "Close": 12.06,
+          "Volume": 41398,
+          "studies": {
+            "StudyD200SMA": " AVG:2556.481\n",
+            "StudyD200EMA": " AVG:2831.545\n",
+            "StudyD9EMA": " AVG:19.677\n",
+            "StudyD20EMA": " AVG:44.976\n"
+          }
+        },
+        {
+          "Time": "20261110 00:00:00",
+          "Open": 10.75,
+          "Hi": 11.4025,
+          "Lo": 10.265,
+          "Close": 10.9175,
+          "Volume": 19005,
+          "studies": {
+            "StudyD200SMA": " AVG:2602.692\n",
+            "StudyD200EMA": " AVG:2859.881\n",
+            "StudyD9EMA": " AVG:21.582\n",
+            "StudyD20EMA": " AVG:48.441\n"
+          }
+        },
+        {
+          "Time": "20261109 00:00:00",
+          "Open": 9.705,
+          "Hi": 11.24,
+          "Lo": 9.08,
+          "Close": 10.9025,
+          "Volume": 36690,
+          "studies": {
+            "StudyD200SMA": " AVG:2651.240\n",
+            "StudyD200EMA": " AVG:2888.514\n",
+            "StudyD9EMA": " AVG:24.248\n",
+            "StudyD20EMA": " AVG:52.390\n"
+          }
+        },
+        {
+          "Time": "20261106 00:00:00",
+          "Open": 10.525,
+          "Hi": 10.55,
+          "Lo": 9,
+          "Close": 10.1075,
+          "Volume": 26081,
+          "studies": {
+            "StudyD200SMA": " AVG:2701.382\n",
+            "StudyD200EMA": " AVG:2917.435\n",
+            "StudyD9EMA": " AVG:27.584\n",
+            "StudyD20EMA": " AVG:56.758\n"
+          }
+        }
+      ]
+    }
+  },
+  "variables": {
+    "ABOVE9EMA": 1,
+    "ABOVEVWAP": 1,
+    "ANNOUNCE": 0,
+    "AVERAGERANGE10": 0.3903,
+    "AVERAGERANGE4": 0.32,
+    "AVG10MINVOL": 31334.5,
+    "AVG10MINVOLK": 31.3345,
+    "AVGVOLUME2W": 27018.2,
+    "BLOCKED": 0,
+    "BODY0": -0.0151,
+    "BODY1": -0.0272,
+    "BODY2": 0.335,
+    "BODY3": -0.0512,
+    "BODY4": -0.1847,
+    "BODY_CENTER": 11.8125,
+    "BULLISHSTRUCTURE": 0,
+    "BULLISH_IMPULSE": 0,
+    "CANDLE_ANNOUNCED": 0,
+    "CANDLE_BIAS": "BEARISH",
+    "CANDLE_COLOR_0": -1,
+    "CANDLE_COLOR_0_VAL": "red",
+    "CANDLE_COLOR_1": -1,
+    "CANDLE_COLOR_2": 1,
+    "CANDLE_COLOR_3": -1,
+    "CANDLE_COLOR_4": -1,
+    "CANDLE_CONFIRMATION": "No Confirmation",
+    "CANDLE_PATTERN": "No Pattern",
+    "CANDLE_TYPE": "Hanging Man",
+    "CANDLE_TYPE_SP": "Hanging Man",
+    "CAUTION": 0,
+    "CENTER_DISTANCE": 0.0425,
+    "COMMAPOS": 13,
+    "CT": "20261124 13:59:00",
+    "CURLBLOCKED": 0,
+    "CURLCAUTION": 1,
+    "CURLEMA20": 11.4601,
+    "CURLEMA9": 11.6889,
+    "CURLPREVIOUSREASON": "Curl Caution, Not enough volume.",
+    "CURLRESULT": "RVOL < 1.0",
+    "CURLSPEECH": "Curl Caution, Not enough volume.",
+    "CURRENTVOL": 1651,
+    "CURRENT_BAR_TIME": "20261124 13:59:00",
+    "D200EMA": 2588.6,
+    "D20EMA": 23.481,
+    "D9EMA": 10.1702,
+    "DASRVOL": 17.41,
+    "DIPPREVIOUSREASON": "Dip Trade OK.",
+    "DIPREASON": "Dip Trade OK",
+    "DIPSPEECH": "Dip Trade OK.",
+    "DOJI_THRESHOLD": 0.013,
+    "DOJI_TOLERANCE": 0.005,
+    "EMA20": 11.4601,
+    "EMA200": 10.19,
+    "EMA20INFO1": " AVG:11.424\n",
+    "EMA20INFO11": " AVG:11.018\n",
+    "EMA20INFO6": " AVG:11.198\n",
+    "EMA20_1": 11.424,
+    "EMA20_11": 11.018,
+    "EMA20_6": 11.198,
+    "EMA20_CHANGE10": 3.6849,
+    "EMA20_CHANGE5": 2.0182,
+    "EMA9": 11.6889,
+    "EMA9INFO1": " AVG:11.660\n",
+    "EMA9INFO11": " AVG:11.219\n",
+    "EMA9INFO6": " AVG:11.392\n",
+    "EMA9_1": 11.66,
+    "EMA9_11": 11.219,
+    "EMA9_6": 11.392,
+    "EMA9_CHANGE10": 3.9308,
+    "EMA9_CHANGE5": 2.3525,
+    "EMA_TREND_STATE": 1,
+    "EMA_TREND_UP10": 0.1,
+    "EMA_TREND_UP5": 0.05,
+    "ETB": 0,
+    "EXTENDED": 0,
+    "EXTENSION": 13.25,
+    "EXTENSIONAMOUNT": 0.116,
+    "EXTENSIONMULTIPLIER": 4,
+    "EXTENSIONPERCENT": 0.9924,
+    "EXTENSIONRANGEMULTIPLE": 0.2972,
+    "EXTENSIONWARNING": 12.4695,
+    "EXTENSIONWARNINGMULTIPLIER": 2,
+    "FLOAT": 12.52,
+    "FLOATDISP": "12.52M",
+    "GAP": 92.9694,
+    "GAPPER": 1,
+    "GAPPERCENT": 92,
+    "GAPSYMBOL": "JAGX",
+    "HIGH1": 12.04,
+    "HIGH2": 12,
+    "HIGH3": 11.75,
+    "HIGH4": 11.8147,
+    "HIGH5": 11.83,
+    "HTB": 1,
+    "IMPULSEHIGH": 12.04,
+    "IMPULSELOW": 11.4,
+    "IMPULSEMOVE": 0.64,
+    "IMPULSEPERCENT": 5.614,
+    "IMPULSEVOLUME": 129208,
+    "IMPULSE_TYPE": "NONE",
+    "LARGE_TAIL_THRESHOLD": 0.0227,
+    "LAST_5_9EMA_PRICE": 11.2301,
+    "LAST_BAR": "20261124 13:59:00",
+    "LOSSES": 1,
+    "LOW1": 11.71,
+    "LOW2": 11.5,
+    "LOW3": 11.4,
+    "LOW4": 11.4501,
+    "LOW5": 11.3917,
+    "MACD": 0.249,
+    "MACDINFO": "MACD:0.249218, Signal:0.218806\n",
+    "MH": "MH",
+    "MIN_IMPULSE_PERCENT": 3,
+    "MIN_IMPULSE_VOLUME": 250000,
+    "MOSTLY_FULL_THRESHOLD": 0.07,
+    "MOVINGAVGSALIGNED": 1,
+    "MPRICE": 11.8049,
+    "NEAR200PERCENT": 0.2,
+    "NEGLIGIBLE_SHADOW": 0.013,
+    "ONECANDLEBULLISH": 0,
+    "ONECANDLEEXPANSION": 0,
+    "ONECANDLEMOVE": 0.0629,
+    "ONECANDLEPERCENT": 0.5252,
+    "ONECANDLEVOLUME": 0,
+    "P": 11.2301,
+    "PATTERN_BIAS": "Neutral",
+    "PATTERN_JAGX": "20261124 13:57:00",
+    "PLENTYROOM200PERCENT": 0.5,
+    "PREVCLOSE": 11.9499,
+    "PREV_CANDLE_BIAS": "Indecision",
+    "PREV_CANDLE_TIME": "20261124 13:59:00",
+    "PREV_CANDLE_TYPE": "Bottoming Tail",
+    "PRICE": 11.8049,
+    "PRICECHANGE": -1.2134,
+    "PRICEPOSITION": 63.7359,
+    "RANGE": 0.6483,
+    "RANGE0": 0.1,
+    "RANGE1": 0.33,
+    "RANGE2": 0.5,
+    "RANGE3": 0.35,
+    "RANGE4": 0.3646,
+    "RANGE5": 0.4383,
+    "RANGE6": 0.3399,
+    "RANGE7": 0.46,
+    "RANGE8": 0.53,
+    "RANGE9": 0.49,
+    "RANGE_CENTER": 11.77,
+    "RECENTHIGH": 12.04,
+    "RECENTLOW": 11.3917,
+    "RETRACE50": 10.6521,
+    "REVERSAL": 0,
+    "RPC": 9.75,
+    "RPCVAL": 25,
+    "RUNNINGTESTS1": 0,
+    "RUNNINGTESTS1S": 0,
+    "RUNNINGTESTSCHART": 0,
+    "RUNNINGTESTSSYMB": 0,
+    "RUNTESTSENABLED": 1,
+    "RVOL": 373.41,
+    "RVOLSYMBOL": "JAGX",
+    "SECONDS_IN_MINUTE": 6,
+    "SELECTEDSYMBOL": "JAGX",
+    "SESSIONHIGH": 14.7,
+    "SESSIONLOW": 6.6042,
+    "SETUPARMED": 0,
+    "SHORT_TERM_TREND": "UPTREND",
+    "SIGNAL": 0.219,
+    "SPEAKCANDLEACTION": 1,
+    "SPREAD": 0.12,
+    "SSR": 0,
+    "STATE": 0,
+    "STRVOL10SYMB": "JAGX",
+    "STRVOL10TIME": "20261124 13:59:00",
+    "STRVOL_SEC": 6,
+    "ST_INTERPRETATION": "Quiet Pullback",
+    "ST_LAST_BAR": "20261124 13:59:00",
+    "ST_LIVE_EVENT": 0,
+    "ST_RVOL10": 0.99,
+    "ST_RVOL10_LAST": 0.99,
+    "TEMPTOTAL": -15.67,
+    "TESTMAXIMUMRISKPERTRADE": 3.75,
+    "TESTMAXLONGVAL": 2000,
+    "TESTOFFSETRISK": 0.05,
+    "TESTPRICE": 11.85,
+    "TESTSHARESIZE": 25,
+    "TESTSTOPPRICE": 0,
+    "TESTTRADERISK": 3.75,
+    "THEBAR_BODY": 0.0151,
+    "THEBAR_COLOR": "RED",
+    "THEBAR_LSHADOW": 0.0849,
+    "THEBAR_RANGE": 0.1,
+    "THEBAR_USHADOW": 0,
+    "TIMENOW": 50346,
+    "VOL": 10088965,
+    "VOL1": 31022,
+    "VOL10": 38361,
+    "VOL2": 53562,
+    "VOL3": 27938,
+    "VOL4": 16686,
+    "VOL5": 24127,
+    "VOL6": 11843,
+    "VOL7": 31493,
+    "VOL8": 28060,
+    "VOL9": 50253,
+    "VOLDISP": "10.1M",
+    "VOL_ANNOUNCED": 0,
+    "VWAP": 11.264,
+    "VWAP_DISTANCE": -0.5409,
+    "YCLOSE": 6.1175
+  }
+}

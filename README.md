@@ -26,7 +26,6 @@ These are plain DAS script files with no file extension. They don't run from thi
 - [Button scripts](#button-scripts)
 - [Shared global variables](#shared-global-variables)
 - [Hotkey names vs. filenames](#hotkey-names-vs-filenames)
-- [Unit tests](#unit-tests)
 - [Legacy: DynamicSizing/](#legacy-dynamicsizing)
 - [DAS behaviour to know](#das-behaviour-to-know)
 - [Deploying changes](#deploying-changes)
@@ -349,6 +348,7 @@ In `ButtonClickScripts/`:
 | `DrawKeyResistance` | — | Runs `CleanupLines`, then `DrawKeyResistance` |
 | `ColorButton` | — | Asks for a price and draws a yellow horizontal line there |
 | `RiskPerCandle` | — | Asks for a share count into `$rpcval`. Not used yet: `TestExtended` still uses 25. |
+| `ExportChartData` | — | Runs the `ExportChartData` hotkey, which is too big to be a button click script. The hotkey captures the current symbol's 1-minute bars since 4 AM (at most 960, i.e. to 8 PM, stopping early where the chart's history starts), 12 five-minute and 12 daily bars with their study values, the current study values, and montage and quote fields into `$X_*` variables. It then saves every variable in memory with `SaveVarToFile("DASExport_<SYM>")`. Unpause the tests first so the file also holds their results. |
 
 ---
 
@@ -387,20 +387,6 @@ These hotkeys are called but aren't in this repo: `CatalystButtonColor` (from Ru
 
 ---
 
-## Unit tests
-
-`UnitTests/` has a Node.js copy of the Bullish Impulse logic from `Test_Pattern`, plus recorded candles from real trades.
-
-```
-node UnitTests/bullish_impulse_test.js UnitTests/APUS.json
-```
-
-Each JSON file has a `name`, an `expected` result, and `bars.BAR1` (the most recent finished bar) through `BAR4`. With only `BAR1`, it runs the single-candle test. **The harness is a manual copy of the logic:** when you change the impulse rules in `Test_Pattern`, change `bullish_impulse_test.js` to match.
-
-Current status: `APUS` and `TDIC` pass. Both `WHLR` cases fail: BAR1 is a red candle, and BAR3's high is below BAR4's. These still need a decision on whether the rules or the expected results are wrong.
-
----
-
 ## Legacy: DynamicSizing/
 
 An earlier version of the scripts, **no longer in use**, kept for reference. It uses the older bare-montage syntax (`Price=`, `Pos`) and has ideas not yet carried over:
@@ -418,7 +404,15 @@ Its `DesktopLoadScript` would replace the main one, so don't paste it into DAS.
 - **Divide by zero doesn't error; it returns 0** (`MsgBox(14/0)` shows `0`). Some scripts still guard against it where 0 would be misleading, such as `$PricePosition`.
 - **Fractional share counts are rounded down.**
 - `GetBar(0)` is the bar still forming; `GetBar(-1)` is the most recent finished bar.
-- `GetStudyVal("Study", ByBarNum, n)` returns a string such as `AVG:3.751`, which `TestEMATrendState` and `TestMACD` parse with `SubString`.
+- `GetStudyVal("Study", ByBarNum, n)` returns a string such as `AVG:3.751`, which `TestEMATrendState` and `TestMACD` parse with `SubString`, then turn into a number with `Round(text, 3)`.
+- `Round(x,103)` returns a 2-decimal **string** for display (`"123.45"`), not a number.
+- `Round(x)` with no decimals **drops the fraction** instead of rounding (`Round(92.9694)` gave 92 in `TestGap`), so `DynamicEntry`'s share count always rounds down. `Round(x,1)` and `Round(x,2)` do round (`Round(10.088965,1)` gave 10.1).
+- `SaveVarToFile(name)` writes every variable in memory to a file as `$var=value;` lines, in no particular order. Strings are in double quotes, numbers keep full precision, and variables created with `setvar` are included. Window and bar objects aren't saved. `LoadVarFromFile(name)` reads them back.
+- Per-bar study text has a newline at the end, and some kinds start with a space: `" AVG:0.893\n"`, `" VWAP:0.780\n"`, `"MACD:0.005628, Signal:0.007296\n"`. That's why `TestEMATrendState` uses `SubString(x, 5, StrLen(x)-1)`. Per-bar values have 3 decimals.
+- Bar `.Time` looks like `"20261124 13:37:00"`. Minutes with no trades have no bar, so `GetBar(-n)` is n bars back, not n minutes. On a thin stock, `GetBar(0)` can be a bar that has already closed.
+- `GetBar(-n)` before the first bar on the chart returns an empty bar: `Time` is `""`, prices and volume are 0, and `GetStudyVal(..., ByBarNum, -n)` returns `"0"`.
+- `GetSecond()` is seconds since midnight in the same time zone as the bar times (49927 = 13:52:07 during the 13:52 bar).
+- `GetStudyVal("Study9EMA")` with no window in front reads **Chart1**, even though Chart5 also has a `Study9EMA`.
 - Lines are created as global and then made specific to the symbol with `GlobalTrendLineToLocal`. `GetTrendLine` only finds lines on the chart's **current** symbol.
 
 ---

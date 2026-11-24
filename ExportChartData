@@ -1,0 +1,205 @@
+// ============================================================
+// EXPORT CHART DATA (experimental)
+// Runs on: hotkey, from the ExportChartData button
+// (ButtonClickScripts/ExportChartData calls it with exechotkey:
+// this script is too big to be a button click script)
+//
+// Captures the current symbol's bars, study values, montage and
+// quote fields into $X_* variables, then saves every variable in
+// memory to a file with SaveVarToFile("DASExport_<SYM>").
+// UnitTests/tools/convert_das_export.js turns that file into
+// unit-test JSON. Unpause the tests first, so the file also holds
+// the test scripts' current results.
+//
+// All variables here start with $X_ so they can't overwrite the
+// variables the test scripts use (for example $VOL or $IDX).
+//
+// Each bar is saved with setvar("X_B1_<n>", row), where n is the
+// GetBar offset: 0 is the latest bar, n is n bars back.
+// Row format (fields separated by "|"):
+//   Chart1:     Time|Open|Hi|Lo|Close|Volume|9EMA|20EMA|200EMA|VWAP|MACD
+//   Chart5:     Time|Open|Hi|Lo|Close|Volume|9EMA
+//   ChartDaily: Time|Open|Hi|Lo|Close|Volume|200SMA|200EMA|9EMA|20EMA
+// Study values are kept exactly as DAS returns them (e.g. " AVG:3.751\n").
+// ============================================================
+
+
+// ============================================================
+// CONFIGURATION
+// ============================================================
+
+$X_VERSION=4;
+$X_MAXBARS1=960;  // most 1-minute bars to export (4 AM to 8 PM)
+$X_NBARS5=12;     // 5-minute bars on Chart5
+$X_NBARSD=12;     // daily bars on ChartDaily
+
+
+// ============================================================
+// CAPTURE INFO
+// ============================================================
+
+$X_SYMBOL=$CHART1.Symbol;
+$X_SECOND=GetSecond();
+$X_BARTIME="" + $CHART1.GetBar(0).Time;
+$X_RUNTESTS=$RunTestsEnabled;
+
+// 1-minute bars since 4:00 AM (assumes GetSecond() is Eastern time).
+// Minutes with no trades have no bar, so this can reach a little
+// into the previous day; the converter keeps those bars.
+$X_NBARS1=30;
+if($X_SECOND>=14400)
+{
+    $X_NBARS1=Round(($X_SECOND-14400)/60);
+}
+if($X_NBARS1>$X_MAXBARS1)
+{
+    $X_NBARS1=$X_MAXBARS1;
+}
+
+
+// ============================================================
+// MONTAGE
+// ============================================================
+
+$X_M_BID=$MONTAGE1.Bid;
+$X_M_ASK=$MONTAGE1.Ask;
+$X_M_LAST=$MONTAGE1.Last;
+$X_M_HI=$MONTAGE1.Hi;
+$X_M_LO=$MONTAGE1.Lo;
+$X_M_PRICE=$MONTAGE1.Price;
+$X_M_POS=$MONTAGE1.Pos;
+$X_M_AVGCOST=$MONTAGE1.AvgCost;
+
+
+// ============================================================
+// QUOTE
+// ============================================================
+
+$X_Q_LAST=getquoteobj($CHART1.SYMBOL).Last;
+$X_Q_VOLUME=getquoteobj($CHART1.SYMBOL).Volume;
+$X_Q_YCLOSE=getquoteobj($CHART1.SYMBOL).yClose;
+$X_Q_RVOL=getquoteobj($CHART1.SYMBOL).RVOL;
+$X_Q_FLOAT=getquoteobj($CHART1.SYMBOL).float;
+$X_Q_ETB=getquoteobj($CHART1.SYMBOL).ETB;
+$X_Q_HTB=getquoteobj($CHART1.SYMBOL).HTB;
+$X_Q_SSR=getquoteobj($CHART1.SYMBOL).SSR;
+$X_Q_HALTED=getquoteobj($CHART1.SYMBOL).Halted;
+$X_Q_COMPANY=getquoteobj($CHART1.SYMBOL).CompanyName;
+$X_Q_SECTOR=getquoteobj($CHART1.SYMBOL).Sector;
+
+
+// ============================================================
+// CURRENT STUDY VALUES (no ByBarNum: these return numbers)
+// The bare GetStudyVal() calls show which window a call
+// without a window object reads from.
+// ============================================================
+
+$X_S1_BAR=$CHART1.GetStudyVal("StudyBar");
+$X_S1_EMA9=$CHART1.GetStudyVal("Study9EMA");
+$X_S1_EMA20=$CHART1.GetStudyVal("Study20EMA");
+$X_S1_EMA200=$CHART1.GetStudyVal("Study200EMA");
+$X_S1_VWAP=$CHART1.GetStudyVal("StudyVWAP");
+$X_S5_EMA9=$CHART5.GetStudyVal("Study9EMA");
+$X_SD_200SMA=$CHARTD.GetStudyVal("StudyD200SMA");
+$X_SD_200EMA=$CHARTD.GetStudyVal("StudyD200EMA");
+$X_SD_9EMA=$CHARTD.GetStudyVal("StudyD9EMA");
+$X_SD_20EMA=$CHARTD.GetStudyVal("StudyD20EMA");
+$X_SB_BAR=GetStudyVal("StudyBar");
+$X_SB_EMA9=GetStudyVal("Study9EMA");
+$X_SB_EMA20=GetStudyVal("Study20EMA");
+$X_SB_EMA200=GetStudyVal("Study200EMA");
+$X_SB_VWAP=GetStudyVal("StudyVWAP");
+
+
+// ============================================================
+// 1-MINUTE BARS (Chart1)
+// ============================================================
+
+$X_I=0;
+$X_END1=0;   // set to 1 if the chart's history ends before $X_NBARS1
+while($X_I<=$X_NBARS1)
+{
+    $X_BAR=$CHART1.GetBar(-$X_I);
+    if($X_BAR.Close<=0)
+    {
+        // Past the start of the chart's history: DAS returns an
+        // empty bar. Stop here and record how many bars there were.
+        $X_NBARS1=$X_I-1;
+        $X_END1=1;
+    }
+    else
+    {
+        $X_ROW="" + $X_BAR.Time
+            + "|" + $X_BAR.Open
+            + "|" + $X_BAR.Hi
+            + "|" + $X_BAR.Lo
+            + "|" + $X_BAR.Close
+            + "|" + $X_BAR.Volume
+            + "|" + $CHART1.GetStudyVal("Study9EMA",ByBarNum,-$X_I)
+            + "|" + $CHART1.GetStudyVal("Study20EMA",ByBarNum,-$X_I)
+            + "|" + $CHART1.GetStudyVal("Study200EMA",ByBarNum,-$X_I)
+            + "|" + $CHART1.GetStudyVal("StudyVWAP",ByBarNum,-$X_I)
+            + "|" + $CHART1.GetStudyVal("StudyMACD",ByBarNum,-$X_I);
+        setvar("X_B1_" + $X_I, $X_ROW);
+    }
+    $X_I=$X_I+1;
+}
+
+
+// ============================================================
+// 5-MINUTE BARS (Chart5)
+// ============================================================
+
+$X_I=0;
+while($X_I<=$X_NBARS5)
+{
+    $X_BAR=$CHART5.GetBar(-$X_I);
+    $X_ROW="" + $X_BAR.Time
+        + "|" + $X_BAR.Open
+        + "|" + $X_BAR.Hi
+        + "|" + $X_BAR.Lo
+        + "|" + $X_BAR.Close
+        + "|" + $X_BAR.Volume
+        + "|" + $CHART5.GetStudyVal("Study9EMA",ByBarNum,-$X_I);
+    setvar("X_B5_" + $X_I, $X_ROW);
+    $X_I=$X_I+1;
+}
+
+
+// ============================================================
+// DAILY BARS (ChartDaily)
+// ============================================================
+
+$X_I=0;
+while($X_I<=$X_NBARSD)
+{
+    $X_BAR=$CHARTD.GetBar(-$X_I);
+    $X_ROW="" + $X_BAR.Time
+        + "|" + $X_BAR.Open
+        + "|" + $X_BAR.Hi
+        + "|" + $X_BAR.Lo
+        + "|" + $X_BAR.Close
+        + "|" + $X_BAR.Volume
+        + "|" + $CHARTD.GetStudyVal("StudyD200SMA",ByBarNum,-$X_I)
+        + "|" + $CHARTD.GetStudyVal("StudyD200EMA",ByBarNum,-$X_I)
+        + "|" + $CHARTD.GetStudyVal("StudyD9EMA",ByBarNum,-$X_I)
+        + "|" + $CHARTD.GetStudyVal("StudyD20EMA",ByBarNum,-$X_I);
+    setvar("X_BD_" + $X_I, $X_ROW);
+    $X_I=$X_I+1;
+}
+
+
+// ============================================================
+// SAVE
+// ============================================================
+
+SaveVarToFile("DASExport_" + $X_SYMBOL);
+
+if($X_RUNTESTS!=1)
+{
+    MsgBox("Exported " + $X_SYMBOL + " (" + $X_NBARS1 + " 1-min bars). Tests are paused, so the export has no current test results.");
+}
+else
+{
+    MsgBox("Exported " + $X_SYMBOL + " (" + $X_NBARS1 + " 1-min bars).");
+}

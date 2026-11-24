@@ -1,0 +1,40 @@
+{
+  "description": "Test scripts, buttons and arming on real setups. Expected values are what DAS showed when the fixture was exported.",
+  "fixture": "JAGX_20261124_1359",
+  "tests": [
+    {
+      "name": "JAGX 13:59: buttons match DAS",
+      "run": ["RunTests_Dispatch", "RunTests_ChartUpdate"],
+      "expect": {
+        "vars": { "DIPREASON": "Dip Trade OK", "ST_RVOL10": 0.99 },
+        "buttons": {
+          "LADDER1.btn_dip": { "text": "DIP: OK", "bkcolor": "green" },
+          "LADDER1.btn_curl": { "text": "CURL: RVOL < 1.0", "bkcolor": "orange" },
+          "LADDER1.btn_pattern": { "text": "No Pattern" },
+          "CHART1.btn_candle_type": { "text": "Hanging Man / BEARISH" },
+          "CHART1.btn_rvol": { "text": "RVOL: 373.4x", "bkcolor": "green" },
+          "CHART1.btn_vwap": { "text": "Above VWAP", "bkcolor": "green" },
+          "CHART1.btn_vol": { "text": "Volume: 10.1M", "bkcolor": "green" },
+          "CHART1.btn_gap": { "text": "Gap: 92%", "bkcolor": "green" },
+          "CHART1.btn_range": { "text": "Rng4: $0.32 Rng10: $0.39", "bkcolor": "red" },
+          "CHART1.btn_spread": { "text": "Spread: $0.12", "bkcolor": "red" }
+        }
+      }
+    },
+    {
+      "name": "JAGX 13:59: arming is blocked by the candle range",
+      "run": ["RunTests_Dispatch", "RunTests_ChartUpdate", "Setup Armed"],
+      "expect": {
+        "vars": { "SETUPARMED": 0 },
+        "speech": ["Candle range too large.", "Non-Negotiable."],
+        "buttons": { "CHART1.btn_arm": { "text": "Arm Setup" } }
+      }
+    },
+    {
+      "name": "RVOL: no data shows 0x in orange",
+      "run": ["TestRVOL"],
+      "quote": { "RVOL": 0, "Volume": 0 },
+      "expect": { "buttons": { "CHART1.btn_rvol": { "text": "RVOL: 0x", "bkcolor": "orange" } } }
+    }
+  ]
+}

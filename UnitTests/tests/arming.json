@@ -1,0 +1,1105 @@
+{
+  "description": "Setup Armed (SpeakTestResults): the self-check pressed before an entry. Each test starts from the JAGX values DAS had in memory, made clean (price 8, small ranges, tight spread, reversal confirmed), then breaks one rule. Checks the exact words spoken, whether it armed, and the button.",
+  "fixture": "JAGX_20261124_1359",
+  "tests": [
+    {
+      "name": "Clean setup arms with nothing to warn about",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1
+      },
+      "expect": {
+        "speech": [
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Blocks: price above $20",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 20.01,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1
+      },
+      "expect": {
+        "speech": [
+          "Stock is too expensive.",
+          "Non-Negotiable."
+        ],
+        "vars": {
+          "SETUPARMED": 0,
+          "OKTOARM": 0
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Arm Setup"
+          }
+        }
+      }
+    },
+    {
+      "name": "Edge: price exactly $20 arms (with the expensive warning)",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 20,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1
+      },
+      "montage": {
+        "Hi": 25
+      },
+      "expect": {
+        "speech": [
+          "Stock is expensive",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Blocks: float above 20M",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "FLOAT": 20.01
+      },
+      "expect": {
+        "speech": [
+          "Float too high.",
+          "Non-Negotiable."
+        ],
+        "vars": {
+          "SETUPARMED": 0,
+          "OKTOARM": 0
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Arm Setup"
+          }
+        }
+      }
+    },
+    {
+      "name": "Edge: float exactly 20M arms",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "FLOAT": 20
+      },
+      "expect": {
+        "speech": [
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Blocks: gap of 10% or less",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "GAP": 10
+      },
+      "expect": {
+        "speech": [
+          "Gap less than 10%.",
+          "Non-Negotiable."
+        ],
+        "vars": {
+          "SETUPARMED": 0,
+          "OKTOARM": 0
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Arm Setup"
+          }
+        }
+      }
+    },
+    {
+      "name": "Blocks: gap 0 (no previous close, e.g. an IPO)",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "GAP": 0
+      },
+      "expect": {
+        "speech": [
+          "Gap less than 10%.",
+          "Non-Negotiable."
+        ],
+        "vars": {
+          "SETUPARMED": 0,
+          "OKTOARM": 0
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Arm Setup"
+          }
+        }
+      }
+    },
+    {
+      "name": "Blocks: RVOL 5x or less",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "RVOL": 5
+      },
+      "expect": {
+        "speech": [
+          "Relative Volume too low.",
+          "Non-Negotiable."
+        ],
+        "vars": {
+          "SETUPARMED": 0,
+          "OKTOARM": 0
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Arm Setup"
+          }
+        }
+      }
+    },
+    {
+      "name": "Edge: RVOL 0 (no data) is not blocked",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "RVOL": 0
+      },
+      "expect": {
+        "speech": [
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Blocks: 4-candle range above $0.30",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.31,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1
+      },
+      "expect": {
+        "speech": [
+          "Candle range too large.",
+          "Non-Negotiable."
+        ],
+        "vars": {
+          "SETUPARMED": 0,
+          "OKTOARM": 0
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Arm Setup"
+          }
+        }
+      }
+    },
+    {
+      "name": "Blocks: 10-candle range above $0.50",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.51,
+        "SPREAD": 0.03,
+        "REVERSAL": 1
+      },
+      "expect": {
+        "speech": [
+          "Candle range too large.",
+          "Non-Negotiable."
+        ],
+        "vars": {
+          "SETUPARMED": 0,
+          "OKTOARM": 0
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Arm Setup"
+          }
+        }
+      }
+    },
+    {
+      "name": "Edge: 4-candle range exactly $0.30 arms (with the large range warning)",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.3,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1
+      },
+      "expect": {
+        "speech": [
+          "Candles have large range.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Blocks: volume under 750k",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "VOL": 749999
+      },
+      "expect": {
+        "speech": [
+          "Volume too low. Wait for stock to become obvious.",
+          "Non-Negotiable."
+        ],
+        "vars": {
+          "SETUPARMED": 0,
+          "OKTOARM": 0
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Arm Setup"
+          }
+        }
+      }
+    },
+    {
+      "name": "Edge: volume exactly 750k arms",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "VOL": 750000
+      },
+      "expect": {
+        "speech": [
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Blocks: price within 10c of the high",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1
+      },
+      "montage": {
+        "Hi": 8.1
+      },
+      "expect": {
+        "speech": [
+          "Price is too close to the highs.",
+          "Non-Negotiable."
+        ],
+        "vars": {
+          "SETUPARMED": 0,
+          "OKTOARM": 0
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Arm Setup"
+          }
+        }
+      }
+    },
+    {
+      "name": "Blocks: below VWAP while curl is cautious",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "ABOVEVWAP": 0,
+        "CURLCAUTION": 1,
+        "CURLBLOCKED": 0
+      },
+      "expect": {
+        "speech": [
+          "Below veewap - no confirmation",
+          "Non-Negotiable."
+        ],
+        "vars": {
+          "SETUPARMED": 0,
+          "OKTOARM": 0
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Arm Setup"
+          }
+        }
+      }
+    },
+    {
+      "name": "Blocks: below VWAP while curl is blocked",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "ABOVEVWAP": 0,
+        "CURLCAUTION": 0,
+        "CURLBLOCKED": 1
+      },
+      "expect": {
+        "speech": [
+          "Below veewap - no confirmation",
+          "Non-Negotiable."
+        ],
+        "vars": {
+          "SETUPARMED": 0,
+          "OKTOARM": 0
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Arm Setup"
+          }
+        }
+      }
+    },
+    {
+      "name": "Blocks: first failing rule wins: price before float",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 25,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "FLOAT": 50
+      },
+      "expect": {
+        "speech": [
+          "Stock is too expensive.",
+          "Non-Negotiable."
+        ],
+        "vars": {
+          "SETUPARMED": 0,
+          "OKTOARM": 0
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Arm Setup"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: price above $10",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 15,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1
+      },
+      "expect": {
+        "speech": [
+          "Stock is expensive",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      },
+      "montage": {
+        "Hi": 25
+      }
+    },
+    {
+      "name": "Warns: below VWAP with the curl OK",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "ABOVEVWAP": 0,
+        "CURLCAUTION": 0,
+        "CURLBLOCKED": 0
+      },
+      "expect": {
+        "speech": [
+          "Price is below veewap",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: MACD closed",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "MACD": 0.1,
+        "SIGNAL": 0.2
+      },
+      "expect": {
+        "speech": [
+          "Macdee is closed.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: within 5% under the daily 200 EMA",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "D200EMA": 8.3
+      },
+      "expect": {
+        "speech": [
+          "Stock is under daily 200",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: within 5% under the daily 200 SMA",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "D200SMA": 8.3
+      },
+      "expect": {
+        "speech": [
+          "Stock is under daily 200",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: easy to borrow",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "ETB": 1
+      },
+      "expect": {
+        "speech": [
+          "Stock is easy to borrow.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: 4-candle range above $0.20",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.25,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1
+      },
+      "expect": {
+        "speech": [
+          "Candles have large range.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: extended",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "EXTENDED": 1
+      },
+      "expect": {
+        "speech": [
+          "Stock may be extended.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: EMA trend sideways",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "EMA_TREND_STATE": 2
+      },
+      "expect": {
+        "speech": [
+          "Stock is moving sideways.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: EMA downtrend",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "EMA_TREND_STATE": 3
+      },
+      "expect": {
+        "speech": [
+          "Stock is in a downtrend.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: wide spread",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.12,
+        "REVERSAL": 1
+      },
+      "expect": {
+        "speech": [
+          "Stock has a wide spread.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: moderate spread",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.07,
+        "REVERSAL": 1
+      },
+      "expect": {
+        "speech": [
+          "Stock has a moderate spread.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: poor catalyst",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "NEWS_JAGX": 2
+      },
+      "expect": {
+        "speech": [
+          "Poor catalyst.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: no catalyst",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "NEWS_JAGX": 3
+      },
+      "expect": {
+        "speech": [
+          "No catalyst to account for move.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: no reversal confirmed",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 0
+      },
+      "expect": {
+        "speech": [
+          "Price action has not yet confirmed a reversal.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: several at once, in order",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 15,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.12,
+        "REVERSAL": 0,
+        "ETB": 1
+      },
+      "expect": {
+        "speech": [
+          "Stock is expensive",
+          "Stock is easy to borrow.",
+          "Stock has a wide spread.",
+          "Price action has not yet confirmed a reversal.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      },
+      "montage": {
+        "Hi": 25
+      }
+    },
+    {
+      "name": "Warns: price below the highest-volume candle low (JAGX 11:23 candle, low 12.73)",
+      "run": [
+        "FindIntradayLevels_1",
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 11.8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1
+      },
+      "montage": {
+        "Hi": 25
+      },
+      "expect": {
+        "speech": [
+          "Stock is expensive",
+          "Price is below the highest volume candle.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "No warning: price above the highest-volume candle low",
+      "run": [
+        "FindIntradayLevels_1",
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 13,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1
+      },
+      "montage": {
+        "Hi": 25
+      },
+      "expect": {
+        "speech": [
+          "Stock is expensive",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Drawing intraday levels leaves the day volume ($VOL) alone",
+      "run": [
+        "TestVolume",
+        "FindIntradayLevels_1",
+        "FindIntradayLevels_2"
+      ],
+      "expect": {
+        "vars": {
+          "VOL": 10089109
+        },
+        "buttons": {
+          "CHART1.btn_vol": {
+            "text": "Volume: 10.1M"
+          }
+        }
+      }
+    }
+  ]
+}

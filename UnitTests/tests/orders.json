@@ -1,0 +1,193 @@
+{
+  "description": "Order safety: entry sizing and the stop, partial exits, the loss lockout. The JAGX fixture has Bid 11.73, Ask 11.85.",
+  "fixture": "JAGX_20261124_1359",
+  "tests": [
+    {
+      "name": "Entry: armed, stop 11.50 -> buys 9 and places the trigger stop",
+      "run": ["DynamicEntry"],
+      "vars": { "SETUPARMED": 1 },
+      "montage": { "Pos": 0, "Price": 11.5 },
+      "expect": {
+        "activity": [
+          "CXL ALLSYMB",
+          "BUY 9 ARCA1L @ 11.85 DAY+",
+          "TRIGGER SELL Pos STOP LIMITP stop 11.5 @ 11.45 DAY+"
+        ],
+        "vars": { "SETUPARMED": 0, "WORSTCASEPLANNEDRISK": 3.6 }
+      }
+    },
+    {
+      "name": "Entry: tight stop is capped at 25 shares",
+      "run": ["DynamicEntry"],
+      "vars": { "SETUPARMED": 1 },
+      "montage": { "Pos": 0, "Bid": 11.80, "Price": 11.76 },
+      "expect": {
+        "activity": [
+          "CXL ALLSYMB",
+          "BUY 25 ARCA1L @ 11.85 DAY+",
+          "TRIGGER SELL Pos STOP LIMITP stop 11.76 @ 11.71 DAY+"
+        ]
+      }
+    },
+    {
+      "name": "Entry: training account uses ARCAL",
+      "run": ["DynamicEntry"],
+      "vars": { "SETUPARMED": 1 },
+      "montage": { "Pos": 0, "Price": 11.5, "Account": "TR12345" },
+      "expect": {
+        "activity": [
+          "CXL ALLSYMB",
+          "BUY 9 ARCAL @ 11.85 DAY+",
+          "TRIGGER SELL Pos STOP LIMITP stop 11.5 @ 11.45 DAY+"
+        ]
+      }
+    },
+    {
+      "name": "Entry: blocked when not armed",
+      "run": ["DynamicEntry"],
+      "vars": { "SETUPARMED": 0 },
+      "montage": { "Pos": 0, "Price": 11.5 },
+      "expect": {
+        "activity": [],
+        "speech": ["You cannot trade just because you feel like trading. You must first explicitly declare that you have identified a setup."]
+      }
+    },
+    {
+      "name": "Entry: blocked when already in a position",
+      "run": ["DynamicEntry"],
+      "vars": { "SETUPARMED": 1 },
+      "montage": { "Pos": 10, "Price": 11.5 },
+      "expect": { "activity": [], "speech": ["Position is not flat"], "vars": { "SETUPARMED": 1 } }
+    },
+    {
+      "name": "Entry: blocked when the stop is above the bid",
+      "run": ["DynamicEntry"],
+      "vars": { "SETUPARMED": 1 },
+      "montage": { "Pos": 0, "Price": 11.8 },
+      "expect": { "activity": [], "speech": ["Stop is above Bid price"], "vars": { "SETUPARMED": 1 } }
+    },
+    {
+      "name": "Entry: blocked when the stop is 5c or less from the ask",
+      "run": ["DynamicEntry"],
+      "vars": { "SETUPARMED": 1 },
+      "montage": { "Pos": 0, "Ask": 11.76, "Price": 11.72 },
+      "expect": { "activity": [], "speech": ["Stop is too close"], "vars": { "SETUPARMED": 1 } }
+    },
+    {
+      "name": "TestStop shows the same share count DynamicEntry buys",
+      "run": ["TestStop"],
+      "montage": { "Pos": 0, "Price": 11.5 },
+      "expect": {
+        "vars": { "TESTSHARECOUNT": 9 },
+        "buttons": {
+          "CHART1.btn_shares": { "text": "Shares: 9" },
+          "CHART1.btn_stop": { "text": "Stop: 11.5 (0.35)" },
+          "CHART1.btn_riskpershare": { "text": "Risk/Share: 0.40" }
+        }
+      }
+    },
+    {
+      "name": "TestStop: stop above the ask shows No Shares",
+      "run": ["TestStop"],
+      "montage": { "Pos": 0, "Price": 11.9 },
+      "expect": {
+        "buttons": {
+          "CHART1.btn_shares": { "text": "Shares: N/A" },
+          "CHART1.btn_plannedrisk": { "text": "Risk: No Shares" }
+        }
+      }
+    },
+    {
+      "name": "SellPortion: sells 75% at bid-10c, breakeven stop on the rest",
+      "run": ["SellPortion"],
+      "montage": { "Pos": 20, "AvgCost": 11.5 },
+      "expect": {
+        "activity": [
+          "CXL ALLSYMB",
+          "SELL 15 LIMIT @ 11.63",
+          "SELL 5 STOP LimitP stop 11.5 @ 11.45"
+        ]
+      }
+    },
+    {
+      "name": "SellPortion: 25 shares leaves 1 share unprotected (known, see Open items)",
+      "run": ["SellPortion"],
+      "montage": { "Pos": 25, "AvgCost": 11.5 },
+      "expect": {
+        "activity": [
+          "CXL ALLSYMB",
+          "SELL 18 LIMIT @ 11.63",
+          "SELL 6 STOP LimitP stop 11.5 @ 11.45"
+        ]
+      }
+    },
+    {
+      "name": "SellPortion: does nothing when flat",
+      "run": ["SellPortion"],
+      "montage": { "Pos": 0 },
+      "expect": { "activity": [] }
+    },
+    {
+      "name": "SellPortionAsk: in profit sells half at the ask, breakeven stop on the rest",
+      "run": ["SellPortionAsk"],
+      "montage": { "Pos": 20, "AvgCost": 11.5 },
+      "expect": {
+        "activity": [
+          "CXL ALLSYMB",
+          "SELL 10 LIMIT @ 11.85",
+          "SELL 10 STOP LimitP stop 11.5 @ 11.45"
+        ]
+      }
+    },
+    {
+      "name": "SellPortionAsk: at a loss sells everything at bid-10c",
+      "run": ["SellPortionAsk"],
+      "montage": { "Pos": 20, "AvgCost": 12 },
+      "expect": {
+        "activity": ["CXL ALLSYMB", "SELL 20 LIMIT @ 11.63"],
+        "speech": ["Trade is not profitable, exiting on bid"]
+      }
+    },
+    {
+      "name": "SellPortionAsk: does nothing when flat",
+      "run": ["SellPortionAsk"],
+      "montage": { "Pos": 0 },
+      "expect": { "activity": [] }
+    },
+    {
+      "name": "Loss lockout: second loss locks the montage",
+      "run": ["CheckForMultipleLosses"],
+      "vars": { "TEMPTOTAL": -10, "LOSSES": 1 },
+      "account": { "Realized": -20 },
+      "montage": { "Pos": 0 },
+      "expect": {
+        "activity": ["LockAllMontage Lock"],
+        "speech": ["You'd rather take a break!"],
+        "vars": { "LOSSES": 2, "TEMPTOTAL": -20 }
+      }
+    },
+    {
+      "name": "Loss lockout: first loss only counts",
+      "run": ["CheckForMultipleLosses"],
+      "vars": { "TEMPTOTAL": -10, "LOSSES": 0 },
+      "account": { "Realized": -20 },
+      "montage": { "Pos": 0 },
+      "expect": { "activity": [], "vars": { "LOSSES": 1 } }
+    },
+    {
+      "name": "Loss lockout: a win resets the count",
+      "run": ["CheckForMultipleLosses"],
+      "vars": { "TEMPTOTAL": -10, "LOSSES": 1 },
+      "account": { "Realized": 5 },
+      "expect": { "activity": [], "vars": { "LOSSES": 0, "TEMPTOTAL": 5 } }
+    },
+    {
+      "name": "Loss lockout: waits while still in a position",
+      "run": ["CheckForMultipleLosses"],
+      "vars": { "TEMPTOTAL": -10, "LOSSES": 1 },
+      "account": { "Realized": -20 },
+      "montage": { "Pos": 5 },
+      "expect": { "activity": [], "vars": { "LOSSES": 1, "TEMPTOTAL": -10 } }
+    }
+  ]
+}
