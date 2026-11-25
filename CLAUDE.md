@@ -26,6 +26,7 @@ The user confirmed these in DAS:
 - Variables are global and not case-sensitive (`$SetupArmed` and `$SETUPARMED` are the same).
 - Bar fields are `.Open`, `.Hi`, `.Lo`, `.Close`, `.Volume`, `.Time`. Use `.Hi`/`.Lo`, not `.High`/`.Low`.
 - `GetTrendLine` only finds lines on the chart's current symbol, because lines are made local with `GlobalTrendLineToLocal`.
+- Trendline `LineStyle=0` is solid; `1` is not. Level lines use 0; `R1`/`S1` and `5Min9EMA` use 2.
 - `Round(x,103)` returns a **string** with 2 decimals (`Round(123.456,103)` → `"123.45"`), meant for display. The 2 decimals can't be changed.
 - `Round("123.456",3)` turns a string into a number. Study values from `GetStudyVal(..., ByBarNum, n)` are strings, so the scripts strip the prefix with `SubString` and then `Round` the rest.
 - `SaveVarToFile(name)` writes every variable in memory to a file, one `$var=value;` per line. `LoadVarFromFile(name)` reads them back (meant for restoring values when the platform loads). Lines come out in no fixed order. Strings are double-quoted, and `setvar` variables are included.
@@ -56,7 +57,7 @@ Not yet done. Raise them only if relevant, and don't implement without the user'
 - **TriggerStop:** the `StopTrigger` alert is left behind after a manual exit. Delete any existing alert before creating a new one.
 - **Stuck test-group guards:** optionally reset the `$RunningTests*` guards when the PauseTests button unpauses, as a way to recover.
 - **Leftover share from rounding:** `$qty=Round($pos*0.75)` in `SellPortion` (and `$pos*0.5` in `SellPortionAsk`) would avoid it. The user hasn't decided.
-- **Range limits:** `$AverageRange4` thresholds (.30 block, .20 warning) became about 2.5× stricter after the `/10` → `/4` fix. The user is watching whether they need retuning, and may switch to percentage-of-price thresholds.
+- **Range limits:** replaced on 2026-11-25. The $0.30 / $0.50 blocks and the $0.20 warning became: block when Rng4 > 25% of price, or when the bigger of the last two candles is ≥ 2.5× the 8 before it and ≥ 8% of price; warn when Rng4 > 10% of price. The aim is to allow frontside entries like NRSN 08:09. The user is testing it in DAS; the numbers may still need tuning with the replay sliders.
 
 Already decided, not to be raised again:
 - `SellPortion` doesn't need a profitable check.

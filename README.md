@@ -142,7 +142,8 @@ The setup also disarms automatically when the symbol changes (if the tests are r
 | Float | `$Float > 20` (millions) | TestFloat |
 | Gap | `$GAP <= 10` (%) | TestGap |
 | Relative volume | `0 < $RVOL <= 5` | TestRVOL |
-| Candle range | 4-candle average range > $0.30, or 10-candle average > $0.50 | TestExtended |
+| Candle range ("Candle range too large.") | 4-candle average range > 25% of price (`$Rng4Pct`) | TestExtended |
+| Spike ("Candle is too large for this stock.") | The bigger of the last two candles (the forming one and the one before) is ≥ 2.5× the average range of the 8 candles before them (`$SpikeMultiple`) **and** ≥ 8% of price (`$SpikePct`) | TestExtended |
 | Volume | `$VOL < 750,000` | TestVolume |
 | Near the high | Price within $0.10 of the montage high | MONTAGE1 |
 | Below VWAP with no confirmation | Below VWAP and the curl check is blocked or cautious | TestVWAP, Test_Curl |
@@ -156,9 +157,9 @@ A symbol with no previous close (usually an IPO) shows a gap of 0, so it fails t
 - MACD closed
 - Within 5% under the daily 200 EMA or SMA
 - Easy to borrow
-- 4-candle average range above $0.20
+- 4-candle average range above 10% of price
 - Extended from the 9 EMA
-- EMA trend sideways or down
+- EMA trend sideways or down (nothing is said while the chart is too short to tell, `$EMA_TREND_STATE` 0)
 - Wide spread (> $0.10) or moderate spread (> $0.05)
 - Catalyst marked "no news" or red
 - No reversal confirmed yet
@@ -221,7 +222,7 @@ Both read the position once at the start (so a fast fill on the partial can't sh
 | Fixed dollar risk | `DynamicEntry` | $3.75 planned risk, including the stop-limit offset |
 | Position caps | Entry hotkeys | 25 shares and $2,000 |
 | Loss lockout | `CheckForMultipleLosses` | Each second, compares the account's realized P&L with the last value. A drop while flat counts as a loss; any rise resets the count. At 2 losses it locks the montage and says "You'd rather take a break!" |
-| Candle-size auto-disarm | `TestExtended` | Disarms and says "Candle size too large." when the range limits are exceeded |
+| Candle-size auto-disarm | `TestExtended` | Disarms and says "Candle size too large." when either candle-range blocker (25% of price, or the spike) is hit |
 
 Known limitation: `CheckForMultipleLosses` works from changes in realized P&L, not per trade. A partial exit at a profit followed by a breakeven stop that fills slightly lower can count as a loss.
 
@@ -236,6 +237,8 @@ Known limitation: `CheckForMultipleLosses` works from changes in realized P&L, n
 | `DrawKeyResistance` | Level 1 lines, plus the session high (PM High / HOD / AH High, depending on `$MH`), plus the daily 200 SMA (purple) and 200 EMA (violet) | `PM High`, `HOD`, `AH High`, `200 SMA`, `200 EMA` + symbol |
 | `Draw5MinEMA` | The 5-minute 9 EMA as a dashed line on Chart1. Redrawn only when it changes. | `5Min9EMA` |
 | `TestStop` (while armed) | 1R target (green) and stop (red), at most every 2 seconds | `R1`, `S1` |
+
+All level lines are solid (`LineStyle=0`). `R1`/`S1` and `5Min9EMA` use `LineStyle=2` (dashed).
 
 Cleanup: `CleanupLines` (200s, intraday levels, session high), `CleanupLines_Intraday` (1x/2x lines) and `CleanupLines_Risk` (R1/S1, run by `SetupDisarmed`). The draw buttons run the matching cleanup before drawing.
 
@@ -258,7 +261,7 @@ All of these are in `Tests/`, except `Speak_Price_Action` and `Draw5MinEMA`, whi
 | `TestRVOL` | chart update | `$RVOL` = higher of (today's volume ÷ 10-day average daily volume) and DAS's RVOL. The daily average is cached per symbol; DAS's RVOL is read every run. | `btn_rvol` (green > 5) |
 | `TestSpread` | chart update | `$Spread` | `btn_spread` (green < $0.05, orange to $0.10, red above) |
 | `TestPriceChange` | chart update | `$PriceChange`: % move since the previous 1-minute close | — |
-| `TestExtended` | 1s | `$AverageRange4`, `$AverageRange10`, `$EXTENDED`, distance from the 9 EMA | `btn_extended`, `btn_range` (orange when the 4-candle average is above $0.20, red past the arming limits), `btn_risk` |
+| `TestExtended` | 1s | `$AverageRange4`, `$AverageRange10`, `$Rng4Pct`, `$SpikeMultiple`, `$SpikePct`, `$EXTENDED`, distance from the 9 EMA | `btn_extended`, `btn_range` (`Rng4: $0.50 (17.3%) Spike: 1.1x`; orange when the 4-candle average is above 10% of price, red past either arming limit), `btn_risk` |
 | `TestVolume` | 1s | `$VOL` (today's volume) | `btn_vol` (green ≥ 1M, orange ≥ 750K) |
 | `TestStop` | 1s | Preview of the DynamicEntry calculation | `btn_stop`, `btn_riskpershare`, `btn_shares`, `btn_plannedrisk` ("N/A" with no stop price or under 1 share, e.g. a stop at or above the ask); draws R1/S1 while armed |
 | `Test_ST_RVOL10` | 1s (average refreshed each new bar and on symbol change) | `$ST_RVOL10`: the current bar's volume projected to a full minute (`volume × 60 ÷ (seconds into bar + 1)`) ÷ average of the last 10 bars. For the first 15 seconds of a bar it uses the last finished bar's ratio instead (`$ST_RVOL10_LAST`). 0 when there is no average. | — |
@@ -273,9 +276,9 @@ All of these are in `Tests/`, except `Speak_Price_Action` and `Draw5MinEMA`, whi
 | `Speak_Price_Action` | 1s | — | Speech only |
 | `Test_MarketHours` | 1 min | `$MH` = `PM` (before 9:30), `MH`, `AH` (from 16:00) | — |
 | `TestDaily` | 1 min, symbol change | `$D200SMA`, `$D200EMA`, `$D9EMA`, `$D20EMA` (cached per symbol) | `btn_dailyavgs` (red within 20% under the 200, orange below it, green ≥ 50% below or above it) |
-| `TestMACD` | 1 min, symbol change | `$MACD`, `$Signal` | `btn_macd` |
+| `TestMACD` | 1 min, symbol change | `$MACD`, `$Signal`, `$MACDReady` (0 while DAS's MACD or signal line still reads exactly 0.000000) | `btn_macd` (green "MACD Pos" above the signal line, red "MACD Neg" below, gray "MACD Flat" when equal to 3 decimals, gray "MACD: No Data" while not ready) |
 | `TestEMAAlignment` | 1 min | `$MOVINGAVGSALIGNED`, `$ABOVE9EMA` | `btn_emas` (green when 9 > 20 > 200) |
-| `TestEMATrendState` | 1 min, symbol change | `$EMA_TREND_STATE`: 1 up, 2 sideways, 3 down | `btn_ematrend` |
+| `TestEMATrendState` | 1 min, symbol change | `$EMA_TREND_STATE`: 1 up, 2 sideways, 3 down, 0 no data. Uptrend needs the 9 EMA up > 0.05% over 5 bars and the 20 EMA up > 0.10% over 10 bars. When the chart doesn't have that many bars yet (bars before its first bar read `"0"`), it compares with a shorter lookback: 9 EMA 5 -> 3 bars, 20 EMA 10 -> 5 -> 3 bars. With fewer than 3 bars it's 0 (no data). | `btn_ematrend` (green UPTREND, orange SIDEWAYS, red DOWNTREND, gray NO DATA) |
 | `TestFloat` | symbol change | `$FLOAT` (millions) | `btn_float` (green shades ≤ 20M, red above, orange "N/A" with no float data). A float of 0 still passes the arming rule. |
 | `TestETB` | symbol change | `$ETB`, `$HTB`, `$SSR` | `btn_etb` (SSR green, HTB orange, ETB red, otherwise gray "Shortable: No") |
 
@@ -414,6 +417,9 @@ Its `DesktopLoadScript` would replace the main one, so don't paste it into DAS.
 - `GetSecond()` is seconds since midnight in the same time zone as the bar times (49927 = 13:52:07 during the 13:52 bar).
 - `GetStudyVal("Study9EMA")` with no window in front reads **Chart1**, even though Chart5 also has a `Study9EMA`.
 - Lines are created as global and then made specific to the symbol with `GlobalTrendLineToLocal`. `GetTrendLine` only finds lines on the chart's **current** symbol.
+- `LineStyle=0` is a solid line. `1` is not solid.
+- `$MONTAGE1.Hi`/`.Lo` (and the daily bar) cover the **regular session only**, from 9:30. After the open, "Price is too close to the highs" ignores the premarket high: NRSN's premarket high was 4.68, its montage high 2.82 (seen in four exports). What the montage shows before 9:30 isn't known yet.
+- `StudyMACD` reads exactly `MACD:0.000000, Signal:0.000000` until the chart has about 26 bars, and the signal line stays `0.000000` until about 34. The count starts at the chart's first bar, so a stock whose chart starts at 08:02 has no usable MACD until about 08:36 (seen on NRSN). `TestMACD` shows "MACD: No Data" until then, and Setup Armed doesn't warn about MACD. The same short history affects `TestEMATrendState`'s lookbacks, which is why it falls back to shorter ones.
 
 ---
 
