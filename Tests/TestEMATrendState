@@ -37,6 +37,10 @@ $EMA20Info1 = $CHART1.GetStudyVal("Study20EMA", ByBarNum, -1);
 $EMA20Info6 = $CHART1.GetStudyVal("Study20EMA", ByBarNum, -6);
 $EMA20Info11 = $CHART1.GetStudyVal("Study20EMA", ByBarNum, -11);
 
+// Three bars earlier, for when the chart's history is too short
+$EMA9Info4 = $CHART1.GetStudyVal("Study9EMA", ByBarNum, -4);
+$EMA20Info4 = $CHART1.GetStudyVal("Study20EMA", ByBarNum, -4);
+
 
 // ============================================================
 // EXTRACT NUMERIC EMA VALUES
@@ -51,6 +55,34 @@ $EMA20_1 = Round(SubString($EMA20Info1, 5, StrLen($EMA20Info1)-1), 4);
 $EMA20_6 = Round(SubString($EMA20Info6, 5, StrLen($EMA20Info6)-1), 4);
 $EMA20_11 = Round(SubString($EMA20Info11, 5, StrLen($EMA20Info11)-1), 4);
 
+$EMA9_4 = Round(SubString($EMA9Info4, 5, StrLen($EMA9Info4)-1), 4);
+$EMA20_4 = Round(SubString($EMA20Info4, 5, StrLen($EMA20Info4)-1), 4);
+
+
+// ============================================================
+// LOOKBACK BASE VALUES
+//
+// Bars before the chart's first bar read "0" (e.g. a chart that
+// starts at 08:02 has no bar 10 back until 08:13). Instead of
+// calling that SIDEWAYS, compare with a shorter lookback:
+//   9 EMA:  5 bars back -> 3
+//   20 EMA: 10 bars back -> 5 -> 3
+// If even 3 bars back is missing, the trend is NO DATA (state 0).
+// ============================================================
+
+$EMA9_BASE = $EMA9_6;
+if ($EMA9_BASE <= 0) {
+    $EMA9_BASE = $EMA9_4;
+}
+
+$EMA20_BASE = $EMA20_11;
+if ($EMA20_BASE <= 0) {
+    $EMA20_BASE = $EMA20_6;
+}
+if ($EMA20_BASE <= 0) {
+    $EMA20_BASE = $EMA20_4;
+}
+
 
 // ============================================================
 // CALCULATE EMA PERCENTAGE CHANGES
@@ -62,9 +94,9 @@ $EMA9_CHANGE10 = 0;
 $EMA20_CHANGE5 = 0;
 $EMA20_CHANGE10 = 0;
 
-// 9 EMA: change over approximately 5 bars
-if ($EMA9_6 > 0) {
-    $EMA9_CHANGE5 = (($EMA9_1 - $EMA9_6) / $EMA9_6) * 100;
+// 9 EMA: change over approximately 5 bars (3 on a short chart)
+if ($EMA9_BASE > 0) {
+    $EMA9_CHANGE5 = (($EMA9_1 - $EMA9_BASE) / $EMA9_BASE) * 100;
 }
 
 // 9 EMA: change over approximately 10 bars
@@ -77,15 +109,16 @@ if ($EMA20_6 > 0) {
     $EMA20_CHANGE5 = (($EMA20_1 - $EMA20_6) / $EMA20_6) * 100;
 }
 
-// 20 EMA: change over approximately 10 bars
-if ($EMA20_11 > 0) {
-    $EMA20_CHANGE10 = (($EMA20_1 - $EMA20_11) / $EMA20_11) * 100;
+// 20 EMA: change over approximately 10 bars (5 or 3 on a short chart)
+if ($EMA20_BASE > 0) {
+    $EMA20_CHANGE10 = (($EMA20_1 - $EMA20_BASE) / $EMA20_BASE) * 100;
 }
 
 
 // ============================================================
 // CLASSIFY EMA TREND
 //
+// 0 = NO DATA (fewer than 3 bars on the chart)
 // 1 = UPTREND
 // 2 = SIDEWAYS
 // 3 = DOWNTREND
@@ -117,4 +150,14 @@ else if ($EMA9_CHANGE5 < -$EMA_TREND_UP5 &&
 
     $CHART1.GetCustButObj("btn_ematrend").text = "EMA: DOWNTREND";
     $CHART1.GetCustButObj("btn_ematrend").bkcolor = red;
+}
+
+// NO DATA: not even 3 bars to compare with. Setup Armed says nothing
+// for state 0, and Test_Curl still blocks a curl (it needs state 1).
+if ($EMA9_1 <= 0 || $EMA9_BASE <= 0 || $EMA20_BASE <= 0)
+{
+    $EMA_TREND_STATE = 0;
+
+    $CHART1.GetCustButObj("btn_ematrend").text = "EMA: NO DATA";
+    $CHART1.GetCustButObj("btn_ematrend").bkcolor = color(211,211,211);
 }
