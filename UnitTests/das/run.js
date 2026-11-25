@@ -27,6 +27,19 @@
 //     value DAS had in memory at export. Checks the interpreter
 //     against DAS.
 //
+// node UnitTests/das/run.js replay <fixture> [options]
+//     Replay the day minute by minute (das/replay.js) and write a
+//     chart of where Setup Armed would block or warn, to
+//     UnitTests/replays/<fixture>.html. Options:
+//       --from=HH:MM --to=HH:MM  only show this part of the day
+//       --samples=N   points per minute: 4 (default), 2 or 1
+//       --spread=X    assumed bid/ask spread (default 0.02)
+//       --out=FILE    where to write the chart
+//       --json=FILE   also write the timeline as JSON
+//       --param=NAME=VALUE  change a threshold (das/params.js), e.g.
+//                     --param=nearHigh=0.05, --param=nearHigh=2%,
+//                     --param=nearHigh=0.1and2% or --param=spikeMult=3
+//
 // <fixture> is a path or a name in UnitTests/fixtures, such as
 // JAGX_20261124_1359.
 //
@@ -48,6 +61,9 @@
 //       "montage": { "Pos": 20, "AvgCost": 11.5 },    optional overrides
 //       "quote": { "Halted": 1 },                     optional overrides
 //       "account": { "Realized": -50 },               optional overrides
+//       "bar0": { "studies": { "StudyMACD": "MACD:0.000000, Signal:0.000000\n" } },
+//                                                     optional: change Chart1's latest bar
+//       "until": "08:07",                             optional: drop Chart1's bars after this minute
 //       "second": 50346,                              optional GetSecond()
 //       "expect": {
 //         "vars": { "DIPREASON": "Dip Trade OK" },
@@ -62,8 +78,10 @@
 
 const fs = require("fs");
 const path = require("path");
-const { SimDas, indexScripts, REPO_ROOT, HOTKEY_ALIASES, HOST_FUNCTIONS, UNSIMULATED_FUNCTIONS } = require("./simdas");
+const { SimDas, indexScripts, loadSources, REPO_ROOT, HOTKEY_ALIASES, HOST_FUNCTIONS, UNSIMULATED_FUNCTIONS } = require("./simdas");
 const { parse, toNum, fmtNum, BUILTINS } = require("./interpreter");
+const { replay } = require("./replay");
+const { parseSetting, checkParams } = require("./params");
 
 const UNIT_DIR = path.join(__dirname, "..");
 const FIXTURE_DIR = path.join(UNIT_DIR, "fixtures");
@@ -159,6 +177,22 @@ function runScenario(fixture, sc)
         quote: { ...(fixture.quote || {}), ...(sc.quote || {}) },
         account: { ...(fixture.account || {}), ...(sc.account || {}) },
     };
+    // "until": "08:07" drops Chart1's bars after that minute, so the
+    // fixture looks as it did then (for per-bar tests on early history)
+    if (sc.until)
+    {
+        const c1 = (f.charts || fixture.charts).Chart1;
+        const bars = c1.bars.filter(b => String(b.Time).slice(9, 14) <= sc.until);
+        f.charts = { ...(f.charts || fixture.charts), Chart1: { ...c1, bars } };
+    }
+    // "bar0": change Chart1's latest bar, e.g. its per-bar study text
+    if (sc.bar0)
+    {
+        const c1 = (f.charts || fixture.charts).Chart1;
+        const b0 = c1.bars[0] || {};
+        const bar = { ...b0, ...sc.bar0, studies: { ...(b0.studies || {}), ...(sc.bar0.studies || {}) } };
+        f.charts = { ...(f.charts || fixture.charts), Chart1: { ...c1, bars: [bar, ...c1.bars.slice(1)] } };
+    }
     const sim = new SimDas(f, {
         presetVariables: sc.preset !== false,
         second: sc.second,
@@ -307,6 +341,13 @@ function lint()
             for (const k of Object.keys(n)) if (typeof n[k] === "object") visit(n[k], k);
         })(ast);
     }
+
+    // The replay's adjustable thresholds must still match the scripts
+    for (const e of checkParams(n =>
+    {
+        const file = scripts.get(n.toLowerCase());
+        return file ? fs.readFileSync(file, "utf8") : null;
+    })) errors.push("replay threshold " + e);
 
     // A variable that is read but never set anywhere is usually a typo
     const seen = new Set();
@@ -555,6 +596,92 @@ function cmdCompare(args)
     return 0;
 }
 
+function cmdReplay(args)
+{
+    const opts = {};
+    const rest = [];
+    const settings = {};
+    try
+    {
+        for (const a of args)
+        {
+            const m = a.match(/^--([a-z]+)=(.*)$/);
+            if (m && m[1] === "param") { const [k, v] = parseSetting(m[2]); settings[k] = v; }
+            else if (m) opts[m[1]] = m[2];
+            else rest.push(a);
+        }
+    }
+    catch (e)
+    {
+        console.error(e.message);
+        return 1;
+    }
+    if (!rest[0])
+    {
+        console.error("Usage: run.js replay <fixture> [--from=HH:MM] [--to=HH:MM] [--samples=4] [--spread=0.02] " +
+            "[--param=NAME=VALUE ...] [--out=FILE] [--json=FILE]");
+        return 1;
+    }
+    const fixture = loadFixture(rest[0]);
+    const options = {
+        samples: opts.samples ? Number(opts.samples) : 4,
+        spread: opts.spread !== undefined ? Number(opts.spread) : 0.02,
+        from: opts.from || "",
+        to: opts.to || "",
+    };
+    const timeline = replay(fixture, { ...options, settings });
+    if (timeline.problems.length)
+    {
+        console.log("Thresholds that no longer match their script (fix UnitTests/das/params.js):\n" +
+            [...new Set(timeline.problems)].map(p => "  " + p).join("\n"));
+    }
+
+    // The page replays the day itself, so the sliders can re-run the
+    // real scripts: it gets the engine, the scripts and the fixture.
+    const sources = loadSources();
+    const input = { fixture, sources: [...sources.entries()], options, settings };
+    const BS = String.fromCharCode(92);
+    // "<" is escaped so data can never close the <script> tag
+    const data = JSON.stringify(input).replace(/</g, BS + "u003c");
+    const modules = ["interpreter", "simdas", "params", "replay"].map(name =>
+    {
+        const src = fs.readFileSync(path.join(__dirname, name + ".js"), "utf8")
+            .replace(/^#!.*/, "")
+            .replace(/<\/script/gi, "<" + BS + "/script");
+        return JSON.stringify("./" + name) + ": function (module, exports, require, __dirname) {\n" + src + "\n},";
+    }).join("\n");
+
+    const template = fs.readFileSync(path.join(UNIT_DIR, "tools", "replay_viewer.html"), "utf8");
+    const html = template
+        .replace("/*REPLAY_MODULES*/", () => modules)
+        .replace("/*REPLAY_INPUT*/null", () => data);
+    const out = opts.out || path.join(UNIT_DIR, "replays", fixture.file + ".html");
+    fs.mkdirSync(path.dirname(out), { recursive: true });
+    fs.writeFileSync(out, html);
+    if (opts.json) fs.writeFileSync(opts.json, JSON.stringify(timeline, null, 1) + "\n");
+
+    const blocked = timeline.steps.filter(s => !s.ok).length;
+    const errors = timeline.steps.filter(s => s.error);
+    console.log(fixture.file + ": " + timeline.bars.length + " minutes, " + timeline.steps.length +
+        " samples, blocked at " + blocked +
+        (Object.keys(settings).length ? " (with " + Object.keys(settings).join(", ") + " changed)" : ""));
+    if (!timeline.assumptions.historyEnded)
+    {
+        console.log("Note: the export doesn't reach the start of the chart (first bar " + timeline.assumptions.firstBar +
+            "). Today's volume before it (" + timeline.assumptions.preVolume + ") is added to every sample.");
+    }
+    else if (timeline.assumptions.volumeScale > 1)
+    {
+        console.log("Note: DAS's daily volume is " + Math.round((timeline.assumptions.volumeScale - 1) * 100) +
+            "% higher than the 1-minute bars add up to; the running volume is scaled up to match.");
+    }
+    const warnings = [...new Set(timeline.steps.flatMap(s => s.warnings))];
+    if (warnings.length) console.log("Warnings:\n" + warnings.map(w => "  " + w).join("\n"));
+    if (errors.length) console.log("Script errors at " + errors.length + " samples, first: " + errors[0].error);
+    console.log("Wrote " + rel(out));
+    return errors.length ? 1 : 0;
+}
+
 function cmdCheck()
 {
     const result = lint();
@@ -685,10 +812,10 @@ function cmdSnapshot(args)
 // ---------------------------------------------------------
 
 const [command, ...rest] = process.argv.slice(2);
-const commands = { run: cmdRun, compare: cmdCompare, test: cmdTest, check: cmdCheck, snapshot: cmdSnapshot };
+const commands = { run: cmdRun, compare: cmdCompare, test: cmdTest, check: cmdCheck, snapshot: cmdSnapshot, replay: cmdReplay };
 if (!commands[command])
 {
-    console.error("Usage: node UnitTests/das/run.js <test|snapshot|check|run|compare> ...  (see the top of run.js)");
+    console.error("Usage: node UnitTests/das/run.js <test|snapshot|check|run|compare|replay> ...  (see the top of run.js)");
     process.exit(1);
 }
 process.exit(commands[command](rest));

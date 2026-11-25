@@ -17,6 +17,9 @@
 //              (Round(10.088965,1) = 10.1)
 //   confirmed: Round("123.456",3) turns text into a number
 //   confirmed: setvar/getvar share the $variable namespace
+//   confirmed: MONTAGE1.Hi/Lo and the daily bar's Hi/Lo/Open cover the
+//              regular session only (from 9:30), seen in 4 exports;
+//              modelled in replay.js. Before 9:30: not known yet.
 //   assumed:   an unset variable reads as 0
 //   assumed:   C-style operator precedence (* / % before + -,
 //              comparisons before &&, && before ||)

@@ -1,0 +1,993 @@
+<!doctype html>
+<!--
+  Replay viewer. "node UnitTests/das/run.js replay <fixture>" copies this
+  file to UnitTests/replays/<fixture>.html, filling in REPLAY_MODULES
+  (das/interpreter.js, simdas.js, params.js, replay.js) and REPLAY_INPUT
+  (the fixture and the text of every live script). The page replays the
+  day itself with the real scripts, so the strategy sliders can change a
+  threshold and re-run them. No libraries, no network.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Replay</title>
+<style>
+  :root {
+    --bg: #14171c; --panel: #1b1f26; --line: #2a303a; --text: #d6dbe3; --muted: #8a93a3;
+    --up: #3fb68b; --down: #e5534b; --block: #e5534b; --warn: #e3a33b; --ok: #3fb68b;
+    --ema9: #c9ced6; --ema20: #22b8cf; --vwap: #f08c2e; --accent: #6aa6ff;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px;
+    padding: 8px 16px; border-bottom: 1px solid var(--line); min-height: 48px; }
+  header h1 { font-size: 17px; margin: 0; font-weight: 600; }
+  header .sub { color: var(--muted); }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted); }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px;
+    margin-right: 5px; vertical-align: -1px; border-radius: 2px; background: var(--c); }
+  .controls { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+  #status { color: var(--accent); min-width: 150px; text-align: right; }
+  button { background: var(--panel); color: var(--text); border: 1px solid var(--line);
+    border-radius: 4px; padding: 3px 10px; font: inherit; cursor: pointer; }
+  button:hover { border-color: var(--muted); }
+  button.on { border-color: var(--accent); color: var(--accent); }
+  input[type=time], input[type=number] { background: var(--bg); color: var(--text); border: 1px solid var(--line);
+    border-radius: 4px; padding: 2px 4px; font: inherit; color-scheme: dark; }
+  html, body { height: 100%; }
+  body { display: flex; flex-direction: column; }
+  main { display: grid; grid-template-columns: 0 1fr 330px; flex: 1; min-height: 0; }
+  main.settings-open { grid-template-columns: 320px 1fr 330px; }
+  /* Fixed columns, so hiding the settings doesn't shift the chart into column 1 */
+  #settings { grid-column: 1; }
+  #chartWrap { grid-column: 2; }
+  aside { grid-column: 3; }
+  #settings { overflow-y: auto; border-right: 1px solid var(--line); background: var(--panel); padding: 0 14px 20px; }
+  main:not(.settings-open) #settings { display: none; }
+  #chartWrap { position: relative; overflow-y: auto; overflow-x: hidden; }
+  #busy { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); background: var(--panel);
+    border: 1px solid var(--line); border-radius: 6px; padding: 8px 14px; display: none; z-index: 2; }
+  #busy .bar { height: 4px; background: var(--line); border-radius: 2px; margin-top: 6px; width: 220px; }
+  #busy .bar i { display: block; height: 100%; background: var(--accent); border-radius: 2px; width: 0; }
+  canvas { display: block; cursor: crosshair; }
+  aside { border-left: 1px solid var(--line); padding: 12px 14px; overflow-y: auto; background: var(--panel); }
+  h2 { font-size: 15px; margin: 0 0 2px; }
+  h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted);
+    margin: 14px 0 6px; font-weight: 600; }
+  .kv { display: grid; grid-template-columns: auto 1fr; gap: 1px 12px; font-variant-numeric: tabular-nums; }
+  .kv div:nth-child(odd) { color: var(--muted); }
+  .sample { border: 1px solid var(--line); border-radius: 5px; padding: 6px 8px; margin-bottom: 6px;
+    border-left: 4px solid var(--c); }
+  .sample .head { display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; }
+  .sample .state { font-weight: 600; color: var(--c); }
+  .sample ul { margin: 3px 0 0; padding-left: 16px; }
+  .sample li.blocker { color: var(--block); }
+  .sample li.masked { color: var(--muted); }
+  .sample .was { color: var(--muted); font-size: 12px; margin-top: 3px; }
+  .btns { display: grid; grid-template-columns: 12px 1fr; gap: 2px 6px; align-items: center; }
+  .btns i { width: 10px; height: 10px; border-radius: 2px; display: block; }
+  .hint { color: var(--muted); font-size: 12px; }
+  .filters label { display: block; color: var(--muted); }
+  .filters input { vertical-align: -2px; }
+  .stats { position: sticky; top: 0; background: var(--panel); padding: 12px 0 8px; z-index: 1;
+    border-bottom: 1px solid var(--line); }
+  .stats .big { font-size: 15px; font-variant-numeric: tabular-nums; }
+  .stats .row { display: flex; justify-content: space-between; gap: 8px; }
+  .param { border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px 8px; margin-bottom: 8px; }
+  .param.changed { border-color: var(--accent); }
+  .param .top { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
+  .param .name { font-weight: 500; }
+  .param .val { font-variant-numeric: tabular-nums; color: var(--accent); white-space: nowrap; }
+  .param input[type=range] { width: 100%; margin: 6px 0 2px; accent-color: var(--accent); }
+  .param .bottom { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+  .param .bottom input[type=number] { width: 86px; }
+  .param .mode { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+  .param .mode button { padding: 1px 7px; font-size: 12px; }
+  .param .lim { margin-top: 4px; }
+  .param .lim[hidden] { display: none; }
+  .param .lim .unit { color: var(--muted); font-size: 12px; }
+  .param .modehelp { color: var(--muted); font-size: 12px; margin-top: 3px; }
+  .param .live { color: var(--muted); font-size: 12px; }
+  .param .slow { color: var(--warn); font-size: 11px; }
+  .param .reset { padding: 0 6px; font-size: 12px; visibility: hidden; }
+  .param.changed .reset { visibility: visible; }
+  .chg { margin-bottom: 8px; font-size: 12px; }
+  .chg code { display: block; background: var(--bg); border: 1px solid var(--line); border-radius: 4px;
+    padding: 3px 6px; margin-top: 2px; white-space: pre-wrap; word-break: break-all; }
+  .chg code.new { border-color: var(--accent); }
+  .problem { color: var(--block); }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="title">Replay</h1>
+  <span class="sub" id="subtitle"></span>
+  <div class="legend">
+    <span style="--c: var(--block)">Blocked</span>
+    <span style="--c: var(--warn)">Arms, with warnings</span>
+    <span style="--c: var(--ok)">Arms clean</span>
+    <span style="--c: var(--ema9)">9 EMA</span>
+    <span style="--c: var(--ema20)">20 EMA</span>
+    <span style="--c: var(--vwap)">VWAP</span>
+  </div>
+  <div class="controls">
+    <span id="status"></span>
+    <button id="toggleSettings">Strategy settings</button>
+    <input type="time" id="from"> to <input type="time" id="to">
+    <button id="apply">Show</button>
+    <button id="fit">Whole day</button>
+  </div>
+</header>
+<main id="main">
+  <section id="settings"></section>
+  <div id="chartWrap">
+    <div id="busy"><span id="busyText"></span><div class="bar"><i id="busyBar"></i></div></div>
+    <canvas id="c"></canvas>
+  </div>
+  <aside id="side"></aside>
+</main>
+
+<script>
+// ---------- the replay engine (filled in by run.js) ----------
+const MODULE_FNS = {
+/*REPLAY_MODULES*/
+};
+const INPUT = /*REPLAY_INPUT*/null;
+
+const STUBS = {
+  fs: {},
+  path: { join: (...a) => a.join("/"), relative: (a, b) => b,
+    basename: (p) => String(p).split("/").pop(), extname: () => "" },
+};
+const moduleCache = {};
+function req(name)
+{
+  if (STUBS[name]) return STUBS[name];
+  if (moduleCache[name]) return moduleCache[name].exports;
+  const m = { exports: {} };
+  moduleCache[name] = m;
+  MODULE_FNS[name](m, m.exports, req, ".");
+  return m.exports;
+}
+const { createReplay, prepareRescore, rescoreStep } = req("./replay");
+const P = req("./params");
+const sources = new Map(INPUT.sources);
+
+// ---------- state ----------
+let R = null, T = null;           // current replay and its timeline
+let bars = [];
+let byBar = [];                   // step indexes per bar
+let base = [];                    // live-rules result per step
+let settings = {};                // id -> { value, mode }
+let fullToken = 0, rescoreToken = 0;
+const countedWarnings = new Set();
+const knownWarnings = new Set();
+
+const PARAM = new Map(P.PARAMS.map(p => [p.id, p]));
+const isChanged = (id) => !!settings[id] && !P.isDefault(PARAM.get(id), settings[id]);
+const anyChanged = () => P.PARAMS.some(p => isChanged(p.id));
+const changedSettings = () =>
+{
+  const out = {};
+  for (const p of P.PARAMS) if (isChanged(p.id)) out[p.id] = { ...settings[p.id] };
+  return out;
+};
+// The part of the settings a full replay depends on
+const fullKey = (s) => JSON.stringify(P.PARAMS.filter(p => !p.instant && s[p.id] && !P.isDefault(p, s[p.id]))
+  .map(p => [p.id, s[p.id]]));
+
+// ---------- running ----------
+function busy(text, frac)
+{
+  const el = document.getElementById("busy");
+  if (text === null) { el.style.display = "none"; return; }
+  el.style.display = "block";
+  document.getElementById("busyText").textContent = text;
+  document.getElementById("busyBar").style.width = Math.round(frac * 100) + "%";
+}
+function status(text) { document.getElementById("status").textContent = text || ""; }
+
+// Replay the whole day with these settings, a few bars per frame
+function runFull(s, onDone)
+{
+  const token = ++fullToken;
+  rescoreToken++;
+  const r = createReplay(INPUT.fixture, { ...INPUT.options, settings: s, sources, keepMemory: true });
+  const it = r.run();
+  busy("Replaying the day with the scripts", 0);
+  function tick()
+  {
+    if (token !== fullToken) return;
+    const t0 = performance.now();
+    let res = { done: false, value: 0 };
+    while (performance.now() - t0 < 40)
+    {
+      res = it.next();
+      if (res.done) break;
+    }
+    if (!res.done) { busy("Replaying the day with the scripts", res.value); requestAnimationFrame(tick); return; }
+    busy(null);
+    r.fullKey = fullKey(s);
+    onDone(r);
+  }
+  requestAnimationFrame(tick);
+}
+
+function adopt(r)
+{
+  R = r; T = r.timeline; bars = T.bars;
+  byBar = bars.map(() => []);
+  T.steps.forEach((s, k) => byBar[s.bar].push(k));
+  for (const s of T.steps) for (const l of s.speech) if (!knownWarnings.has(l) && !T.blockers.includes(l))
+  {
+    knownWarnings.add(l); countedWarnings.add(l);
+  }
+}
+
+// Press Setup Armed again at every point with the current settings,
+// visible minutes first
+function runRescore()
+{
+  if (!R) return;
+  const token = ++rescoreToken;
+  prepareRescore(R, changedSettings());
+  const vis = [], rest = [];
+  const a = Math.max(0, Math.floor(view.start)), z = Math.min(bars.length, Math.ceil(view.end));
+  T.steps.forEach((s, k) => (s.bar >= a && s.bar < z ? vis : rest).push(k));
+  const order = vis.concat(rest);
+  let k = 0;
+  status("Re-scoring…");
+  function tick()
+  {
+    if (token !== rescoreToken) return;
+    const t0 = performance.now();
+    while (k < order.length && performance.now() - t0 < 30) rescoreStep(R, T.steps[order[k++]]);
+    if (k >= vis.length || k >= order.length) { draw(); renderStats(); }
+    if (k < order.length) { requestAnimationFrame(tick); return; }
+    for (const s of T.steps) for (const l of s.speech) if (!knownWarnings.has(l) && !T.blockers.includes(l))
+    {
+      knownWarnings.add(l); countedWarnings.add(l);
+    }
+    status("");
+    draw(); renderStats(); refreshSide();
+  }
+  tick();
+}
+
+// After a slider moves: re-score now if only SpeakTestResults changed,
+// or replay the day once the slider is released
+function settingsChanged(released)
+{
+  renderSettingsState();
+  writeHash();
+  if (!R) return;
+  if (fullKey(settings) !== R.fullKey)
+  {
+    if (!released) { status("Release to replay the day"); return; }
+    runFull(changedSettings(), (r) => { adopt(r); runRescore(); });
+    return;
+  }
+  runRescore();
+}
+
+// ---------- colours and formatting ----------
+const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const COL = {};
+function loadColours()
+{
+  for (const k of ["bg", "panel", "line", "text", "muted", "up", "down", "block", "warn", "ok", "ema9", "ema20", "vwap", "accent"])
+    COL[k] = css("--" + k);
+}
+function buttonColour(c)
+{
+  c = String(c || "").toLowerCase();
+  if (c === "green") return COL.ok;
+  if (c === "red") return COL.block;
+  if (c === "orange" || c === "yellow") return COL.warn;
+  if (c.startsWith("color(")) return "#5b6270";
+  return null;
+}
+function stateOf(ok, speech)
+{
+  if (!ok) return "block";
+  return speech.some(l => countedWarnings.has(l)) ? "warn" : "ok";
+}
+const stateColour = (st) => st === "block" ? COL.block : st === "warn" ? COL.warn : COL.ok;
+const stateLabel = (st) => st === "block" ? "Blocked" : st === "warn" ? "Arms, with warnings" : "Arms";
+const hhmm = (t) => String(t).slice(9, 14);
+const fmt = (x, d = 2) => (x === undefined || x === null || isNaN(x)) ? "-" : Number(x).toFixed(d);
+const fmtVol = (v) => v >= 1e6 ? (v / 1e6).toFixed(2).replace(/\.?0+$/, "") + "M" : v >= 1e3 ? (v / 1e3).toFixed(1).replace(/\.0$/, "") + "K" : String(v);
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function fmtSetting(p, s)
+{
+  s = P.normalize(p, s);
+  if (p.kind === "rule") return s.on ? "On" : "Off";
+  const pct = s.pct + "% of price";
+  if (s.mode === "%") return pct;
+  if (s.mode === "and") return fmtDollar(p, s.value) + " and " + pct;
+  if (s.mode === "or") return fmtDollar(p, s.value) + " or " + pct;
+  return fmtDollar(p, s.value);
+}
+function fmtDollar(p, value)
+{
+  const s = { value };
+  switch (p.unit)
+  {
+    case "$": return "$" + Number(s.value).toFixed(2);
+    case "shares": return fmtVol(s.value);
+    case "M shares": return s.value + "M";
+    case "%": return s.value + "%";
+    case "x": return s.value + "x";
+    default: return s.value + " " + p.unit;
+  }
+}
+
+const BUTTON_LABELS = {
+  btn_price: "Price", btn_float: "Float", btn_gap: "Gap", btn_vol: "Volume",
+  btn_range: "Candle range", btn_extended: "9 EMA extension", btn_spread: "Spread", btn_vwap: "VWAP",
+  btn_macd: "MACD", btn_emas: "EMAs", btn_ematrend: "EMA trend", btn_dailyavgs: "Daily averages",
+  btn_etb: "Shortable",
+};
+
+// ---------- layout ----------
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+const LEFT = 190, RIGHT = 58, TOP = 10;
+const ROW = 15;
+let W = 0, H = 0, priceH = 0, volTop = 0, volH = 0, stripTop = 0, rowsDrawn = -1;
+let view = { start: 0, end: 1 };
+let hover = -1, pinned = -1;
+
+function stripRows()
+{
+  const lines = new Set();
+  T.steps.forEach((s, k) => { for (const l of s.all) lines.add(l); for (const l of base[k].all) lines.add(l); });
+  const blockers = T.blockers.filter(l => lines.has(l));
+  const warnings = [...lines].filter(l => !T.blockers.includes(l));
+  const changed = anyChanged();
+  const buttons = Object.keys(BUTTON_LABELS).filter(b => T.steps.some(s => s.buttons[b]));
+  return [
+    { kind: "arm", label: changed ? "Setup Armed, adjusted" : "Setup Armed" },
+    ...(changed ? [{ kind: "base", label: "Setup Armed, live rules" }] : []),
+    { kind: "head", label: "Rules that fail (faded: Setup Armed stopped before saying it)" },
+    ...blockers.map(l => ({ kind: "line", line: l, label: l, blocker: true })),
+    ...warnings.map(l => ({ kind: "line", line: l, label: l, blocker: false })),
+    { kind: "head", label: "Chart buttons (a red button doesn't always block arming)" },
+    ...buttons.map(b => ({ kind: "button", button: b, label: BUTTON_LABELS[b] })),
+  ];
+}
+
+function resize()
+{
+  const wrap = document.getElementById("chartWrap");
+  const rows = T ? stripRows().length : 0;
+  rowsDrawn = rows;
+  W = wrap.clientWidth;
+  const avail = Math.max(wrap.clientHeight, 500);
+  const stripsH = rows * ROW + 10;
+  priceH = Math.max(260, avail - stripsH - 120);
+  volTop = TOP + priceH + 8;
+  volH = 70;
+  stripTop = volTop + volH + 24;
+  H = stripTop + stripsH;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W + "px"; canvas.style.height = H + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  draw();
+}
+
+const plotW = () => W - LEFT - RIGHT;
+const barW = () => plotW() / (view.end - view.start);
+const xOf = (i) => LEFT + (i - view.start) * barW();
+const iAt = (x) => Math.floor(view.start + (x - LEFT) / barW());
+
+// ---------- drawing ----------
+function draw()
+{
+  if (!T) return;
+  const rows = stripRows();
+  if (rows.length !== rowsDrawn) { resize(); return; }
+  loadColours();
+  ctx.clearRect(0, 0, W, H);
+  ctx.font = "11px system-ui, sans-serif";
+  const i0 = Math.max(0, Math.floor(view.start)), i1 = Math.min(bars.length, Math.ceil(view.end));
+  const bw = barW();
+
+  // price scale
+  let lo = Infinity, hi = -Infinity;
+  for (let i = i0; i < i1; i++)
+  {
+    const b = bars[i];
+    lo = Math.min(lo, b.l); hi = Math.max(hi, b.h);
+    for (const v of [b.ema9, b.ema20, b.vwap]) if (v > 0) { lo = Math.min(lo, v); hi = Math.max(hi, v); }
+  }
+  if (!isFinite(lo)) { lo = 0; hi = 1; }
+  const pad = (hi - lo) * 0.05 || 0.05;
+  lo -= pad; hi += pad;
+  const yOf = (p) => TOP + (hi - p) / (hi - lo) * priceH;
+
+  // arming shading behind the candles: one slice per point
+  ctx.save();
+  ctx.beginPath(); ctx.rect(LEFT, TOP, plotW(), priceH); ctx.clip();
+  for (let i = i0; i < i1; i++)
+  {
+    const ks = byBar[i], n = ks.length || 1;
+    ks.forEach((k, j) =>
+    {
+      const s = T.steps[k], st = stateOf(s.ok, s.speech);
+      ctx.fillStyle = stateColour(st);
+      ctx.globalAlpha = st === "block" ? 0.20 : st === "warn" ? 0.16 : 0.12;
+      ctx.fillRect(xOf(i) + j * bw / n, TOP, bw / n + 0.5, priceH);
+    });
+  }
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = COL.line; ctx.lineWidth = 1;
+  const step = niceStep((hi - lo) / 7);
+  for (let p = Math.ceil(lo / step) * step; p <= hi; p += step)
+  {
+    const y = Math.round(yOf(p)) + 0.5;
+    ctx.globalAlpha = 0.6; ctx.beginPath(); ctx.moveTo(LEFT, y); ctx.lineTo(W - RIGHT, y); ctx.stroke(); ctx.globalAlpha = 1;
+  }
+  ctx.restore();
+  ctx.fillStyle = COL.muted; ctx.textAlign = "left";
+  for (let p = Math.ceil(lo / step) * step; p <= hi; p += step) ctx.fillText(p.toFixed(2), W - RIGHT + 6, yOf(p) + 4);
+
+  // candles and studies
+  ctx.save();
+  ctx.beginPath(); ctx.rect(LEFT, TOP, plotW(), priceH); ctx.clip();
+  const body = Math.max(1, bw * 0.65);
+  for (let i = i0; i < i1; i++)
+  {
+    const b = bars[i], x = xOf(i) + bw / 2;
+    ctx.strokeStyle = ctx.fillStyle = b.c >= b.o ? COL.up : COL.down;
+    ctx.beginPath(); ctx.moveTo(Math.round(x) + 0.5, yOf(b.h)); ctx.lineTo(Math.round(x) + 0.5, yOf(b.l)); ctx.stroke();
+    const y1 = yOf(Math.max(b.o, b.c)), y2 = yOf(Math.min(b.o, b.c));
+    ctx.fillRect(x - body / 2, y1, body, Math.max(1, y2 - y1));
+  }
+  for (const [k, c] of [["vwap", COL.vwap], ["ema20", COL.ema20], ["ema9", COL.ema9]])
+  {
+    ctx.strokeStyle = c; ctx.lineWidth = 1.5; ctx.beginPath();
+    let started = false;
+    for (let i = i0; i < i1; i++)
+    {
+      const v = bars[i][k];
+      if (!(v > 0)) { started = false; continue; }
+      const x = xOf(i) + bw / 2, y = yOf(v);
+      if (started) ctx.lineTo(x, y); else { ctx.moveTo(x, y); started = true; }
+    }
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  // volume
+  let vmax = 1;
+  for (let i = i0; i < i1; i++) vmax = Math.max(vmax, bars[i].v);
+  for (let i = i0; i < i1; i++)
+  {
+    const b = bars[i], h = b.v / vmax * volH;
+    ctx.fillStyle = b.c >= b.o ? COL.up : COL.down; ctx.globalAlpha = 0.6;
+    ctx.fillRect(xOf(i) + (bw - body) / 2, volTop + volH - h, body, h);
+  }
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = COL.muted; ctx.textAlign = "right";
+  ctx.fillText("Volume", LEFT - 8, volTop + 12);
+  ctx.textAlign = "left"; ctx.fillText(fmtVol(vmax), W - RIGHT + 6, volTop + 10);
+
+  // time axis
+  ctx.textAlign = "center";
+  const every = Math.max(1, niceMinutes(70 / bw));
+  for (let i = i0; i < i1; i++)
+  {
+    const t = hhmm(bars[i].t), m = +t.slice(3) + 60 * +t.slice(0, 2);
+    if (m % every === 0) ctx.fillText(t, xOf(i) + bw / 2, volTop + volH + 14);
+  }
+
+  // strips
+  rows.forEach((r, n) =>
+  {
+    const y = stripTop + n * ROW;
+    if (r.kind === "head")
+    {
+      ctx.fillStyle = COL.muted; ctx.textAlign = "left";
+      ctx.fillText(r.label, 8, y + 11);
+      return;
+    }
+    ctx.textAlign = "right";
+    ctx.fillStyle = r.kind === "line" ? (r.blocker ? COL.block : COL.warn) : r.kind === "base" ? COL.muted : COL.text;
+    ctx.fillText(truncate(r.label, LEFT - 14), LEFT - 8, y + 11);
+    ctx.strokeStyle = COL.line; ctx.beginPath(); ctx.moveTo(LEFT, y + ROW - 0.5); ctx.lineTo(W - RIGHT, y + ROW - 0.5); ctx.stroke();
+    for (let i = i0; i < i1; i++)
+    {
+      const ks = byBar[i], nn = ks.length || 1;
+      ks.forEach((k, j) =>
+      {
+        const s = T.steps[k];
+        let c = null, alpha = 1;
+        if (r.kind === "arm") c = stateColour(stateOf(s.ok, s.speech));
+        else if (r.kind === "base") { c = stateColour(stateOf(base[k].ok, base[k].speech)); alpha = 0.75; }
+        else if (r.kind === "line")
+        {
+          if (!s.all.includes(r.line)) return;
+          c = r.blocker ? COL.block : COL.warn;
+          if (!s.speech.includes(r.line)) alpha = 0.35;
+        }
+        else c = s.buttons[r.button] ? buttonColour(s.buttons[r.button].color) : null;
+        if (!c) return;
+        ctx.fillStyle = c; ctx.globalAlpha = alpha;
+        ctx.fillRect(xOf(i) + j * bw / nn, y + 2, Math.max(0.5, bw / nn - (bw > 12 ? 0.5 : 0)), ROW - 5);
+      });
+    }
+    ctx.globalAlpha = 1;
+  });
+
+  // selected minute
+  const sel = pinned >= 0 ? pinned : hover;
+  if (sel >= i0 && sel < i1)
+  {
+    ctx.fillStyle = "#ffffff"; ctx.globalAlpha = 0.09;
+    ctx.fillRect(xOf(sel), TOP, bw, H - TOP);
+    ctx.globalAlpha = 1;
+  }
+}
+
+function niceStep(raw)
+{
+  const p = Math.pow(10, Math.floor(Math.log10(raw))), m = raw / p;
+  return (m < 1.5 ? 1 : m < 3 ? 2 : m < 7 ? 5 : 10) * p;
+}
+function niceMinutes(n)
+{
+  for (const m of [1, 2, 5, 10, 15, 30, 60, 120]) if (m >= n) return m;
+  return 240;
+}
+function truncate(s, px)
+{
+  if (ctx.measureText(s).width <= px) return s;
+  while (s.length > 3 && ctx.measureText(s + "…").width > px) s = s.slice(0, -1);
+  return s + "…";
+}
+
+// ---------- details panel ----------
+// The replay assumes a green candle reaches its low before its high,
+// and a red candle its high before its low (das/replay.js samplePath)
+function sampleNames(b, n)
+{
+  if (n === 4) return b.c >= b.o ? ["Open", "Low", "High", "Close"] : ["Open", "High", "Low", "Close"];
+  if (n === 2) return ["Open", "Close"];
+  if (n === 1) return ["Close"];
+  return Array.from({ length: n }, (_, k) => "Point " + (k + 1));
+}
+
+function refreshSide() { showSide(pinned >= 0 ? pinned : hover); }
+
+function showSide(i)
+{
+  const side = document.getElementById("side");
+  if (!T || i < 0 || i >= bars.length)
+  {
+    side.innerHTML = intro();
+    bindFilters();
+    return;
+  }
+  const b = bars[i], ks = byBar[i], last = T.steps[ks[ks.length - 1]] || { vars: {}, buttons: {} };
+  const names = sampleNames(b, ks.length);
+  const v = last.vars;
+  const changed = anyChanged();
+  let h = `<h2>${esc(hhmm(b.t))} ${pinned >= 0 ? '<span class="hint">(pinned, click again to release)</span>' : ""}</h2>
+    <div class="kv">
+      <div>O / H / L / C</div><div>${fmt(b.o, 4)} / ${fmt(b.h, 4)} / ${fmt(b.l, 4)} / ${fmt(b.c, 4)}</div>
+      <div>Candle range</div><div>${fmt(b.h - b.l, 3)} (${fmt((b.h - b.l) / b.c * 100, 1)}% of price)</div>
+      <div>Volume</div><div>${fmtVol(b.v)}</div>
+      <div>9 / 20 EMA</div><div>${fmt(b.ema9, 3)} / ${fmt(b.ema20, 3)}</div>
+      <div>VWAP</div><div>${fmt(b.vwap, 3)}</div>
+    </div>
+    <h3>At the close</h3>
+    <div class="kv">
+      <div>Rng4 / Rng10</div><div>${fmt(v.AverageRange4, 3)} / ${fmt(v.AverageRange10, 3)}</div>
+      <div>Rng4 of price</div><div>${fmt(v.Rng4Pct, 1)}%</div>
+      <div>Above 9 EMA</div><div>${fmt(v.ExtensionMultiple, 2)}x Rng10</div>
+      <div>Spike</div><div>${fmt(v.SpikeMultiple, 1)}x the 8 before, ${fmt(v.SpikePct, 1)}% of price</div>
+      <div>Day volume</div><div>${fmtVol(v.Vol || 0)}</div>
+      <div>10-candle RVOL</div><div>${fmt(v.STRVOL10, 2)}x</div>
+      <div>MACD / signal</div><div>${fmt(v.MACD, 3)} / ${fmt(v.Signal, 3)}</div>
+      <div>High so far</div><div>${fmt(v.MontageHi, 4)}</div>
+    </div>
+    <h3>If you pressed Setup Armed${changed ? " (adjusted rules)" : ""}</h3>`;
+  ks.forEach((k, n) =>
+  {
+    const s = T.steps[k], st = stateOf(s.ok, s.speech);
+    h += `<div class="sample" style="--c:${stateColour(st)}">
+      <div class="head"><span>${esc(names[n])} @ ${fmt(s.price, 4)}</span><span class="state">${stateLabel(st)}</span></div>`;
+    const spoken = s.speech.map((l, m) =>
+      `<li class="${!s.ok && m === s.speech.length - 1 ? "blocker" : ""}">${esc(l)}</li>`);
+    const masked = s.all.filter(l => !s.speech.includes(l)).map(l => `<li class="masked">not reached: ${esc(l)}</li>`);
+    if (spoken.length || masked.length) h += "<ul>" + spoken.join("") + masked.join("") + "</ul>";
+    if (changed)
+    {
+      const bs = base[k], bst = stateOf(bs.ok, bs.speech);
+      h += `<div class="was">Live rules: ${stateLabel(bst)}${!bs.ok && bs.speech.length ? " (" + esc(bs.speech[bs.speech.length - 1]) + ")" : ""}</div>`;
+    }
+    if (s.error) h += `<div class="problem">Script error: ${esc(s.error)}</div>`;
+    h += "</div>";
+  });
+  h += "<h3>Buttons at the close</h3><div class='btns'>";
+  for (const k of Object.keys(BUTTON_LABELS))
+  {
+    const r = last.buttons[k];
+    if (!r) continue;
+    h += `<i style="background:${buttonColour(r.color) || "transparent"}"></i><div>${esc(r.text || BUTTON_LABELS[k])}</div>`;
+  }
+  side.innerHTML = h + "</div>";
+}
+
+function intro()
+{
+  if (!T) return `<h2>Replaying…</h2><p class="hint">Running the scripts through the day.</p>`;
+  const a = T.assumptions;
+  let h = `<h2>How to read this</h2>
+    <p class="hint">Each minute is replayed at ${T.samples} point${T.samples > 1 ? "s" : ""}
+    (open, low, high, close for a green candle; open, high, low, close for a red one), running the real test scripts each time and
+    asking what Setup Armed would have said. The shading behind the candles and the strips below
+    show the answer, one thin slice per point. Hover a candle for the details, click to pin it.
+    Scroll to zoom, drag to pan.</p>
+    <p class="hint">Open <b>Strategy settings</b> to change a threshold. The scripts run again
+    with the new number, and the "live rules" strip keeps the original result for comparison.</p>
+    <h3>Assumptions</h3>
+    <ul class="hint">
+      <li>Path inside a minute: green candles go to the low first, red ones to the high first.</li>
+      <li>Bid/ask spread fixed at $${fmt(a.spread, 2)}.</li>
+      <li>The day's high and low ("Price is too close to the highs") cover the regular session from 9:30, as DAS's montage does. Before 9:30 they're the high and low of the exported bars so far, which start at ${esc(hhmm(a.firstBar))}; what DAS shows then isn't known yet.</li>
+      ${a.historyEnded
+        ? (a.volumeScale > 1 ? `<li>DAS's daily volume is ${fmt((a.volumeScale - 1) * 100, 0)}% higher than the 1-minute bars add up to, so the running volume is scaled up by that much.</li>` : "")
+        : `<li>The export doesn't reach the start of the chart. Today's volume before its first bar (${fmtVol(a.preVolume)}) is counted.</li>`}
+      <li>The RVOL rule is switched off here (your DAS scripts keep it): DAS's RVOL during the day isn't in the export.</li>
+      <li>Float and borrow status come from the moment of export.</li>
+    </ul>`;
+  if (knownWarnings.size)
+  {
+    h += `<h3>Warnings that count as orange</h3><div class="filters">`;
+    for (const l of knownWarnings)
+      h += `<label><input type="checkbox" data-line="${esc(l)}" ${countedWarnings.has(l) ? "checked" : ""}> ${esc(l)}</label>`;
+    h += `</div><p class="hint">Untick a warning you'd ignore, so only the ones you care about turn a minute orange.</p>`;
+  }
+  return h;
+}
+function bindFilters()
+{
+  for (const el of document.querySelectorAll(".filters input"))
+  {
+    el.onchange = () =>
+    {
+      if (el.checked) countedWarnings.add(el.dataset.line); else countedWarnings.delete(el.dataset.line);
+      draw(); renderStats();
+    };
+  }
+}
+
+// ---------- strategy settings ----------
+const MODE_LABELS = { "$": "$", "%": "% of price", "and": "$ and %", "or": "$ or %" };
+const MODE_HELP = {
+  "and": "Fires only when both limits are crossed (looser than either alone).",
+  "or": "Fires when either limit is crossed (stricter than either alone).",
+};
+
+function limitRow(kind, label)
+{
+  return `<div class="lim" data-kind="${kind}">
+      <input type="range">
+      <div class="bottom"><input type="number"> <span class="unit">${label}</span></div>
+    </div>`;
+}
+
+function renderSettings()
+{
+  const el = document.getElementById("settings");
+  let h = `<div class="stats" id="stats"></div>`;
+  let group = "";
+  for (const p of P.PARAMS)
+  {
+    if (p.group !== group) { group = p.group; h += `<h3>${esc(group)}</h3>`; }
+    if (p.kind === "rule")
+    {
+      h += `<div class="param rule" data-id="${p.id}" title="${esc(p.help)}">
+      <div class="top"><label class="name"><input type="checkbox" class="on"> ${esc(p.label)}</label><span class="val"></span></div>
+      ${p.fields.map(fl => `<div class="lim" data-field="${fl.key}"><div class="unit">${esc(fl.label)}</div>
+        <input type="range" min="${fl.min}" max="${fl.max}" step="${fl.step}">
+        <div class="bottom"><input type="number" step="${fl.step}"> <span class="unit">${esc(fl.unit)}</span></div></div>`).join("")}
+      <div class="modehelp">Off: your live rule. On: this rule replaces it in Setup Armed.</div>
+      <div class="bottom"><span></span><button class="reset" title="Back to the live rule">Reset</button></div>
+    </div>`;
+      continue;
+    }
+    h += `<div class="param" data-id="${p.id}" title="${esc(p.help)}">
+      <div class="top"><span class="name">${esc(p.label)}</span><span class="val"></span></div>
+      ${p.percent ? `<div class="mode">${P.MODES.map(m => `<button data-mode="${m}">${esc(MODE_LABELS[m])}</button>`).join("")}</div>` : ""}
+      ${limitRow("value", p.unit === "$" ? "$" : esc(p.unit))}
+      ${p.percent ? limitRow("pct", "% of price") : ""}
+      <div class="modehelp"></div>
+      <div class="bottom"><span></span><button class="reset" title="Back to the live value">Reset</button></div>
+      <div class="live">Live: ${esc(fmtSetting(p, { value: p.default, mode: "$" }))}${p.instant ? "" : ' <span class="slow">· replays the day when released</span>'}</div>
+    </div>`;
+  }
+  h += `<h3>Changes to the scripts</h3><div id="changes"></div>
+    <button id="resetAll">Reset all</button>
+    <p class="hint">Nothing here changes the scripts in the repo. To keep a change, edit the script and paste it into DAS.</p>`;
+  el.innerHTML = h;
+
+  for (const box of el.querySelectorAll(".param"))
+  {
+    const p = PARAM.get(box.dataset.id);
+    if (p.kind === "rule")
+    {
+      box.querySelector("input.on").onchange = (ev) =>
+      {
+        settings[p.id] = { ...P.normalize(p, settings[p.id]), on: ev.target.checked };
+        settingsChanged(true);
+      };
+      for (const lim of box.querySelectorAll(".lim"))
+      {
+        const key = lim.dataset.field;
+        const range = lim.querySelector("input[type=range]");
+        const num = lim.querySelector("input[type=number]");
+        const set = (v, released) =>
+        {
+          settings[p.id] = { ...P.normalize(p, settings[p.id]), on: true, [key]: Number(v) };
+          settingsChanged(released);
+        };
+        range.oninput = () => set(range.value, false);
+        range.onchange = () => set(range.value, true);
+        num.onchange = () => set(num.value, true);
+      }
+      box.querySelector(".reset").onclick = () => { delete settings[p.id]; settingsChanged(true); };
+      continue;
+    }
+    for (const lim of box.querySelectorAll(".lim"))
+    {
+      const kind = lim.dataset.kind;          // "value" ($) or "pct"
+      const range = lim.querySelector("input[type=range]");
+      const num = lim.querySelector("input[type=number]");
+      const set = (v, released) =>
+      {
+        const s = P.normalize(p, settings[p.id]);
+        s[kind] = Number(v);
+        settings[p.id] = s;
+        settingsChanged(released);
+      };
+      range.oninput = () => set(range.value, false);
+      range.onchange = () => set(range.value, true);
+      num.onchange = () => set(num.value, true);
+    }
+    for (const b of box.querySelectorAll(".mode button"))
+    {
+      b.onclick = () =>
+      {
+        const s = P.normalize(p, settings[p.id]);
+        s.mode = b.dataset.mode;
+        settings[p.id] = s;
+        settingsChanged(true);
+      };
+    }
+    box.querySelector(".reset").onclick = () => { delete settings[p.id]; settingsChanged(true); };
+  }
+  document.getElementById("resetAll").onclick = () => { settings = {}; settingsChanged(true); };
+  renderSettingsState();
+}
+
+function renderSettingsState()
+{
+  for (const box of document.querySelectorAll("#settings .param"))
+  {
+    const p = PARAM.get(box.dataset.id);
+    const s = P.normalize(p, settings[p.id]);
+    if (p.kind === "rule")
+    {
+      box.querySelector("input.on").checked = s.on;
+      for (const lim of box.querySelectorAll(".lim"))
+      {
+        const key = lim.dataset.field;
+        lim.style.opacity = s.on ? 1 : 0.45;
+        const range = lim.querySelector("input[type=range]");
+        if (document.activeElement !== range) range.value = s[key];
+        const num = lim.querySelector("input[type=number]");
+        if (document.activeElement !== num) num.value = s[key];
+      }
+      box.querySelector(".val").textContent = fmtSetting(p, s);
+      box.classList.toggle("changed", isChanged(p.id));
+      continue;
+    }
+    for (const lim of box.querySelectorAll(".lim"))
+    {
+      const kind = lim.dataset.kind;
+      const r = kind === "pct" ? p.percent : p;
+      lim.hidden = kind === "pct" ? s.mode === "$" : s.mode === "%";
+      const range = lim.querySelector("input[type=range]");
+      range.min = r.min; range.max = r.max; range.step = r.step;
+      if (document.activeElement !== range) range.value = s[kind];
+      const num = lim.querySelector("input[type=number]");
+      num.step = r.step;
+      if (document.activeElement !== num) num.value = s[kind];
+    }
+    box.querySelector(".modehelp").textContent = MODE_HELP[s.mode] || "";
+    box.querySelector(".val").textContent = fmtSetting(p, s);
+    box.classList.toggle("changed", isChanged(p.id));
+    for (const b of box.querySelectorAll(".mode button")) b.classList.toggle("on", b.dataset.mode === s.mode);
+  }
+  const ch = document.getElementById("changes");
+  if (!ch) return;
+  let h = "";
+  for (const p of P.PARAMS)
+  {
+    if (!isChanged(p.id)) continue;
+    for (const e of p.edits)
+      h += `<div class="chg"><b>${esc(e.script)}</b><code>${esc(e.find)}</code><code class="new">${esc(P.editText(p, e, settings[p.id]))}</code></div>`;
+  }
+  if (T && T.problems.length)
+    h += [...new Set(T.problems)].map(p => `<div class="problem">Can't apply: ${esc(p)}</div>`).join("");
+  ch.innerHTML = h || `<p class="hint">None. Move a slider to try a different threshold.</p>`;
+}
+
+function renderStats()
+{
+  const el = document.getElementById("stats");
+  if (!el || !T) return;
+  const a = Math.max(0, Math.floor(view.start)), z = Math.min(bars.length, Math.ceil(view.end));
+  const count = (inView, useBase) =>
+  {
+    let ok = 0, all = 0;
+    T.steps.forEach((s, k) =>
+    {
+      if (inView && (s.bar < a || s.bar >= z)) return;
+      all++;
+      if (useBase ? base[k].ok : s.ok) ok++;
+    });
+    return [ok, all];
+  };
+  const [o, n] = count(false, false), [ob] = count(false, true);
+  const [ov, nv] = count(true, false), [ovb] = count(true, true);
+  const pct = (x, y) => y ? Math.round(x / y * 100) + "%" : "-";
+  const delta = (x, y) => x === y ? "" : ` <span class="hint">(live ${pct(y, n)})</span>`;
+  el.innerHTML = `<div class="hint">Setup Armed would arm at</div>
+    <div class="row"><span>Whole day</span><span class="big">${pct(o, n)}${anyChanged() ? delta(o, ob) : ""}</span></div>
+    <div class="row"><span>In view, ${esc(hhmm(bars[a].t))}–${esc(hhmm(bars[z - 1].t))}</span>
+      <span class="big">${pct(ov, nv)}${anyChanged() && ov !== ovb ? ` <span class="hint">(live ${pct(ovb, nv)})</span>` : ""}</span></div>`;
+}
+
+// ---------- link to a view and settings ----------
+// #08:00-09:15@08:07&nearHigh=0.05&rng4Block=0.3or6%
+function readHash()
+{
+  const out = { settings: {} };
+  // Not decodeURIComponent: a bare "%" (as in rng4Block=8%) would throw
+  for (const part of location.hash.slice(1).replace(/%25/g, "%").split("&"))
+  {
+    let m = part.match(/^(\d\d:\d\d)-(\d\d:\d\d)(?:@(\d\d:\d\d))?$/);
+    if (m) { out.from = m[1]; out.to = m[2]; out.pin = m[3]; continue; }
+    try { if (part.includes("=")) { const [k, v] = P.parseSetting(part); out.settings[k] = v; } } catch (e) { /* ignore */ }
+  }
+  return out;
+}
+function writeHash()
+{
+  if (!T) return;
+  const a = Math.max(0, Math.floor(view.start)), z = Math.min(bars.length, Math.ceil(view.end)) - 1;
+  let h = hhmm(bars[a].t) + "-" + hhmm(bars[z].t);
+  if (pinned >= 0) h += "@" + hhmm(bars[pinned].t);
+  for (const [k, s] of Object.entries(changedSettings())) h += "&" + k + "=" + P.settingText(PARAM.get(k), s);
+  history.replaceState(null, "", "#" + h);
+}
+
+// ---------- interaction ----------
+let drag = null;
+canvas.addEventListener("mousemove", (e) =>
+{
+  if (!T) return;
+  const x = e.offsetX;
+  if (drag)
+  {
+    const d = (x - drag.x) / barW();
+    const len = view.end - view.start;
+    view.start = clamp(drag.start - d, -len * 0.5, bars.length - len * 0.5);
+    view.end = view.start + len;
+    draw();
+    return;
+  }
+  const i = x >= LEFT && x < W - RIGHT ? iAt(x) : -1;
+  if (i !== hover)
+  {
+    hover = i;
+    if (pinned < 0) showSide(i >= 0 && i < bars.length ? i : -1);
+    draw();
+  }
+});
+canvas.addEventListener("mouseleave", () => { hover = -1; drag = null; if (pinned < 0) showSide(-1); draw(); });
+canvas.addEventListener("mousedown", (e) => { drag = { x: e.offsetX, start: view.start }; });
+window.addEventListener("mouseup", (e) =>
+{
+  if (!drag) return;
+  const moved = Math.abs(e.offsetX - drag.x) > 3 && e.target === canvas;
+  drag = null;
+  if (moved) { renderStats(); writeHash(); return; }
+  if (e.target === canvas && T)
+  {
+    const i = iAt(e.offsetX);
+    pinned = (pinned === i || i < 0 || i >= bars.length) ? -1 : i;
+    refreshSide(); draw(); writeHash();
+  }
+});
+let wheelTimer = 0;
+canvas.addEventListener("wheel", (e) =>
+{
+  if (!T) return;
+  e.preventDefault();
+  const at = view.start + (e.offsetX - LEFT) / barW();
+  const k = e.deltaY > 0 ? 1.2 : 1 / 1.2;
+  const len = clamp((view.end - view.start) * k, 10, bars.length * 1.2);
+  view.start = at - (at - view.start) * len / (view.end - view.start);
+  view.end = view.start + len;
+  draw();
+  clearTimeout(wheelTimer);
+  wheelTimer = setTimeout(() => { renderStats(); writeHash(); }, 200);
+}, { passive: false });
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+function showRange(from, to)
+{
+  const a = bars.findIndex(b => hhmm(b.t) >= from);
+  let z = bars.length - 1;
+  while (z > 0 && hhmm(bars[z].t) > to) z--;
+  if (a < 0 || z < a) return;
+  view = { start: a, end: z + 1 };
+  draw(); renderStats(); writeHash();
+}
+document.getElementById("apply").onclick = () =>
+  showRange(document.getElementById("from").value || "00:00", document.getElementById("to").value || "23:59");
+document.getElementById("fit").onclick = () => { view = { start: 0, end: bars.length }; draw(); renderStats(); writeHash(); };
+document.getElementById("toggleSettings").onclick = () =>
+{
+  const main = document.getElementById("main");
+  main.classList.toggle("settings-open");
+  document.getElementById("toggleSettings").classList.toggle("on", main.classList.contains("settings-open"));
+  resize(); renderStats();
+};
+window.addEventListener("resize", resize);
+
+// ---------- start ----------
+(function start()
+{
+  const fx = INPUT.fixture;
+  document.getElementById("title").textContent = fx.symbol + " replay";
+  document.title = fx.symbol + " replay";
+  const hash = readHash();
+  settings = { ...INPUT.settings, ...hash.settings };
+  renderSettings();
+  if (Object.keys(changedSettings()).length)
+  {
+    document.getElementById("main").classList.add("settings-open");
+    document.getElementById("toggleSettings").classList.add("on");
+  }
+  showSide(-1);
+  resize();
+
+  // First the live rules, kept for comparison, then any settings from the link
+  runFull({}, (r) =>
+  {
+    adopt(r);
+    base = T.steps.map(s => ({ ok: s.ok, speech: s.speech, all: s.all }));
+    view = { start: 0, end: bars.length };
+    document.getElementById("subtitle").textContent =
+      hhmm(bars[0].t) + "–" + hhmm(bars[bars.length - 1].t) + " · " + String(bars[0].t).slice(0, 8) + " · fixture " + T.fixture;
+    document.getElementById("from").value = hash.from || hhmm(bars[0].t);
+    document.getElementById("to").value = hash.to || hhmm(bars[bars.length - 1].t);
+    if (hash.from) showRange(hash.from, hash.to);
+    if (hash.pin) { const i = bars.findIndex(b => hhmm(b.t) === hash.pin); if (i >= 0) pinned = i; }
+    resize(); renderStats(); refreshSide(); renderSettingsState();
+    if (anyChanged()) settingsChanged(true);
+  });
+})();
+</script>
+</body>
+</html>

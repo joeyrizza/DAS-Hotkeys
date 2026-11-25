@@ -51,7 +51,8 @@ function indexScripts(root)
             {
                 if (!SKIP_DIRS.has(e.name)) walk(p);
             }
-            else if (path.extname(e.name) === "" && !e.name.startsWith("DASExport"))
+            // Scripts have no extension. Dot-files (.gitignore) aren't scripts.
+            else if (path.extname(e.name) === "" && !e.name.startsWith("DASExport") && !e.name.startsWith("."))
             {
                 // Button scripts aren't hotkeys: only use them when no
                 // hotkey has the same name (e.g. DrawKeyResistance).
@@ -313,7 +314,13 @@ class SimDas
         this.fixture = fixture;
         this.symbol = fixture.symbol;
         this.root = options.repoRoot || REPO_ROOT;
-        this.scripts = options.scripts || indexScripts(this.root);
+        // options.sources: Map of hotkey name (lower case) -> { file, source },
+        // used instead of reading files (the replay viewer runs in a browser).
+        // options.transform(file, source): edits a script's text before it
+        // runs (the replay's adjustable thresholds).
+        this.sources = options.sources || null;
+        this.transform = options.transform || null;
+        this.scripts = this.sources ? null : (options.scripts || indexScripts(this.root));
 
         this.buttons = {};
         this.speech = [];
@@ -368,15 +375,24 @@ class SimDas
     resolveScript(name)
     {
         const key = (HOTKEY_ALIASES[name.toLowerCase()] || name).toLowerCase();
-        let file = this.scripts.get(key);
-        if (!file)
+        let script = null;
+        if (this.sources)
         {
-            // also accept a path such as "Tests/Test_Dip"
-            const p = path.join(this.root, name);
-            if (fs.existsSync(p) && fs.statSync(p).isFile()) file = p;
+            script = this.sources.get(key) || null;
         }
-        if (!file) return null;
-        return { file: path.relative(this.root, file).replace(/\\/g, "/"), source: fs.readFileSync(file, "utf8") };
+        else
+        {
+            let file = this.scripts.get(key);
+            if (!file)
+            {
+                // also accept a path such as "Tests/Test_Dip"
+                const p = path.join(this.root, name);
+                if (fs.existsSync(p) && fs.statSync(p).isFile()) file = p;
+            }
+            if (file) script = { file: path.relative(this.root, file).replace(/\\/g, "/"), source: fs.readFileSync(file, "utf8") };
+        }
+        if (script && this.transform) script = { file: script.file, source: this.transform(script.file, script.source) };
+        return script;
     }
 
     call(name, args, where)
@@ -486,6 +502,9 @@ class SimDas
     // ---- running ----
     run(name)
     {
+        // The endless-loop guard counts statements per hotkey press,
+        // not across a whole replay that reuses this simulation
+        this.interp.steps = 0;
         this.interp.execHotkey(name);
         return this;
     }
@@ -522,5 +541,16 @@ const HOST_FUNCTIONS = ["getwindowobj", "getstudyval", "getquoteobj", "getaccoun
 // TriggerStop (not live) creates alerts
 const UNSIMULATED_FUNCTIONS = ["savevartofile", "loadvarfromfile", "newalertobj"];
 
-module.exports = { SimDas, indexScripts, studyTextToNumber, describeOrder, REPO_ROOT,
+// Every live script's text, keyed like resolveScript: for options.sources
+function loadSources(root = REPO_ROOT)
+{
+    const out = new Map();
+    for (const [key, file] of indexScripts(root))
+    {
+        out.set(key, { file: path.relative(root, file).replace(/\\/g, "/"), source: fs.readFileSync(file, "utf8") });
+    }
+    return out;
+}
+
+module.exports = { SimDas, indexScripts, loadSources, studyTextToNumber, describeOrder, REPO_ROOT,
     HOTKEY_ALIASES, HOST_FUNCTIONS, UNSIMULATED_FUNCTIONS };

@@ -265,44 +265,19 @@
       }
     },
     {
-      "name": "Blocks: 4-candle range above $0.30",
-      "run": [
-        "Setup Armed"
-      ],
-      "vars": {
-        "MPRICE": 8,
-        "AVERAGERANGE4": 0.31,
-        "AVERAGERANGE10": 0.2,
-        "SPREAD": 0.03,
-        "REVERSAL": 1
-      },
-      "expect": {
-        "speech": [
-          "Candle range too large.",
-          "Non-Negotiable."
-        ],
-        "vars": {
-          "SETUPARMED": 0,
-          "OKTOARM": 0
-        },
-        "buttons": {
-          "CHART1.btn_arm": {
-            "text": "Arm Setup"
-          }
-        }
-      }
-    },
-    {
-      "name": "Blocks: 10-candle range above $0.50",
+      "name": "Blocks: 4-candle range above 25% of price",
       "run": [
         "Setup Armed"
       ],
       "vars": {
         "MPRICE": 8,
         "AVERAGERANGE4": 0.1,
-        "AVERAGERANGE10": 0.51,
+        "AVERAGERANGE10": 0.2,
         "SPREAD": 0.03,
-        "REVERSAL": 1
+        "REVERSAL": 1,
+        "RNG4PCT": 25.01,
+        "SPIKEMULTIPLE": 1,
+        "SPIKEPCT": 1.25
       },
       "expect": {
         "speech": [
@@ -321,20 +296,211 @@
       }
     },
     {
-      "name": "Edge: 4-candle range exactly $0.30 arms (with the large range warning)",
+      "name": "Edge: 4-candle range exactly 25% of price arms (with the large range warning)",
       "run": [
         "Setup Armed"
       ],
       "vars": {
         "MPRICE": 8,
-        "AVERAGERANGE4": 0.3,
+        "AVERAGERANGE4": 0.1,
         "AVERAGERANGE10": 0.2,
         "SPREAD": 0.03,
-        "REVERSAL": 1
+        "REVERSAL": 1,
+        "RNG4PCT": 25,
+        "SPIKEMULTIPLE": 1,
+        "SPIKEPCT": 1.25
       },
       "expect": {
         "speech": [
           "Candles have large range.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Blocks: a candle 2.5x the 8 before it and 8% of price (both at the limit)",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "RNG4PCT": 1.25,
+        "SPIKEMULTIPLE": 2.5,
+        "SPIKEPCT": 8
+      },
+      "expect": {
+        "speech": [
+          "Candle is too large for this stock.",
+          "Non-Negotiable."
+        ],
+        "vars": {
+          "SETUPARMED": 0,
+          "OKTOARM": 0
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Arm Setup"
+          }
+        }
+      }
+    },
+    {
+      "name": "Arms: a candle 3x the 8 before it but only 5% of price (both needed to block)",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "RNG4PCT": 1.25,
+        "SPIKEMULTIPLE": 3,
+        "SPIKEPCT": 5
+      },
+      "expect": {
+        "speech": [
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Arms: a candle 40% of price but only 2.49x the 8 before it",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "RNG4PCT": 1.25,
+        "SPIKEMULTIPLE": 2.49,
+        "SPIKEPCT": 40
+      },
+      "expect": {
+        "speech": [
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Arms: NRSN 08:09 frontside, candles 17% of price but 1.1x the 8 before (large range warning)",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 2.87,
+        "AVERAGERANGE4": 0.497,
+        "AVERAGERANGE10": 0.45,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "RNG4PCT": 17.3,
+        "SPIKEMULTIPLE": 1.1,
+        "SPIKEPCT": 17
+      },
+      "expect": {
+        "speech": [
+          "Candles have large range.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Warns: 4-candle range above 10% of price",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "RNG4PCT": 10.01,
+        "SPIKEMULTIPLE": 1,
+        "SPIKEPCT": 1.25
+      },
+      "expect": {
+        "speech": [
+          "Candles have large range.",
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
+        },
+        "buttons": {
+          "CHART1.btn_arm": {
+            "text": "Disarm Setup",
+            "bkcolor": "orange"
+          }
+        }
+      }
+    },
+    {
+      "name": "Edge: 4-candle range exactly 10% of price arms without the warning",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "RNG4PCT": 10,
+        "SPIKEMULTIPLE": 1,
+        "SPIKEPCT": 1.25
+      },
+      "expect": {
+        "speech": [
           "Setup armed."
         ],
         "vars": {
@@ -715,35 +881,6 @@
       }
     },
     {
-      "name": "Warns: 4-candle range above $0.20",
-      "run": [
-        "Setup Armed"
-      ],
-      "vars": {
-        "MPRICE": 8,
-        "AVERAGERANGE4": 0.25,
-        "AVERAGERANGE10": 0.2,
-        "SPREAD": 0.03,
-        "REVERSAL": 1
-      },
-      "expect": {
-        "speech": [
-          "Candles have large range.",
-          "Setup armed."
-        ],
-        "vars": {
-          "SETUPARMED": 1,
-          "OKTOARM": 1
-        },
-        "buttons": {
-          "CHART1.btn_arm": {
-            "text": "Disarm Setup",
-            "bkcolor": "orange"
-          }
-        }
-      }
-    },
-    {
       "name": "Warns: extended",
       "run": [
         "Setup Armed"
@@ -800,6 +937,29 @@
             "text": "Disarm Setup",
             "bkcolor": "orange"
           }
+        }
+      }
+    },
+    {
+      "name": "EMA trend with no data (chart too short) says nothing about the trend",
+      "run": [
+        "Setup Armed"
+      ],
+      "vars": {
+        "MPRICE": 8,
+        "AVERAGERANGE4": 0.1,
+        "AVERAGERANGE10": 0.2,
+        "SPREAD": 0.03,
+        "REVERSAL": 1,
+        "EMA_TREND_STATE": 0
+      },
+      "expect": {
+        "speech": [
+          "Setup armed."
+        ],
+        "vars": {
+          "SETUPARMED": 1,
+          "OKTOARM": 1
         }
       }
     },
