@@ -85,8 +85,22 @@ if($MPRICE<$ExtensionWarning){
 }
 
 //Average Candle Size
-$CHART1.GetCustButObj("btn_range").text ="Rng4: $" + Round($AverageRange4,103) + " Rng10: $" + Round($AverageRange10,103);
-if($AverageRange4 > .3 || $AverageRange10 > .50){
+//Rng4 as % of price, and the bigger of the last two candles
+//compared with the average of the 8 candles before them
+$BaseRange=($Range2+$Range3+$Range4+$Range5+$Range6+$Range7+$Range8+$Range9)/8;
+$BigRange=$Range0;
+if($Range1>$BigRange){ $BigRange=$Range1; }
+$SpikeMultiple=0;
+$SpikePct=0;
+$Rng4Pct=0;
+if($BaseRange>0){ $SpikeMultiple=$BigRange/$BaseRange; }
+if($MPRICE>0){
+    $SpikePct=$BigRange/$MPRICE*100;
+    $Rng4Pct=$AverageRange4/$MPRICE*100;
+}
+
+$CHART1.GetCustButObj("btn_range").text ="Rng4: $" + Round($AverageRange4,103) + " (" + Round($Rng4Pct,1) + "%) Spike: " + Round($SpikeMultiple,1) + "x";
+if($Rng4Pct > 25 || ($SpikeMultiple >= 2.5 && $SpikePct >= 8)){
   $CHART1.GetCustButObj("btn_range").bkcolor=red;
   if($SetupArmed==1)
     {
@@ -94,7 +108,7 @@ if($AverageRange4 > .3 || $AverageRange10 > .50){
         exechotkey("Setup Disarmed");
     }
 } else {
-    if($AverageRange4 > .2){
+    if($Rng4Pct > 10){
         $CHART1.GetCustButObj("btn_range").bkcolor=orange;
     } else{
         $CHART1.GetCustButObj("btn_range").bkcolor=color(211,211,211);

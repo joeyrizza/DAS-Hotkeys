@@ -21,8 +21,13 @@ if($RVOL>0 && $RVOL<=5){
   return;
 }
 //Average Range
-if($AverageRange4 > .3 || $AverageRange10 > .50){
+if($Rng4Pct > 25){
   Speak("Candle range too large."); $OKtoArm=0;
+  return;
+}
+//Single candle far larger than this stock's recent candles
+if($SpikeMultiple >= 2.5 && $SpikePct >= 8){
+  Speak("Candle is too large for this stock."); $OKtoArm=0;
   return;
 }
 //Volume
@@ -80,7 +85,7 @@ if($ETB == 1){
   Speak("Stock is easy to borrow.");
 }
 //Check for Large Candle Range
-if($AverageRange4 > .2){
+if($Rng4Pct > 10){
   Speak("Candles have large range.");
 }
 //Check for Extended
