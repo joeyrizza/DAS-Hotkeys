@@ -92,7 +92,7 @@ if($TopVol1Open>=$LowerPrice && $TopVol1Open<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
-    $TL.LineStyle=1;
+    $TL.LineStyle=0;
     $TL.LineWidth=1;
 }
 
@@ -106,7 +106,7 @@ if($TopVol1High>=$LowerPrice && $TopVol1High<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
-    $TL.LineStyle=1;
+    $TL.LineStyle=0;
     $TL.LineWidth=1;
 }
 
@@ -120,7 +120,7 @@ if($TopVol1Low>=$LowerPrice && $TopVol1Low<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
-    $TL.LineStyle=1;
+    $TL.LineStyle=0;
     $TL.LineWidth=1;
 }
 
@@ -134,7 +134,7 @@ if($TopVol1Close>=$LowerPrice && $TopVol1Close<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
-    $TL.LineStyle=1;
+    $TL.LineStyle=0;
     $TL.LineWidth=1;
 }
 
@@ -152,7 +152,7 @@ if($TopVol2Open>=$LowerPrice && $TopVol2Open<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
-    $TL.LineStyle=1;
+    $TL.LineStyle=0;
     $TL.LineWidth=1;
 }
 
@@ -166,7 +166,7 @@ if($TopVol2High>=$LowerPrice && $TopVol2High<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
-    $TL.LineStyle=1;
+    $TL.LineStyle=0;
     $TL.LineWidth=1;
 }
 
@@ -180,7 +180,7 @@ if($TopVol2Low>=$LowerPrice && $TopVol2Low<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
-    $TL.LineStyle=1;
+    $TL.LineStyle=0;
     $TL.LineWidth=1;
 }
 
@@ -194,7 +194,7 @@ if($TopVol2Close>=$LowerPrice && $TopVol2Close<=$UpperPrice)
     $TL.time1=$ct;
     $TL.LabelTextColor=Color(0,0,0);
     $TL.LabelBgColor=Color(211,211,211);
-    $TL.LineStyle=1;
+    $TL.LineStyle=0;
     $TL.LineWidth=1;
 }
 
