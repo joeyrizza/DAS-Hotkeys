@@ -40,6 +40,18 @@
 //                     --param=nearHigh=0.05, --param=nearHigh=2%,
 //                     --param=nearHigh=0.1and2% or --param=spikeMult=3
 //
+// node UnitTests/das/run.js publish [folder] [options]
+//     Build the replay part of the trade-review site (default folder
+//     UnitTests/site). First converts any export in UnitTests/exports
+//     that has no fixture yet. Then writes <folder>/replay/:
+//     index.html (list of days, and the viewer), engine.js (the
+//     interpreter and the text of every live script, as they are
+//     now), days.json and days/<fixture>.json for every fixture.
+//     Upload with: aws s3 sync <folder>/replay s3://<bucket>/replay
+//     Options:
+//       --reconvert   convert every export again, replacing fixtures
+//       --samples=N, --spread=X  as for replay
+//
 // <fixture> is a path or a name in UnitTests/fixtures, such as
 // JAGX_20261124_1359.
 //
@@ -596,6 +608,148 @@ function cmdCompare(args)
     return 0;
 }
 
+// ---------------------------------------------------------
+// Replay pages
+// ---------------------------------------------------------
+
+const BS = String.fromCharCode(92);
+
+// JSON that can sit inside a <script> tag: "<" is escaped so data can
+// never close the tag
+function jsonForScript(value)
+{
+    return JSON.stringify(value).replace(/</g, BS + "u003c");
+}
+
+// The replay engine for the browser: the four modules, wrapped for the
+// viewer's little require(), and the text of every live script.
+// Sets window.REPLAY_MODULES and window.REPLAY_SOURCES.
+function replayEngineJs()
+{
+    const modules = ["interpreter", "simdas", "params", "replay"].map(name =>
+    {
+        const src = fs.readFileSync(path.join(__dirname, name + ".js"), "utf8")
+            .replace(/^#!.*/, "")
+            .replace(/<\/script/gi, "<" + BS + "/script");
+        return JSON.stringify("./" + name) + ": function (module, exports, require, __dirname) {\n" + src + "\n},";
+    }).join("\n");
+    return "window.REPLAY_MODULES = {\n" + modules + "\n};\n" +
+        "window.REPLAY_SOURCES = " + jsonForScript([...loadSources().entries()]) + ";\n";
+}
+
+// The viewer with its engine tag and input (or "null" for the site)
+function replayPage(engineTag, inputJson)
+{
+    const template = fs.readFileSync(path.join(UNIT_DIR, "tools", "replay_viewer.html"), "utf8");
+    if (!template.includes("<!--REPLAY_ENGINE-->") || !template.includes("/*REPLAY_INPUT*/null"))
+    {
+        throw new Error("tools/replay_viewer.html is missing its REPLAY_ENGINE or REPLAY_INPUT marker");
+    }
+    return template
+        .replace("<!--REPLAY_ENGINE-->", () => engineTag)
+        .replace("/*REPLAY_INPUT*/null", () => inputJson);
+}
+
+// The export version ExportChartData writes now ($X_VERSION=4;)
+function currentExportVersion()
+{
+    try
+    {
+        const m = fs.readFileSync(path.join(REPO_ROOT, "ExportChartData"), "utf8").match(/\$X_VERSION\s*=\s*(\d+)/i);
+        return m ? Number(m[1]) : 0;
+    }
+    catch (e) { return 0; }
+}
+
+function cmdPublish(args)
+{
+    const opts = {};
+    const rest = [];
+    for (const a of args)
+    {
+        const m = a.match(/^--([a-z]+)(?:=(.*))?$/);
+        if (m) opts[m[1]] = m[2] === undefined ? true : m[2];
+        else rest.push(a);
+    }
+    const site = path.resolve(rest[0] || path.join(UNIT_DIR, "site"));
+    const outDir = path.join(site, "replay");
+    const options = {
+        samples: opts.samples ? Number(opts.samples) : 4,
+        spread: opts.spread !== undefined ? Number(opts.spread) : 0.02,
+        from: "",
+        to: "",
+    };
+
+    // 1. Convert new exports
+    const { parseExport, buildFixture, defaultOutputPath } = require("../tools/convert_das_export");
+    const exportDir = path.join(UNIT_DIR, "exports");
+    const exportFiles = fs.existsSync(exportDir)
+        ? fs.readdirSync(exportDir).filter(f => !f.startsWith(".")).map(f => path.join(exportDir, f)).filter(f => fs.statSync(f).isFile())
+        : [];
+    let converted = 0;
+    for (const file of exportFiles)
+    {
+        try
+        {
+            const fx = buildFixture(parseExport(fs.readFileSync(file, "utf8")));
+            const out = defaultOutputPath(fx);
+            if (fs.existsSync(out) && !opts.reconvert) continue;
+            fs.mkdirSync(path.dirname(out), { recursive: true });
+            fs.writeFileSync(out, JSON.stringify(fx, null, 2) + "\n");
+            console.log("Converted " + rel(file) + " -> " + rel(out));
+            converted++;
+        }
+        catch (e)
+        {
+            console.log("Skipped " + rel(file) + ": " + e.message);
+        }
+    }
+
+    // 2. One data file per fixture, and the list of days
+    const version = currentExportVersion();
+    const days = [];
+    const old = [];
+    fs.rmSync(path.join(outDir, "days"), { recursive: true, force: true });
+    fs.mkdirSync(path.join(outDir, "days"), { recursive: true });
+    for (const file of listJson(FIXTURE_DIR))
+    {
+        let fixture;
+        try { fixture = loadFixture(file); }
+        catch (e) { console.log("Skipped " + rel(file) + ": " + e.message); continue; }
+        const bars = ((fixture.charts || {}).Chart1 || {}).bars || [];
+        if (!bars.length) { console.log("Skipped " + rel(file) + ": no Chart1 bars"); continue; }
+        const last = String(bars[0].Time), first = String(bars[bars.length - 1].Time);
+        const ymd = last.slice(0, 8);
+        days.push({
+            id: fixture.file,
+            t: fixture.symbol,
+            d: ymd.slice(0, 4) + "-" + ymd.slice(4, 6) + "-" + ymd.slice(6, 8),
+            from: first.slice(0, 8) === ymd ? first.slice(9, 14) : "00:00",
+            to: last.slice(9, 14),
+        });
+        const v = (fixture.capture || {}).exportVersion || 0;
+        if (version && v < version) old.push(fixture.file + " (version " + v + ")");
+        fs.writeFileSync(path.join(outDir, "days", fixture.file + ".json"),
+            JSON.stringify({ fixture: { ...fixture, file: fixture.file }, options, settings: {} }));
+    }
+    days.sort((a, b) => (b.d + b.to).localeCompare(a.d + a.to));
+    fs.writeFileSync(path.join(outDir, "days.json"), JSON.stringify(days, null, 1) + "\n");
+
+    // 3. The viewer and the engine, with the scripts as they are now
+    fs.writeFileSync(path.join(outDir, "engine.js"), replayEngineJs());
+    fs.writeFileSync(path.join(outDir, "index.html"), replayPage('<script src="engine.js"></script>', "null"));
+
+    console.log("Wrote " + rel(outDir) + ": " + days.length + " day" + (days.length === 1 ? "" : "s") +
+        (converted ? ", " + converted + " newly converted" : ""));
+    if (old.length)
+    {
+        console.log("From an older ExportChartData than the current one (version " + version + "). " +
+            "Export again if the replay looks wrong:\n" + old.map(o => "  " + o).join("\n"));
+    }
+    console.log("Upload: aws s3 sync \"" + outDir + "\" s3://<BucketName>/replay --cache-control no-cache");
+    return 0;
+}
+
 function cmdReplay(args)
 {
     const opts = {};
@@ -638,23 +792,8 @@ function cmdReplay(args)
 
     // The page replays the day itself, so the sliders can re-run the
     // real scripts: it gets the engine, the scripts and the fixture.
-    const sources = loadSources();
-    const input = { fixture, sources: [...sources.entries()], options, settings };
-    const BS = String.fromCharCode(92);
-    // "<" is escaped so data can never close the <script> tag
-    const data = JSON.stringify(input).replace(/</g, BS + "u003c");
-    const modules = ["interpreter", "simdas", "params", "replay"].map(name =>
-    {
-        const src = fs.readFileSync(path.join(__dirname, name + ".js"), "utf8")
-            .replace(/^#!.*/, "")
-            .replace(/<\/script/gi, "<" + BS + "/script");
-        return JSON.stringify("./" + name) + ": function (module, exports, require, __dirname) {\n" + src + "\n},";
-    }).join("\n");
-
-    const template = fs.readFileSync(path.join(UNIT_DIR, "tools", "replay_viewer.html"), "utf8");
-    const html = template
-        .replace("/*REPLAY_MODULES*/", () => modules)
-        .replace("/*REPLAY_INPUT*/null", () => data);
+    const input = { fixture, options, settings };
+    const html = replayPage("<script>\n" + replayEngineJs() + "\n</script>", jsonForScript(input));
     const out = opts.out || path.join(UNIT_DIR, "replays", fixture.file + ".html");
     fs.mkdirSync(path.dirname(out), { recursive: true });
     fs.writeFileSync(out, html);
@@ -812,10 +951,10 @@ function cmdSnapshot(args)
 // ---------------------------------------------------------
 
 const [command, ...rest] = process.argv.slice(2);
-const commands = { run: cmdRun, compare: cmdCompare, test: cmdTest, check: cmdCheck, snapshot: cmdSnapshot, replay: cmdReplay };
+const commands = { run: cmdRun, compare: cmdCompare, test: cmdTest, check: cmdCheck, snapshot: cmdSnapshot, replay: cmdReplay, publish: cmdPublish };
 if (!commands[command])
 {
-    console.error("Usage: node UnitTests/das/run.js <test|snapshot|check|run|compare|replay> ...  (see the top of run.js)");
+    console.error("Usage: node UnitTests/das/run.js <test|snapshot|check|run|compare|replay|publish> ...  (see the top of run.js)");
     process.exit(1);
 }
 process.exit(commands[command](rest));

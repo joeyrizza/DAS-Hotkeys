@@ -289,4 +289,4 @@ if (require.main === module)
     main();
 }
 
-module.exports = { parseExport, buildFixture };
+module.exports = { parseExport, buildFixture, defaultOutputPath };

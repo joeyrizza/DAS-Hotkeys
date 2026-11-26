@@ -1,6 +1,7 @@
 # Unit test data: DAS exports, the fixtures and snapshots made from them,
-# and the generated replay pages. Kept locally, not in the repo.
+# and the generated replay pages and site. Kept locally, not in the repo.
 UnitTests/exports/
 UnitTests/fixtures/
 UnitTests/snapshots/
 UnitTests/replays/
+UnitTests/site/

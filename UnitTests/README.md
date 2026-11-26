@@ -175,6 +175,36 @@ Values the export only has from the moment of export, and how the replay fills t
 | Float, borrow status, daily averages | The export's values |
 | 9/20/200 EMA inside a minute | Moved from the previous bar's value toward the price at that point. VWAP and MACD use the bar's exported value. |
 
+### Publishing the replays
+
+The replays are published as the **Replays** section of the trade-review site, behind the same login. On your PC, after exporting a day with `ExportChartData`:
+
+```
+node UnitTests/das/run.js publish
+aws s3 sync UnitTests/site/replay s3://<BucketName>/replay --cache-control no-cache
+```
+
+`<BucketName>` is the trade-review stack's bucket (see trade-review's README). `publish`:
+
+1. Converts every file in `exports/` that has no fixture yet (`--reconvert` converts them all again, replacing the fixtures). A file that isn't an export is skipped with a note.
+2. Writes `UnitTests/site/replay/` (or `publish <folder>` writes `<folder>/replay/`):
+   - `days/<fixture>.json`: one per fixture;
+   - `days.json`: the list of days, newest first;
+   - `engine.js`: the interpreter and the text of every live script **as they are now**, so every published day replays with your current rules;
+   - `index.html`: the viewer.
+3. Lists fixtures made by an older `ExportChartData` than the current one (`$X_VERSION`). Export those days again if their replay looks wrong.
+
+`--samples` and `--spread` work as for `replay`. Days whose fixture you delete drop out of the list but stay in the bucket until you delete them there.
+
+On the site:
+
+- **Trades | Replays** at the top switches between the two.
+- **Replays** lists the exported days, newest first, with a ticker search (Enter opens the first match). A day with trades in trade-review shows how many fills it has.
+- On a replay, your fills for that ticker and day (trade-review's screenshots) are purple triangles under their candles. The details panel lists the fills in the minute you pin, each linking to its screenshot in Trades, and the intro panel lists the day's fills. A screenshot's time is taken as the fill time, on the same clock as DAS's bar times. A fill after the export's last bar isn't shown.
+- In Trades, a trade gets a **Replay** button only when a replay exists for its ticker and date. It opens the replay on the hour around the fill, with that minute pinned. If the fill is outside the exported bars, it opens the whole day.
+
+The single-file page from `run.js replay` still works on its own. It has no site navigation and no fills.
+
 ---
 
 ## Files
@@ -186,15 +216,16 @@ Values the export only has from the moment of export, and how the replay fills t
 | `das/run.js` | The command-line runner. The test format is described at the top of the file. |
 | `das/replay.js` | Replays a fixture minute by minute, for `run.js replay` and the replay page. |
 | `das/params.js` | The thresholds the replay page's sliders can change, and the script text each one replaces. |
-| `tools/replay_viewer.html` | The replay page. `run.js replay` copies it to `replays/` with the engine (`das/*.js`), the scripts and the fixture filled in. |
+| `tools/replay_viewer.html` | The replay page. `run.js replay` copies it to `replays/` with the engine (`das/*.js`), the scripts and the fixture filled in. `run.js publish` makes it the site's `replay/index.html`, which loads `engine.js` and one day at a time. |
 | `replays/` | Generated charts. Safe to delete; `run.js replay` writes them again. |
-
-`exports/`, `fixtures/`, `snapshots/` and `replays/` are in `.gitignore`, so they stay on this computer. The tests in `tests/` need the fixtures they name, so a fresh clone can only run the lint until fixtures are added.
-| `tools/convert_das_export.js` | Turns an `ExportChartData` file into a fixture. |
+| `site/` | The replay part of the trade-review site, written by `run.js publish`. Safe to delete. |
+| `tools/convert_das_export.js` | Turns an `ExportChartData` file into a fixture. `run.js publish` uses it for new exports. |
 | `exports/` | Raw `ExportChartData` files, kept so fixtures can be rebuilt. |
 | `fixtures/*.json` | Market data captured from DAS. They hold data only; the tests live in `tests/`, so converting an export again never loses a test. |
 | `tests/*.json` | Hand-written tests. Each file names a default fixture. |
 | `snapshots/*.json` | The accepted results of the standard scenarios, one file per fixture. |
+
+`exports/`, `fixtures/`, `snapshots/`, `replays/` and `site/` are in `.gitignore`, so they stay on this computer. The tests in `tests/` need the fixtures they name, so a fresh clone can only run the lint until fixtures are added.
 
 ---
 

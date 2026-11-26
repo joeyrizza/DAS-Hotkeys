@@ -1,11 +1,19 @@
 <!doctype html>
 <!--
-  Replay viewer. "node UnitTests/das/run.js replay <fixture>" copies this
-  file to UnitTests/replays/<fixture>.html, filling in REPLAY_MODULES
-  (das/interpreter.js, simdas.js, params.js, replay.js) and REPLAY_INPUT
-  (the fixture and the text of every live script). The page replays the
-  day itself with the real scripts, so the strategy sliders can change a
-  threshold and re-run them. No libraries, no network.
+  Replay viewer. The page replays the day itself with the real scripts,
+  so the strategy sliders can change a threshold and re-run them. No
+  libraries. run.js fills it in two ways:
+
+  - "run.js replay <fixture>": one self-contained file,
+    UnitTests/replays/<fixture>.html. REPLAY_ENGINE becomes an inline
+    script (das/interpreter.js, simdas.js, params.js, replay.js and the
+    text of every live script) and REPLAY_INPUT the fixture.
+  - "run.js publish": the replay part of the trade-review site,
+    <site>/replay/index.html. REPLAY_ENGINE becomes <script src=engine.js>
+    and REPLAY_INPUT stays null. With no ?d= the page lists the days in
+    days.json; with ?d=<fixture> it loads days/<fixture>.json. It also
+    reads trade-review's ../index.json and marks the fills (screenshots)
+    for the same ticker and date.
 -->
 <html lang="en">
 <head>
@@ -16,7 +24,7 @@
   :root {
     --bg: #14171c; --panel: #1b1f26; --line: #2a303a; --text: #d6dbe3; --muted: #8a93a3;
     --up: #3fb68b; --down: #e5534b; --block: #e5534b; --warn: #e3a33b; --ok: #3fb68b;
-    --ema9: #c9ced6; --ema20: #22b8cf; --vwap: #f08c2e; --accent: #6aa6ff;
+    --ema9: #c9ced6; --ema20: #22b8cf; --vwap: #f08c2e; --accent: #6aa6ff; --fill: #c792ea;
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--text);
@@ -99,6 +107,35 @@
   .chg code.new { border-color: var(--accent); }
   .problem { color: var(--block); }
   .controls { flex-wrap: wrap; }
+  [hidden] { display: none !important; }
+
+  /* Site navigation, shared with trade-review */
+  nav.site { display: flex; gap: 2px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 2px; }
+  nav.site a { color: var(--muted); text-decoration: none; padding: 4px 12px; border-radius: 4px; }
+  nav.site a.here { color: var(--text); background: var(--panel); box-shadow: inset 0 0 0 1px var(--line); }
+  @media (pointer: coarse) { nav.site a { padding: 7px 14px; } }
+
+  /* List of replay days */
+  #days { flex: 1; min-height: 0; overflow-y: auto; }
+  #days .dayctl { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; background: var(--bg); border-bottom: 1px solid var(--line); }
+  #dq { width: 180px; padding: 6px 8px; font: inherit; color: var(--text); background: var(--panel);
+    border: 1px solid var(--line); border-radius: 4px; text-transform: uppercase; }
+  #dq::placeholder { text-transform: none; }
+  #daylist { max-width: 760px; }
+  #daylist .date { padding: 12px 16px 4px; font-size: 11px; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--muted); }
+  #daylist a { display: flex; gap: 14px; align-items: baseline; padding: 8px 16px; color: var(--text);
+    text-decoration: none; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  #daylist a:hover { background: var(--panel); }
+  #daylist .sym { font-weight: 600; min-width: 64px; }
+  #daylist .rng { color: var(--muted); }
+  #daylist .fills { margin-left: auto; color: var(--fill); }
+  @media (pointer: coarse) { #daylist a { padding: 13px 16px; font-size: 15px; } }
+
+  .fills-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fills-list a, .fills-list button { color: var(--fill); border: 1px solid var(--line); border-radius: 4px;
+    padding: 3px 9px; text-decoration: none; background: var(--bg); font: inherit; font-variant-numeric: tabular-nums; }
   /* Touch: one finger pans sideways (vertical drags scroll), two pinch to zoom */
   canvas { touch-action: pan-y; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
   @supports (height: 100dvh) { body { height: 100dvh; } }
@@ -132,17 +169,19 @@
 </head>
 <body>
 <header>
+  <nav class="site" id="siteNav" hidden><a href="../">Trades</a><a href="./" class="here">Replays</a></nav>
   <h1 id="title">Replay</h1>
   <span class="sub" id="subtitle"></span>
-  <div class="legend">
+  <div class="legend" id="legend">
     <span style="--c: var(--block)">Blocked</span>
     <span style="--c: var(--warn)">Arms, with warnings</span>
     <span style="--c: var(--ok)">Arms clean</span>
     <span style="--c: var(--ema9)">9 EMA</span>
     <span style="--c: var(--ema20)">20 EMA</span>
     <span style="--c: var(--vwap)">VWAP</span>
+    <span style="--c: var(--fill)" id="fillLegend" hidden>Your fill</span>
   </div>
-  <div class="controls">
+  <div class="controls" id="dayControls">
     <span id="status"></span>
     <button id="toggleSettings">Strategy settings</button>
     <input type="time" id="from"> to <input type="time" id="to">
@@ -158,13 +197,22 @@
   </div>
   <aside id="side"></aside>
 </main>
+<section id="days" hidden>
+  <div class="dayctl">
+    <input id="dq" type="search" placeholder="Ticker" autocomplete="off" spellcheck="false" aria-label="Ticker">
+    <span id="dstatus" class="hint"></span>
+  </div>
+  <div id="daylist"></div>
+</section>
 
+<!--REPLAY_ENGINE-->
 <script>
-// ---------- the replay engine (filled in by run.js) ----------
-const MODULE_FNS = {
-/*REPLAY_MODULES*/
-};
-const INPUT = /*REPLAY_INPUT*/null;
+// ---------- the replay engine (window.REPLAY_MODULES and
+// window.REPLAY_SOURCES, from engine.js or inlined by run.js) ----------
+const MODULE_FNS = window.REPLAY_MODULES;
+const INPUT_INLINE = /*REPLAY_INPUT*/null;
+let INPUT = INPUT_INLINE;         // { fixture, options, settings }
+const ON_SITE = !INPUT_INLINE;    // part of the trade-review site
 
 const STUBS = {
   fs: {},
@@ -183,7 +231,7 @@ function req(name)
 }
 const { createReplay, prepareRescore, rescoreStep } = req("./replay");
 const P = req("./params");
-const sources = new Map(INPUT.sources);
+const sources = new Map(window.REPLAY_SOURCES);
 
 // ---------- state ----------
 let R = null, T = null;           // current replay and its timeline
@@ -307,7 +355,7 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
 const COL = {};
 function loadColours()
 {
-  for (const k of ["bg", "panel", "line", "text", "muted", "up", "down", "block", "warn", "ok", "ema9", "ema20", "vwap", "accent"])
+  for (const k of ["bg", "panel", "line", "text", "muted", "up", "down", "block", "warn", "ok", "ema9", "ema20", "vwap", "accent", "fill"])
     COL[k] = css("--" + k);
 }
 function buttonColour(c)
@@ -493,6 +541,14 @@ function draw()
     }
     ctx.stroke();
   }
+  // your fills: a triangle under the candle (side unknown)
+  ctx.fillStyle = COL.fill;
+  for (let i = i0; i < i1; i++)
+  {
+    if (!fillsByBar[i]) continue;
+    const x = xOf(i) + bw / 2, y = yOf(bars[i].l) + 5, s = Math.max(4, Math.min(7, bw * 0.45));
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - s, y + s * 1.6); ctx.lineTo(x + s, y + s * 1.6); ctx.closePath(); ctx.fill();
+  }
   ctx.restore();
 
   // volume
@@ -629,6 +685,7 @@ function showSide(i)
       <div>High so far</div><div>${fmt(v.MontageHi, 4)}</div>
       <div>Top-volume candle low</div><div>${v.TopVolLow > 0 ? fmt(v.TopVolLow, 4) + " (" + esc(hhmm(v.TopVolTime)) + " candle)" : "-"}</div>
     </div>
+    ${fillsByBar[i] ? `<h3>Your fills this minute</h3><div class="fills-list">${fillsByBar[i].map(fillLink).join("")}</div>` : ""}
     <h3>If you pressed Setup Armed${changed ? " (adjusted rules)" : ""}</h3>`;
   ks.forEach((k, n) =>
   {
@@ -667,6 +724,9 @@ function intro()
     asking what Setup Armed would have said. The shading behind the candles and the strips below
     show the answer, one thin slice per point. Hover a candle for the details, click or tap to pin it.
     Scroll or pinch to zoom, drag sideways to pan.</p>
+    ${fills.length ? `<h3>Your fills (${fills.length})</h3>
+    <p class="hint">From trade-review's screenshots for ${esc(INPUT.fixture.symbol)} on this day, marked with a purple triangle under the candle. Tap a time to pin that minute.</p>
+    <div class="fills-list">${fills.map(f => `<button data-bar="${f.bar}">${esc(f.ts.slice(11, 19))}</button>`).join("")}</div>` : ""}
     <p class="hint">Open <b>Strategy settings</b> to change a threshold. The scripts run again
     with the new number, and the "live rules" strip keeps the original result for comparison.</p>
     <h3>Assumptions</h3>
@@ -692,6 +752,10 @@ function intro()
 }
 function bindFilters()
 {
+  for (const el of document.querySelectorAll(".fills-list button[data-bar]"))
+  {
+    el.onclick = () => { pinBar(+el.dataset.bar); };
+  }
   for (const el of document.querySelectorAll(".filters input"))
   {
     el.onchange = () =>
@@ -1044,9 +1108,132 @@ new ResizeObserver(() =>
   if (size !== lastSize) { lastSize = size; resize(); }
 }).observe(document.getElementById("chartWrap"));
 
-// ---------- start ----------
-(function start()
+// ---------- your fills, from trade-review ----------
+// trade-review's index.json: [{ t: "NVDA", ts: "2026-11-24T09:32:02", k: "shots/..." }].
+// A screenshot is taken on every fill, so its time is the fill time
+// (PC clock, assumed to be the same clock as DAS's bar times).
+let fills = [];          // [{ ts, k, bar }] for this symbol and day
+let fillsByBar = {};     // bar index -> fills in that minute
+const fillLink = (f) => `<a href="../#${encodeURIComponent(f.k)}" title="Open in Trades">${esc(f.ts.slice(11, 19))}</a>`;
+
+// The bar a fill at "HH:MM" belongs to: that minute, or the last bar
+// before it (minutes with no trades have no bar). -1 if outside the export.
+function barForFill(day, hm)
 {
+  let k = -1;
+  bars.forEach((b, i) => { if (String(b.t).startsWith(day) && hhmm(b.t) <= hm) k = i; });
+  if (k < 0 || hm > hhmm(bars[bars.length - 1].t)) return -1;
+  return k;
+}
+async function loadTradeIndex()
+{
+  const r = await fetch("../index.json", { cache: "no-cache" });
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r.json();
+}
+async function loadFills()
+{
+  if (!ON_SITE) return;
+  let all;
+  try { all = await loadTradeIndex(); } catch (e) { return; }   // no trades on this site
+  const sym = String(INPUT.fixture.symbol).toUpperCase();
+  const day = String(bars[bars.length - 1].t).slice(0, 8);
+  const iso = day.slice(0, 4) + "-" + day.slice(4, 6) + "-" + day.slice(6, 8);
+  fills = all.filter(e => String(e.t).toUpperCase() === sym && String(e.ts).startsWith(iso))
+    .map(e => ({ ts: String(e.ts), k: e.k, bar: barForFill(day, String(e.ts).slice(11, 16)) }))
+    .filter(f => f.bar >= 0)
+    .sort((a, b) => a.ts < b.ts ? -1 : 1);
+  fillsByBar = {};
+  for (const f of fills) (fillsByBar[f.bar] = fillsByBar[f.bar] || []).push(f);
+  document.getElementById("fillLegend").hidden = !fills.length;
+  draw(); refreshSide();
+}
+
+// Pin a minute, bringing it into view
+function pinBar(i)
+{
+  if (i < 0 || i >= bars.length) return;
+  pinned = i;
+  if (i < view.start || i >= view.end)
+  {
+    const len = Math.min(view.end - view.start, bars.length);
+    view.start = clamp(i - len / 2, 0, Math.max(0, bars.length - len));
+    view.end = view.start + len;
+  }
+  refreshSide(); draw(); renderStats(); writeHash();
+}
+
+// ---------- list of days (site only, no ?d=) ----------
+// days.json: [{ id, t, d: "2026-11-24", from: "09:06", to: "13:59" }], newest first
+async function showDays()
+{
+  document.getElementById("main").hidden = true;
+  document.getElementById("legend").hidden = true;
+  document.getElementById("dayControls").hidden = true;
+  document.getElementById("days").hidden = false;
+  document.getElementById("title").textContent = "Replays";
+  document.title = "Replays";
+  const status = document.getElementById("dstatus");
+  status.textContent = "Loading…";
+  let days = [], trades = [];
+  try
+  {
+    const r = await fetch("days.json", { cache: "no-cache" });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    days = await r.json();
+  }
+  catch (e) { status.textContent = "Could not load days.json (" + e.message + ")"; return; }
+  try { trades = await loadTradeIndex(); } catch (e) { /* no trades: no counts */ }
+  const fillCount = {};
+  for (const e of trades) { const key = String(e.t).toUpperCase() + "|" + String(e.ts).slice(0, 10); fillCount[key] = (fillCount[key] || 0) + 1; }
+
+  const q = document.getElementById("dq");
+  const dayLabel = (iso) =>
+  {
+    const [y, m, dd] = iso.split("-").map(Number);
+    return new Date(y, m - 1, dd).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric", year: "numeric" });
+  };
+  function render()
+  {
+    const prefix = q.value.trim().toUpperCase();
+    const list = days.filter(d => !prefix || String(d.t).toUpperCase().startsWith(prefix));
+    let h = "", last = "";
+    for (const d of list)
+    {
+      if (d.d !== last) { last = d.d; h += `<div class="date">${esc(dayLabel(d.d))}</div>`; }
+      const n = fillCount[String(d.t).toUpperCase() + "|" + d.d] || 0;
+      h += `<a href="?d=${encodeURIComponent(d.id)}"><span class="sym">${esc(d.t)}</span>
+        <span class="rng">${esc(d.from)}–${esc(d.to)}</span>
+        ${n ? `<span class="fills">${n} fill${n > 1 ? "s" : ""}</span>` : ""}</a>`;
+    }
+    document.getElementById("daylist").innerHTML = h || `<p class="hint" style="padding:12px 16px">No replays${prefix ? " for " + esc(prefix) : ""}.</p>`;
+    status.textContent = `${list.length} of ${days.length} days`;
+  }
+  q.oninput = render;
+  q.onkeydown = (e) => { if (e.key === "Enter") { const a = document.querySelector("#daylist a"); if (a) location.href = a.href; } };
+  render();
+}
+
+// ---------- start ----------
+(async function start()
+{
+  document.getElementById("siteNav").hidden = !ON_SITE;
+  if (ON_SITE)
+  {
+    const id = new URLSearchParams(location.search).get("d");
+    if (!id) { showDays(); return; }
+    try
+    {
+      const r = await fetch("days/" + encodeURIComponent(id) + ".json", { cache: "no-cache" });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      INPUT = await r.json();
+    }
+    catch (e)
+    {
+      document.getElementById("side").innerHTML = `<h2>Can't load ${esc(id)}</h2><p class="hint">${esc(e.message)}</p>`;
+      return;
+    }
+  }
   const fx = INPUT.fixture;
   document.getElementById("title").textContent = fx.symbol + " replay";
   document.title = fx.symbol + " replay";
@@ -1068,13 +1255,20 @@ new ResizeObserver(() =>
     base = T.steps.map(s => ({ ok: s.ok, speech: s.speech, all: s.all }));
     view = { start: 0, end: bars.length };
     document.getElementById("subtitle").textContent =
-      hhmm(bars[0].t) + "–" + hhmm(bars[bars.length - 1].t) + " · " + String(bars[0].t).slice(0, 8) + " · fixture " + T.fixture;
+      hhmm(bars[0].t) + "–" + hhmm(bars[bars.length - 1].t) + " · " + String(bars[bars.length - 1].t).slice(0, 8) + " · fixture " + T.fixture;
     document.getElementById("from").value = hash.from || hhmm(bars[0].t);
     document.getElementById("to").value = hash.to || hhmm(bars[bars.length - 1].t);
     if (hash.from) showRange(hash.from, hash.to);
-    if (hash.pin) { const i = bars.findIndex(b => hhmm(b.t) === hash.pin); if (i >= 0) pinned = i; }
-    resize(); renderStats(); refreshSide(); renderSettingsState();
+    if (hash.pin)
+    {
+      // That minute, or the last bar before it (minutes with no trades have no bar)
+      let i = -1;
+      bars.forEach((b, k) => { if (hhmm(b.t) <= hash.pin) i = k; });
+      if (i >= 0) pinned = i;
+    }
+    resize(); renderStats(); refreshSide(); renderSettingsState(); writeHash();
     if (anyChanged()) settingsChanged(true);
+    loadFills();
   });
 })();
 </script>
