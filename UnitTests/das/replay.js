@@ -49,6 +49,13 @@
 //     premarket high was 4.68, its montage high 2.82). Before
 //     9:30, the high/low of the exported bars so far; what DAS
 //     shows then isn't known yet.
+//   - The highest-volume candle line ("1L<SYM>", read by
+//     SpeakTestResults' "Price is below the highest volume candle"):
+//     in DAS, FindIntradayLevels_1 draws it at the low of the day's
+//     highest-volume completed candle, and only when that low is near
+//     the price. The replay always draws it, at the low of today's
+//     highest-volume completed bar so far, so the level still counts
+//     after price has fallen well below it (it stays resistance).
 //   - RVOL: not checked. The replay switches the RVOL blocker off
 //     in its copy of SpeakTestResults (params.js REPLAY_EDITS):
 //     DAS's own RVOL during the day isn't in the export.
@@ -98,6 +105,18 @@ function samplePath(bar, samples)
     if (samples <= 1) return [pts[3]];
     if (samples === 2) return [pts[0], pts[3]];
     return pts;
+}
+
+// Draw (or remove) the highest-volume candle line that SpeakTestResults reads
+function setTopVolLine(sim, low)
+{
+    const chart = sim.windows.CHART1;
+    const name = "1L" + String(sim.symbol).toUpperCase();
+    chart.lines.delete(name);
+    if (!(low > 0)) return;
+    const tl = chart.call("createtrendline", ["hline"]);
+    tl.set("Name", name);
+    tl.set("Price", low);
 }
 
 // Press Setup Armed, then run every rule, each on a copy of memory.
@@ -208,6 +227,8 @@ function createReplay(fixture, options = {})
         // From 9:30: regular session only, as DAS shows it.
         let dayHi = -Infinity, dayLo = Infinity, cumVol = preVolume, dayOpen = 0;
         let regHi = -Infinity, regLo = Infinity, regOpen = 0;
+        // Today's highest-volume completed bar so far (the 1L line)
+        let topVol = 0, topVolLow = 0, topVolTime = "";
 
         for (let i = 0; i < chron.length; i++)
         {
@@ -289,6 +310,7 @@ function createReplay(fixture, options = {})
                 catch (e) { error = e.message; }
                 const liveSpeech = sim.speech.slice();
 
+                setTopVolLine(sim, topVolLow);
                 const arm = error ? { ok: 0, speech: [], all: [], error } : scoreArm(sim);
 
                 if (inRange)
@@ -317,6 +339,8 @@ function createReplay(fixture, options = {})
                             STRVOL10: round4(toNum(v("ST_RVOL10"))),
                             Spread: round4(toNum(v("SPREAD"))),
                             MontageHi: hi,
+                            TopVolLow: topVolLow,
+                            TopVolTime: topVolTime,
                             ExtensionMultiple: round4(toNum(v("EXTENSIONRANGEMULTIPLE"))),
                             Rng4Pct: round4(toNum(v("RNG4PCT"))),
                             SpikeMultiple: round4(toNum(v("SPIKEMULTIPLE"))),
@@ -340,6 +364,7 @@ function createReplay(fixture, options = {})
             dayHi = Math.max(dayHi, bar.Hi);
             dayLo = Math.min(dayLo, bar.Lo);
             if (isToday) { cumVol += bar.Volume; if (!dayOpen) dayOpen = bar.Open; }
+            if (isToday && bar.Volume > topVol) { topVol = bar.Volume; topVolLow = bar.Lo; topVolTime = bar.Time; }
             if (isToday && hhmm >= "09:30")
             {
                 regHi = Math.max(regHi, bar.Hi);
@@ -384,6 +409,7 @@ function rescoreStep(r, s)
     sim.interp.vars = new Map(s.mem);
     const montage = sim.windows.MONTAGE1;
     for (const [k, v] of Object.entries(s.montage)) montage.set(k, v);
+    setTopVolLine(sim, s.vars.TopVolLow);
     const arm = scoreArm(sim);
     s.ok = arm.ok;
     s.speech = arm.speech;

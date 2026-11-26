@@ -126,7 +126,8 @@ The chart:
 
 - The shading behind the candles is the arming result, one thin slice per point: red = blocked, orange = arms with warnings, green = arms clean. In the side panel you can untick warnings you'd ignore (such as "Price action has not yet confirmed a reversal") so they no longer turn a minute orange.
 - The strips under the chart have one row per rule that fails: blockers in red, warnings in orange. A faded mark means Setup Armed stopped at an earlier blocker and never said it. Below them are the chart buttons' colours. A red button that isn't an arming rule, such as MACD, doesn't block.
-- Hover a candle to see its values, Rng4/Rng10 in dollars and as a percent of price, and what Setup Armed said at each of the 4 points. Click to pin it. Scroll to zoom, drag to pan, or type a time range.
+- Hover a candle to see its values, Rng4/Rng10 in dollars and as a percent of price, the highest-volume candle low, and what Setup Armed said at each of the 4 points. Click to pin it. Scroll to zoom, drag to pan, or type a time range.
+- On an iPad (or any touch screen): tap a candle to pin it, drag sideways to pan, and pinch to zoom. A vertical drag scrolls the page. In landscape the page keeps its three columns. In portrait (under 1024 px wide) the details sit in a panel under the chart, and **Strategy settings** replaces them there, so the chart stays in view while a slider moves.
 
 ### Strategy settings
 
@@ -169,6 +170,7 @@ Values the export only has from the moment of export, and how the replay fills t
 | Bid/ask | Last +/- half of `--spread` |
 | Montage high/low ("Price is too close to the highs") | From 9:30, the regular session's high/low so far: DAS's montage leaves out premarket bars (seen in all four exports). Before 9:30, the high/low of the exported bars so far; what DAS shows then isn't known yet. |
 | Today's volume | The exported bars' volume so far. DAS's daily volume is higher than the bars add up to (6-19% in the 2026-11-25 exports), even when the export reaches the start of the chart, so the running volume is scaled up by that ratio. If the export stops before the start of the chart, the difference is added from the first bar instead. |
+| Highest-volume candle line (`1L<SYM>`, "Price is below the highest volume candle") | Always drawn, at the low of today's highest-volume finished candle so far, so the warning still counts after price falls far below that level (it stays resistance). In DAS, `FindIntradayLevels_1` draws it only when that low is within -20%/+50% of the price. The details panel shows the level and which candle set it. |
 | RVOL | Not checked. The replay switches the RVOL blocker off in its copy of `SpeakTestResults` (your DAS scripts keep it), because DAS's own RVOL during the day isn't in the export. It has no slider and no strip. |
 | Float, borrow status, daily averages | The export's values |
 | 9/20/200 EMA inside a minute | Moved from the previous bar's value toward the price at that point. VWAP and MACD use the bar's exported value. |

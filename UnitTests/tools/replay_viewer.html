@@ -98,6 +98,36 @@
     padding: 3px 6px; margin-top: 2px; white-space: pre-wrap; word-break: break-all; }
   .chg code.new { border-color: var(--accent); }
   .problem { color: var(--block); }
+  .controls { flex-wrap: wrap; }
+  /* Touch: one finger pans sideways (vertical drags scroll), two pinch to zoom */
+  canvas { touch-action: pan-y; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+  @supports (height: 100dvh) { body { height: 100dvh; } }
+
+  /* iPad landscape and small laptops: narrower side panels */
+  @media (max-width: 1279px) {
+    main { grid-template-columns: 0 1fr 290px; }
+    main.settings-open { grid-template-columns: 290px 1fr 270px; }
+  }
+  /* iPad portrait: chart on top, details (or the settings) in a panel below,
+     so the chart stays in view while a slider moves */
+  @media (max-width: 1023px) {
+    main, main.settings-open { display: flex; flex-direction: column; }
+    #chartWrap { order: 1; flex: 1 1 auto; min-height: 0; }
+    aside, #settings { order: 2; flex: 0 0 auto; height: 40%; border-left: 0; border-right: 0;
+      border-top: 1px solid var(--line); }
+    main.settings-open aside { display: none; }
+    #status { min-width: 0; }
+    header { padding: 8px 12px; }
+  }
+  /* Bigger targets for fingers */
+  @media (pointer: coarse) {
+    button { padding: 7px 12px; }
+    .param .mode button { padding: 5px 9px; }
+    input[type=time], input[type=number] { padding: 5px 6px; }
+    .param input[type=range] { height: 28px; }
+    .filters label { padding: 5px 0; }
+    .filters input { width: 18px; height: 18px; vertical-align: -4px; }
+  }
 </style>
 </head>
 <body>
@@ -335,7 +365,8 @@ const BUTTON_LABELS = {
 // ---------- layout ----------
 const canvas = document.getElementById("c");
 const ctx = canvas.getContext("2d");
-const LEFT = 190, RIGHT = 58, TOP = 10;
+let LEFT = 190;                   // strip labels; narrower on small screens
+const RIGHT = 58, TOP = 10;
 const ROW = 15;
 let W = 0, H = 0, priceH = 0, volTop = 0, volH = 0, stripTop = 0, rowsDrawn = -1;
 let view = { start: 0, end: 1 };
@@ -366,6 +397,7 @@ function resize()
   const rows = T ? stripRows().length : 0;
   rowsDrawn = rows;
   W = wrap.clientWidth;
+  LEFT = W < 700 ? 130 : 190;
   const avail = Math.max(wrap.clientHeight, 500);
   const stripsH = rows * ROW + 10;
   priceH = Math.max(260, avail - stripsH - 120);
@@ -595,6 +627,7 @@ function showSide(i)
       <div>10-candle RVOL</div><div>${fmt(v.STRVOL10, 2)}x</div>
       <div>MACD / signal</div><div>${fmt(v.MACD, 3)} / ${fmt(v.Signal, 3)}</div>
       <div>High so far</div><div>${fmt(v.MontageHi, 4)}</div>
+      <div>Top-volume candle low</div><div>${v.TopVolLow > 0 ? fmt(v.TopVolLow, 4) + " (" + esc(hhmm(v.TopVolTime)) + " candle)" : "-"}</div>
     </div>
     <h3>If you pressed Setup Armed${changed ? " (adjusted rules)" : ""}</h3>`;
   ks.forEach((k, n) =>
@@ -632,8 +665,8 @@ function intro()
     <p class="hint">Each minute is replayed at ${T.samples} point${T.samples > 1 ? "s" : ""}
     (open, low, high, close for a green candle; open, high, low, close for a red one), running the real test scripts each time and
     asking what Setup Armed would have said. The shading behind the candles and the strips below
-    show the answer, one thin slice per point. Hover a candle for the details, click to pin it.
-    Scroll to zoom, drag to pan.</p>
+    show the answer, one thin slice per point. Hover a candle for the details, click or tap to pin it.
+    Scroll or pinch to zoom, drag sideways to pan.</p>
     <p class="hint">Open <b>Strategy settings</b> to change a threshold. The scripts run again
     with the new number, and the "live rules" strip keeps the original result for comparison.</p>
     <h3>Assumptions</h3>
@@ -644,6 +677,7 @@ function intro()
       ${a.historyEnded
         ? (a.volumeScale > 1 ? `<li>DAS's daily volume is ${fmt((a.volumeScale - 1) * 100, 0)}% higher than the 1-minute bars add up to, so the running volume is scaled up by that much.</li>` : "")
         : `<li>The export doesn't reach the start of the chart. Today's volume before its first bar (${fmtVol(a.preVolume)}) is counted.</li>`}
+      <li>The highest-volume candle line is always drawn, at the low of today's highest-volume finished candle so far, so "Price is below the highest volume candle" still counts after price falls far below it. In DAS, FindIntradayLevels_1 only draws it when the low is near the price.</li>
       <li>The RVOL rule is switched off here (your DAS scripts keep it): DAS's RVOL during the day isn't in the export.</li>
       <li>Float and borrow status come from the moment of export.</li>
     </ul>`;
@@ -881,13 +915,58 @@ function writeHash()
 }
 
 // ---------- interaction ----------
-let drag = null;
-canvas.addEventListener("mousemove", (e) =>
+// Pointer events cover mouse, trackpad, pencil and touch. Dragging
+// sideways pans (a vertical finger drag scrolls the page, from the
+// canvas's touch-action), two fingers pinch to zoom, and a click or
+// tap pins a candle. Only a mouse or trackpad hovers.
+const pointers = new Map();   // pointerId -> { x, y }
+let drag = null;              // { x, y, start, moved }
+let pinch = null;             // { d, at, len }
+const TAP_SLOP = 8;           // px a tap may move and still count as a tap
+const localX = (e) => e.clientX - canvas.getBoundingClientRect().left;
+
+function setHover(i)
+{
+  if (i === hover) return;
+  hover = i;
+  if (pinned < 0) showSide(i >= 0 && i < bars.length ? i : -1);
+  draw();
+}
+function startPinch()
+{
+  const [a, b] = [...pointers.values()];
+  const mid = (a.x + b.x) / 2;
+  pinch = { d: Math.max(20, Math.abs(a.x - b.x)), at: view.start + (mid - LEFT) / barW(), len: view.end - view.start };
+  drag = null;
+}
+canvas.addEventListener("pointerdown", (e) =>
+{
+  if (!T || (e.pointerType === "mouse" && e.button !== 0)) return;
+  try { canvas.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+  pointers.set(e.pointerId, { x: localX(e), y: e.clientY });
+  if (pointers.size === 2) startPinch();
+  else if (pointers.size === 1) drag = { x: localX(e), y: e.clientY, start: view.start, moved: false };
+});
+canvas.addEventListener("pointermove", (e) =>
 {
   if (!T) return;
-  const x = e.offsetX;
-  if (drag)
+  const x = localX(e);
+  if (pointers.has(e.pointerId)) pointers.set(e.pointerId, { x, y: e.clientY });
+  if (pinch)
   {
+    if (pointers.size < 2) return;
+    const [a, b] = [...pointers.values()];
+    const mid = (a.x + b.x) / 2;
+    const len = clamp(pinch.len * pinch.d / Math.max(20, Math.abs(a.x - b.x)), 10, bars.length * 1.2);
+    view.start = pinch.at - (mid - LEFT) / plotW() * len;   // keep the minute under the fingers in place
+    view.end = view.start + len;
+    draw();
+    return;
+  }
+  if (drag && pointers.has(e.pointerId))
+  {
+    if (!drag.moved && Math.abs(x - drag.x) < TAP_SLOP && Math.abs(e.clientY - drag.y) < TAP_SLOP) return;
+    drag.moved = true;
     const d = (x - drag.x) / barW();
     const len = view.end - view.start;
     view.start = clamp(drag.start - d, -len * 0.5, bars.length - len * 0.5);
@@ -895,29 +974,31 @@ canvas.addEventListener("mousemove", (e) =>
     draw();
     return;
   }
-  const i = x >= LEFT && x < W - RIGHT ? iAt(x) : -1;
-  if (i !== hover)
-  {
-    hover = i;
-    if (pinned < 0) showSide(i >= 0 && i < bars.length ? i : -1);
-    draw();
-  }
+  if (e.pointerType !== "touch") setHover(x >= LEFT && x < W - RIGHT ? iAt(x) : -1);
 });
-canvas.addEventListener("mouseleave", () => { hover = -1; drag = null; if (pinned < 0) showSide(-1); draw(); });
-canvas.addEventListener("mousedown", (e) => { drag = { x: e.offsetX, start: view.start }; });
-window.addEventListener("mouseup", (e) =>
+function endPointer(e, cancelled)
 {
-  if (!drag) return;
-  const moved = Math.abs(e.offsetX - drag.x) > 3 && e.target === canvas;
-  drag = null;
-  if (moved) { renderStats(); writeHash(); return; }
-  if (e.target === canvas && T)
+  if (!pointers.has(e.pointerId)) return;
+  pointers.delete(e.pointerId);
+  if (pinch)
   {
-    const i = iAt(e.offsetX);
-    pinned = (pinned === i || i < 0 || i >= bars.length) ? -1 : i;
-    refreshSide(); draw(); writeHash();
+    // Lifting a finger ends the pinch; the other finger doesn't start a drag
+    if (pointers.size < 2) { pinch = null; drag = null; renderStats(); writeHash(); }
+    return;
   }
-});
+  const d = drag;
+  drag = null;
+  if (!d || !T) return;
+  if (d.moved) { renderStats(); writeHash(); return; }
+  if (cancelled) return;
+  const i = iAt(localX(e));
+  pinned = (pinned === i || i < 0 || i >= bars.length) ? -1 : i;
+  if (e.pointerType === "touch") hover = -1;
+  refreshSide(); draw(); writeHash();
+}
+canvas.addEventListener("pointerup", (e) => endPointer(e, false));
+canvas.addEventListener("pointercancel", (e) => endPointer(e, true));
+canvas.addEventListener("pointerleave", (e) => { if (e.pointerType !== "touch" && !drag && !pinch) setHover(-1); });
 let wheelTimer = 0;
 canvas.addEventListener("wheel", (e) =>
 {
@@ -953,7 +1034,15 @@ document.getElementById("toggleSettings").onclick = () =>
   document.getElementById("toggleSettings").classList.toggle("on", main.classList.contains("settings-open"));
   resize(); renderStats();
 };
-window.addEventListener("resize", resize);
+// Redraw when the chart area changes size: window resize, rotating an
+// iPad, or the layout switching when the settings open
+let lastSize = "";
+new ResizeObserver(() =>
+{
+  const w = document.getElementById("chartWrap");
+  const size = w.clientWidth + "x" + w.clientHeight;
+  if (size !== lastSize) { lastSize = size; resize(); }
+}).observe(document.getElementById("chartWrap"));
 
 // ---------- start ----------
 (function start()
