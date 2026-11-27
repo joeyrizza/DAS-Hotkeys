@@ -24,7 +24,7 @@
   :root {
     --bg: #14171c; --panel: #1b1f26; --line: #2a303a; --text: #d6dbe3; --muted: #8a93a3;
     --up: #3fb68b; --down: #e5534b; --block: #e5534b; --warn: #e3a33b; --ok: #3fb68b;
-    --ema9: #c9ced6; --ema20: #22b8cf; --vwap: #f08c2e; --accent: #6aa6ff; --fill: #4dabf7;
+    --ema9: #c9ced6; --ema20: #22b8cf; --vwap: #f08c2e; --accent: #6aa6ff; --fill: #2c4264; --fillEdge: #35548d;
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--text);
@@ -36,7 +36,7 @@
   .legend { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted); }
   .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px;
     margin-right: 5px; vertical-align: -1px; border-radius: 2px; background: var(--c); }
-  .legend span.dot::before { border-radius: 50%; background: none; border: 1.5px solid var(--c); box-sizing: border-box; }
+  .legend span.dot::before { border-radius: 50%; background: var(--c); border: 1.5px solid var(--fillEdge); box-sizing: border-box; }
   .controls { display: flex; gap: 8px; align-items: center; margin-left: auto; }
   #status { color: var(--accent); min-width: 150px; text-align: right; }
   button { background: var(--panel); color: var(--text); border: 1px solid var(--line);
@@ -356,7 +356,7 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
 const COL = {};
 function loadColours()
 {
-  for (const k of ["bg", "panel", "line", "text", "muted", "up", "down", "block", "warn", "ok", "ema9", "ema20", "vwap", "accent", "fill"])
+  for (const k of ["bg", "panel", "line", "text", "muted", "up", "down", "block", "warn", "ok", "ema9", "ema20", "vwap", "accent", "fill", "fillEdge"])
     COL[k] = css("--" + k);
 }
 function buttonColour(c)
@@ -542,13 +542,13 @@ function draw()
     }
     ctx.stroke();
   }
-  // your fills: a hollow ring under the candle (a screenshot exists; not an entry/exit marker)
-  ctx.strokeStyle = COL.fill; ctx.lineWidth = 1.5;
+  // your fills: a solid circle with a border under the candle (a screenshot exists; not an entry/exit marker)
+  ctx.fillStyle = COL.fill; ctx.strokeStyle = COL.fillEdge; ctx.lineWidth = 1.5;
   for (let i = i0; i < i1; i++)
   {
     if (!fillsByBar[i]) continue;
     const r = Math.max(3, Math.min(5, bw * 0.35)), x = xOf(i) + bw / 2, y = yOf(bars[i].l) + 5 + r;
-    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   }
   ctx.restore();
 
@@ -726,7 +726,7 @@ function intro()
     show the answer, one thin slice per point. Hover a candle for the details, click or tap to pin it.
     Scroll or pinch to zoom, drag sideways to pan.</p>
     ${fills.length ? `<h3>Your fills (${fills.length})</h3>
-    <p class="hint">From trade-review's screenshots for ${esc(INPUT.fixture.symbol)} on this day, marked with a blue ring under the candle. Tap a time to pin that minute.</p>
+    <p class="hint">From trade-review's screenshots for ${esc(INPUT.fixture.symbol)} on this day, marked with a blue dot under the candle. Tap a time to pin that minute.</p>
     <div class="fills-list">${fills.map(f => `<button data-bar="${f.bar}">${esc(f.ts.slice(11, 19))}</button>`).join("")}</div>` : ""}
     <p class="hint">Open <b>Strategy settings</b> to change a threshold. The scripts run again
     with the new number, and the "live rules" strip keeps the original result for comparison.</p>
