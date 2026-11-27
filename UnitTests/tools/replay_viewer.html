@@ -36,6 +36,7 @@
   .legend { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted); }
   .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px;
     margin-right: 5px; vertical-align: -1px; border-radius: 2px; background: var(--c); }
+  .legend span.dot::before { border-radius: 50%; }
   .controls { display: flex; gap: 8px; align-items: center; margin-left: auto; }
   #status { color: var(--accent); min-width: 150px; text-align: right; }
   button { background: var(--panel); color: var(--text); border: 1px solid var(--line);
@@ -179,7 +180,7 @@
     <span style="--c: var(--ema9)">9 EMA</span>
     <span style="--c: var(--ema20)">20 EMA</span>
     <span style="--c: var(--vwap)">VWAP</span>
-    <span style="--c: var(--fill)" id="fillLegend" hidden>Your fill</span>
+    <span style="--c: var(--fill)" id="fillLegend" class="dot" hidden>Your fill</span>
   </div>
   <div class="controls" id="dayControls">
     <span id="status"></span>
@@ -541,13 +542,13 @@ function draw()
     }
     ctx.stroke();
   }
-  // your fills: a triangle under the candle (side unknown)
+  // your fills: a circle under the candle (a screenshot exists; not an entry/exit marker)
   ctx.fillStyle = COL.fill;
   for (let i = i0; i < i1; i++)
   {
     if (!fillsByBar[i]) continue;
-    const x = xOf(i) + bw / 2, y = yOf(bars[i].l) + 5, s = Math.max(4, Math.min(7, bw * 0.45));
-    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - s, y + s * 1.6); ctx.lineTo(x + s, y + s * 1.6); ctx.closePath(); ctx.fill();
+    const r = Math.max(3, Math.min(5, bw * 0.35)), x = xOf(i) + bw / 2, y = yOf(bars[i].l) + 5 + r;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
   }
   ctx.restore();
 
@@ -725,7 +726,7 @@ function intro()
     show the answer, one thin slice per point. Hover a candle for the details, click or tap to pin it.
     Scroll or pinch to zoom, drag sideways to pan.</p>
     ${fills.length ? `<h3>Your fills (${fills.length})</h3>
-    <p class="hint">From trade-review's screenshots for ${esc(INPUT.fixture.symbol)} on this day, marked with a purple triangle under the candle. Tap a time to pin that minute.</p>
+    <p class="hint">From trade-review's screenshots for ${esc(INPUT.fixture.symbol)} on this day, marked with a purple circle under the candle. Tap a time to pin that minute.</p>
     <div class="fills-list">${fills.map(f => `<button data-bar="${f.bar}">${esc(f.ts.slice(11, 19))}</button>`).join("")}</div>` : ""}
     <p class="hint">Open <b>Strategy settings</b> to change a threshold. The scripts run again
     with the new number, and the "live rules" strip keeps the original result for comparison.</p>
