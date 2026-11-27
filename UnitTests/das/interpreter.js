@@ -20,6 +20,13 @@
 //   confirmed: MONTAGE1.Hi/Lo and the daily bar's Hi/Lo/Open cover the
 //              regular session only (from 9:30), seen in 4 exports;
 //              modelled in replay.js. Before 9:30: not known yet.
+//   confirmed: TriggerOrder must be the unquoted command form
+//              ($MONTAGE1.TriggerOrder=RT:STOP ... QTY:Pos ...;). DAS's
+//              editor reports "missing ;" on it but saves and runs it.
+//              A quoted string is accepted by the editor but fails when
+//              sent: "Create trigger order failed: No QTY defined!"
+//              (simdas.js only reads the unquoted form, so a quoted
+//              one shows up in the tests as a missing stop).
 //   assumed:   an unset variable reads as 0
 //   assumed:   C-style operator precedence (* / % before + -,
 //              comparisons before &&, && before ||)

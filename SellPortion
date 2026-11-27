@@ -2,10 +2,12 @@
 $pos=$MONTAGE1.Pos;
 if($pos <= 0){ return; }
 
+$Route="ARCA1L";
+
 $MONTAGE1.CXL ALLSYMB;
 $qty=$pos*0.75;
 
-$MONTAGE1.ROUTE=LIMIT;
+$MONTAGE1.ROUTE=$Route;
 $MONTAGE1.Price=$MONTAGE1.Bid-0.10;
 $MONTAGE1.Share=$qty;
 $MONTAGE1.SELL=Send;

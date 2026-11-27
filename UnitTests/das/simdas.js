@@ -27,6 +27,8 @@ const HOTKEY_ALIASES = {
     "setup armed": "SetupArmed",
     "setup disarmed": "SetupDisarmed",
     "test_pricechange": "TestPriceChange",
+    "sell @ bid": "Sell Bid",         // "@" isn't used in filenames
+    "sell @ ask": "Sell Ask",
 };
 
 // Folders that never hold live hotkey scripts

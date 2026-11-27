@@ -3,16 +3,7 @@ $BuyPrice=Ask;
 $MinimumAllowedStopDistance=.05;
 $FinalShareCount=25;
 
-if (SubString($MONTAGE1.Account,0,2) == "TR")
-{
-    //Training Acount
-    $Route="ARCAL";
-}
-else
-{
-    //Margin Account
-    $Route="ARCA1L";
-}
+$Route="ARCA1L";
 
 if($SetupArmed==0){
     Speak You cannot trade just because you feel like trading. You must first explicitly declare that you have identified a setup.;

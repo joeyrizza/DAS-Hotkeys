@@ -3,12 +3,14 @@
 $pos=$MONTAGE1.Pos;
 if($pos <= 0){ return; }
 
+$Route="ARCA1L";
+
 if($MONTAGE1.Bid > $MONTAGE1.AvgCost) {
     $MONTAGE1.CXL ALLSYMB;
 
     $qty=$pos*0.5;
 
-    $MONTAGE1.ROUTE=LIMIT;
+    $MONTAGE1.ROUTE=$Route;
     $MONTAGE1.Price=$MONTAGE1.Ask;
     $MONTAGE1.Share=$qty;
     $MONTAGE1.SELL=Send;
@@ -25,7 +27,7 @@ if($MONTAGE1.Bid > $MONTAGE1.AvgCost) {
     $MONTAGE1.CXL ALLSYMB;
 
     $MONTAGE1.Price=$MONTAGE1.Bid-0.10;
-    $MONTAGE1.ROUTE=LIMIT;
+    $MONTAGE1.ROUTE=$Route;
     $MONTAGE1.Share=$pos;
     $MONTAGE1.SELL=Send;
 }

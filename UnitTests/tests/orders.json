@@ -30,14 +30,14 @@
       }
     },
     {
-      "name": "Entry: training account uses ARCAL",
+      "name": "Entry: training account also uses ARCA1L",
       "run": ["DynamicEntry"],
       "vars": { "SETUPARMED": 1 },
       "montage": { "Pos": 0, "Price": 11.5, "Account": "TR12345" },
       "expect": {
         "activity": [
           "CXL ALLSYMB",
-          "BUY 9 ARCAL @ 11.85 DAY+",
+          "BUY 9 ARCA1L @ 11.85 DAY+",
           "TRIGGER SELL Pos STOP LIMITP stop 11.5 @ 11.45 DAY+"
         ]
       }
@@ -104,7 +104,7 @@
       "expect": {
         "activity": [
           "CXL ALLSYMB",
-          "SELL 15 LIMIT @ 11.63",
+          "SELL 15 ARCA1L @ 11.63",
           "SELL 5 STOP LimitP stop 11.5 @ 11.45"
         ]
       }
@@ -116,8 +116,20 @@
       "expect": {
         "activity": [
           "CXL ALLSYMB",
-          "SELL 18 LIMIT @ 11.63",
+          "SELL 18 ARCA1L @ 11.63",
           "SELL 6 STOP LimitP stop 11.5 @ 11.45"
+        ]
+      }
+    },
+    {
+      "name": "SellPortion: training account also uses ARCA1L",
+      "run": ["SellPortion"],
+      "montage": { "Pos": 20, "AvgCost": 11.5, "Account": "TR12345" },
+      "expect": {
+        "activity": [
+          "CXL ALLSYMB",
+          "SELL 15 ARCA1L @ 11.63",
+          "SELL 5 STOP LimitP stop 11.5 @ 11.45"
         ]
       }
     },
@@ -134,7 +146,7 @@
       "expect": {
         "activity": [
           "CXL ALLSYMB",
-          "SELL 10 LIMIT @ 11.85",
+          "SELL 10 ARCA1L @ 11.85",
           "SELL 10 STOP LimitP stop 11.5 @ 11.45"
         ]
       }
@@ -144,7 +156,28 @@
       "run": ["SellPortionAsk"],
       "montage": { "Pos": 20, "AvgCost": 12 },
       "expect": {
-        "activity": ["CXL ALLSYMB", "SELL 20 LIMIT @ 11.63"],
+        "activity": ["CXL ALLSYMB", "SELL 20 ARCA1L @ 11.63"],
+        "speech": ["Trade is not profitable, exiting on bid"]
+      }
+    },
+    {
+      "name": "SellPortionAsk: training account in profit also uses ARCA1L",
+      "run": ["SellPortionAsk"],
+      "montage": { "Pos": 20, "AvgCost": 11.5, "Account": "TR12345" },
+      "expect": {
+        "activity": [
+          "CXL ALLSYMB",
+          "SELL 10 ARCA1L @ 11.85",
+          "SELL 10 STOP LimitP stop 11.5 @ 11.45"
+        ]
+      }
+    },
+    {
+      "name": "SellPortionAsk: training account at a loss also uses ARCA1L",
+      "run": ["SellPortionAsk"],
+      "montage": { "Pos": 20, "AvgCost": 12, "Account": "TR12345" },
+      "expect": {
+        "activity": ["CXL ALLSYMB", "SELL 20 ARCA1L @ 11.63"],
         "speech": ["Trade is not profitable, exiting on bid"]
       }
     },
@@ -153,6 +186,63 @@
       "run": ["SellPortionAsk"],
       "montage": { "Pos": 0 },
       "expect": { "activity": [] }
+    },
+    {
+      "name": "Sell @ Bid: sells the whole position at bid-10c on ARCA1L",
+      "run": ["Sell @ Bid"],
+      "montage": { "Pos": 20, "AvgCost": 11.5 },
+      "expect": { "activity": ["CXL ALLSYMB", "SELL 20 ARCA1L @ 11.63"] }
+    },
+    {
+      "name": "Sell @ Bid: training account also uses ARCA1L",
+      "run": ["Sell @ Bid"],
+      "montage": { "Pos": 20, "AvgCost": 11.5, "Account": "TR12345" },
+      "expect": { "activity": ["CXL ALLSYMB", "SELL 20 ARCA1L @ 11.63"] }
+    },
+    {
+      "name": "Sell @ Bid: when flat cancels all orders and sends a 0-share sell (no flat check, known)",
+      "run": ["Sell @ Bid"],
+      "montage": { "Pos": 0 },
+      "expect": { "activity": ["CXL ALLSYMB", "SELL 0 ARCA1L @ 11.63"] }
+    },
+    {
+      "name": "Sell @ Ask: in profit sells the whole position at the ask on ARCA1L (plus a 0-share stop, known)",
+      "run": ["Sell @ Ask"],
+      "montage": { "Pos": 20, "AvgCost": 11.5 },
+      "expect": {
+        "activity": [
+          "CXL ALLSYMB",
+          "SELL 20 ARCA1L @ 11.85",
+          "SELL 0 STOP LimitP stop 11.5 @ 11.5"
+        ]
+      }
+    },
+    {
+      "name": "Sell @ Ask: at a loss sells the whole position at bid-10c on ARCA1L",
+      "run": ["Sell @ Ask"],
+      "montage": { "Pos": 20, "AvgCost": 12 },
+      "expect": {
+        "activity": ["CXL ALLSYMB", "SELL 20 ARCA1L @ 11.63"],
+        "speech": ["Trade is not profitable, exiting on bid"]
+      }
+    },
+    {
+      "name": "Sell @ Ask: training account also uses ARCA1L",
+      "run": ["Sell @ Ask"],
+      "montage": { "Pos": 20, "AvgCost": 12, "Account": "TR12345" },
+      "expect": { "activity": ["CXL ALLSYMB", "SELL 20 ARCA1L @ 11.63"] }
+    },
+    {
+      "name": "Sell @ Ask: when flat cancels all orders and sends 0-share orders (no flat check, known)",
+      "run": ["Sell @ Ask"],
+      "montage": { "Pos": 0 },
+      "expect": {
+        "activity": [
+          "CXL ALLSYMB",
+          "SELL 0 ARCA1L @ 11.85",
+          "SELL 0 STOP LimitP stop 0 @ 0"
+        ]
+      }
     },
     {
       "name": "Loss lockout: second loss locks the montage",

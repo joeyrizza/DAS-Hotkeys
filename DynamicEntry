@@ -1,24 +1,13 @@
 $BuyPrice=$MONTAGE1.Ask;
 $MaxShares=25;
 $MaxLongVal=2000;
-$Debug=0;
 Stopread;
 $StopLimitPriceOffset=.05;
 $MinimumAllowedStopDistance=.05;
 $MaximumRiskPerTrade=($MaxShares * .15);
 $SelectedStopPrice=$MONTAGE1.Price;
 
-
-if (SubString($MONTAGE1.Account,0,2) == "TR")
-{
-    //Training Account
-    $Route="ARCAL";
-}
-else
-{
-    //Margin Account
-    $Route="ARCA1L";
-}
+$Route="ARCA1L";
 
 if($MONTAGE1.Pos > 0){
     Speak("Position is not flat");
@@ -71,21 +60,9 @@ $MONTAGE1.Share=$FinalShareCount;
 $MONTAGE1.ROUTE=$Route;
 $MONTAGE1.Price=$BuyPrice;
 $MONTAGE1.TIF="DAY+";
+$MONTAGE1.BUY=Send;
 
-if($Debug == 0){
-    $MONTAGE1.BUY=Send;
-    $MONTAGE1.TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$SelectedStopPrice-$StopLimitPriceOffset ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
-} else {
-    MsgBox(
-        "\nSelectedStopPrice: $" + $SelectedStopPrice
-        + "\nTechnicalStopDistance: $" + $TechnicalStopDistance
-        + "\nEffectiveRiskPerShare: $" + $EffectiveRiskPerShare
-        + "\nMaximumRiskPerTrade: $" + $MaximumRiskPerTrade
-        + "\nTechnicalStopRisk: $" + $TechnicalStopRisk
-        + "\nAdditionalOffsetRisk: $" + $AdditionalOffsetRisk
-        + "\nWorstCasePlannedRisk: $" + $WorstCasePlannedRisk
-        + "\nFinal Shares: " + $FinalShareCount
-    );
-}
-
+//DAS's editor reports "missing ;" on this line, but saves it and it works (a quoted string fails: "No QTY defined!")
+$StopLimitPrice=$SelectedStopPrice-$StopLimitPriceOffset;
+$MONTAGE1.TriggerOrder=RT:STOP STOPTYPE:LIMITP PX:$StopLimitPrice ACT:SELL STOPPRICE:$SelectedStopPrice QTY:Pos TIF:DAY+;
 $MONTAGE1.Price=$SelectedStopPrice;

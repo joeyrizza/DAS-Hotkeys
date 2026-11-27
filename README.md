@@ -173,7 +173,7 @@ Both entry hotkeys:
 
 - refuse to trade unless the setup is armed;
 - reject a stop at or above the bid, or less than $0.05 below the entry;
-- route to `ARCAL` on training accounts (account name starts with `TR`) and `ARCA1L` otherwise;
+- route to `ARCA1L` on every account (`ARCAL` is no longer available on either the training or the margin account);
 - send a limit buy at the ask with `TIF=DAY+`, and attach a stop-limit sell for the whole position;
 - leave the montage price set to the stop afterwards.
 
@@ -191,7 +191,9 @@ risk per share = (ask − stop) + 0.05
 shares         = Round(3.75 / risk per share), capped at 25 and at $2,000 of position value
 ```
 
-It also cancels all open orders for the symbol first, and refuses to trade if you already hold a long position. Set `$Debug=1` to show the calculation in a `MsgBox` instead of sending orders.
+It also cancels all open orders for the symbol first, and refuses to trade if you already hold a long position. (The `$Debug` option that showed the calculation in a `MsgBox` was removed.)
+
+Known limitation: DAS's script editor reports `missing ;` on the `TriggerOrder` line when you commit the hotkey. It still saves, and the stop is attached. Keep the line unquoted, as it is: a quoted version commits without the warning, but the order fails with "Create trigger order failed: No QTY defined!".
 
 ### StaticEntry (fixed size)
 
@@ -209,8 +211,12 @@ Buys 25 shares and creates a DAS alert named `StopTrigger` that runs the `Sell @
 |---|---|
 | `SellPortionAsk` | **In profit (bid > average cost):** sells 50% with a limit at the ask, and places a breakeven stop-limit for the rest. **Otherwise:** sells the whole position with a limit at bid − $0.10. |
 | `SellPortion` | Sells 75% with a limit at bid − $0.10 (fills immediately), and places a breakeven stop-limit for the rest. |
+| `Sell Ask` (hotkey `Sell @ Ask`) | **In profit:** sells the whole position with a limit at the ask. **Otherwise:** sells the whole position with a limit at bid − $0.10. |
+| `Sell Bid` (hotkey `Sell @ Bid`) | Sells the whole position with a limit at bid − $0.10. Also run by the `TriggerStop` alert. |
 
-Both read the position once at the start (so a fast fill on the partial can't shrink the stop's share count) and do nothing when flat. They then cancel all open orders for the symbol. The breakeven stop-limit triggers at average cost with its limit $0.05 lower, so a fast drop can't skip past it; it can fill up to $0.05/share below cost. DAS rounds fractional share counts down, which sometimes leaves one share to sell by hand.
+`Sell @ Ask` and `Sell @ Bid` cancel all open orders for the symbol and route to `ARCA1L`. Known limitations: they have no flat check, so pressed while flat they still cancel all orders and send 0-share sells, and `Sell @ Ask` in profit also sends a 0-share breakeven stop (its stop is for `Pos − qty`, and `qty` is the whole position).
+
+`SellPortion` and `SellPortionAsk` read the position once at the start (so a fast fill on the partial can't shrink the stop's share count) and do nothing when flat. They then cancel all open orders for the symbol. The limit sells use the same route as the entry hotkeys, `ARCA1L`. They used to use DAS's `LIMIT` route, the smart router, which sends the order to whatever route the broker has set up. The breakeven stops still use the `STOP` route. The breakeven stop-limit triggers at average cost with its limit $0.05 lower, so a fast drop can't skip past it; it can fill up to $0.05/share below cost. DAS rounds fractional share counts down, which sometimes leaves one share to sell by hand.
 
 ---
 
@@ -385,8 +391,10 @@ Most filenames match the DAS hotkey name that `exechotkey()` calls. These don't:
 | `Setup Disarmed` | `SetupDisarmed` |
 | `Test_PriceChange` | `Tests/TestPriceChange` |
 | `TestEmaTrendState` | `Tests/TestEMATrendState` |
+| `Sell @ Bid` | `Sell Bid` |
+| `Sell @ Ask` | `Sell Ask` |
 
-These hotkeys are called but aren't in this repo: `CatalystButtonColor` (from RunTests_Symb) and `Sell @ Bid` (from the TriggerStop alert).
+These hotkeys are called but aren't in this repo: `CatalystButtonColor` (from RunTests_Symb).
 
 ---
 
