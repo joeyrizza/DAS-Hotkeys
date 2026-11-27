@@ -209,12 +209,12 @@ Buys 25 shares and creates a DAS alert named `StopTrigger` that runs the `Sell @
 
 | Script | What it does |
 |---|---|
-| `SellPortionAsk` | **In profit (bid > average cost):** sells 50% with a limit at the ask, and places a breakeven stop-limit for the rest. **Otherwise:** sells the whole position with a limit at bid − $0.10. |
+| `SellPortionAsk` | **In profit (bid > average cost):** sells 75% with a limit at the ask, and places a breakeven stop-limit for the rest. **Otherwise:** sells the whole position with a limit at bid − $0.10. |
 | `SellPortion` | Sells 75% with a limit at bid − $0.10 (fills immediately), and places a breakeven stop-limit for the rest. |
 | `Sell Ask` (hotkey `Sell @ Ask`) | **In profit:** sells the whole position with a limit at the ask. **Otherwise:** sells the whole position with a limit at bid − $0.10. |
 | `Sell Bid` (hotkey `Sell @ Bid`) | Sells the whole position with a limit at bid − $0.10. Also run by the `TriggerStop` alert. |
 
-`Sell @ Ask` and `Sell @ Bid` cancel all open orders for the symbol and route to `ARCA1L`. Known limitations: they have no flat check, so pressed while flat they still cancel all orders and send 0-share sells, and `Sell @ Ask` in profit also sends a 0-share breakeven stop (its stop is for `Pos − qty`, and `qty` is the whole position).
+`Sell @ Ask` and `Sell @ Bid` cancel all open orders for the symbol and route to `ARCA1L`. They have no flat check: pressed while flat they still cancel all orders, and DAS rejects the 0-share sell ("Invalid Shares!"). Known limitation: `Sell @ Ask` in profit cancels your stop and places no new one, so the position is unprotected until the limit at the ask fills. Watch it, and use `Sell @ Bid` if it doesn't fill.
 
 `SellPortion` and `SellPortionAsk` read the position once at the start (so a fast fill on the partial can't shrink the stop's share count) and do nothing when flat. They then cancel all open orders for the symbol. The limit sells use the same route as the entry hotkeys, `ARCA1L`. They used to use DAS's `LIMIT` route, the smart router, which sends the order to whatever route the broker has set up. The breakeven stops still use the `STOP` route. The breakeven stop-limit triggers at average cost with its limit $0.05 lower, so a fast drop can't skip past it; it can fill up to $0.05/share below cost. DAS rounds fractional share counts down, which sometimes leaves one share to sell by hand.
 

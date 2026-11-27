@@ -27,6 +27,8 @@
 //              sent: "Create trigger order failed: No QTY defined!"
 //              (simdas.js only reads the unquoted form, so a quoted
 //              one shows up in the tests as a missing stop).
+//   confirmed: DAS rejects a 0-share order with "Invalid Shares!"
+//              (simdas.js still records it as sent, e.g. "SELL 0 ...")
 //   assumed:   an unset variable reads as 0
 //   assumed:   C-style operator precedence (* / % before + -,
 //              comparisons before &&, && before ||)

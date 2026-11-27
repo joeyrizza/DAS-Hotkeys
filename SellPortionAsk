@@ -8,7 +8,7 @@ $Route="ARCA1L";
 if($MONTAGE1.Bid > $MONTAGE1.AvgCost) {
     $MONTAGE1.CXL ALLSYMB;
 
-    $qty=$pos*0.5;
+    $qty=$pos*0.75;
 
     $MONTAGE1.ROUTE=$Route;
     $MONTAGE1.Price=$MONTAGE1.Ask;
