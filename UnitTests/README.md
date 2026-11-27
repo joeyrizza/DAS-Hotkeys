@@ -200,7 +200,7 @@ On the site:
 
 - **Trades | Replays** at the top switches between the two.
 - **Replays** lists the exported days, newest first, with a ticker search (Enter opens the first match). A day with trades in trade-review shows how many fills it has.
-- On a replay, your fills for that ticker and day (trade-review's screenshots) are purple circles under their candles (a circle means a screenshot exists for that minute; it doesn't show the side or mark an entry or exit). The details panel lists the fills in the minute you pin, each linking to its screenshot in Trades, and the intro panel lists the day's fills. A screenshot's time is taken as the fill time, on the same clock as DAS's bar times. A fill after the export's last bar isn't shown.
+- On a replay, your fills for that ticker and day (trade-review's screenshots) are blue rings under their candles (a ring means a screenshot exists for that minute; it doesn't show the side or mark an entry or exit). The details panel lists the fills in the minute you pin, each linking to its screenshot in Trades, and the intro panel lists the day's fills. A screenshot's time is taken as the fill time, on the same clock as DAS's bar times. A fill after the export's last bar isn't shown.
 - In Trades, a trade gets a **Replay** button only when a replay exists for its ticker and date. It opens the replay on the hour around the fill, with that minute pinned. If the fill is outside the exported bars, it opens the whole day.
 
 The single-file page from `run.js replay` still works on its own. It has no site navigation and no fills.
